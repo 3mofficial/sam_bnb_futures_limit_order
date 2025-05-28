@@ -1,0 +1,335 @@
+{
+    "position_file": {
+        "value": "pos20250424_v3_new.csv",
+        "description": "调仓文件",
+        "date": "2025-04-24_16:39:48"
+    },
+    "before_trade_balance": {
+        "value": 44.96559343,
+        "description": "调仓前账户总保证金余额(totalMarginBalance)",
+        "date": "2025-04-24_16:39:48"
+    },
+    "before_available_balance": {
+        "value": 4.96137088,
+        "description": "调仓前可用保证金余额(available_balance)",
+        "date": "2025-04-24_16:39:48"
+    },
+    "trade_COTIUSDT_BUY_6752877365_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "COTIUSDT",
+            "total_qty": 115.0,
+            "price": 0.07274339130434782,
+            "total_quote": 8.36549,
+            "real_quote": 2.7884966666666666,
+            "order_id": 6752877365
+        },
+        "description": "BUY COTIUSDT 成交数量 115.0 成交均价 0.07274339130434782 杠杆后成交金额 8.36549 真实成交金额 2.7884966666666666 订单ID 6752877365",
+        "date": "2025-04-24_16:40:03"
+    },
+    "trade_PAXGUSDT_BUY_77062197_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "PAXGUSDT",
+            "total_qty": 0.003,
+            "price": 3353.39,
+            "total_quote": 10.06017,
+            "real_quote": 3.3533899999999996,
+            "order_id": 77062197
+        },
+        "description": "BUY PAXGUSDT 成交数量 0.003 成交均价 3353.39 杠杆后成交金额 10.06017 真实成交金额 3.3533899999999996 订单ID 77062197",
+        "date": "2025-04-24_16:40:04"
+    },
+    "trade_NEARUSDT_BUY_28794698020_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "NEARUSDT",
+            "total_qty": 4.0,
+            "price": 2.376,
+            "total_quote": 9.504,
+            "real_quote": 3.1679999999999997,
+            "order_id": 28794698020
+        },
+        "description": "BUY NEARUSDT 成交数量 4.0 成交均价 2.376 杠杆后成交金额 9.504 真实成交金额 3.1679999999999997 订单ID 28794698020",
+        "date": "2025-04-24_16:40:05"
+    },
+    "trade_XRPUSDT_SELL_100110425028_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "XRPUSDT",
+            "total_qty": 3.9,
+            "price": 2.1371,
+            "total_quote": 8.33469,
+            "real_quote": 2.77823,
+            "order_id": 100110425028
+        },
+        "description": "SELL XRPUSDT 成交数量 3.9 成交均价 2.1371 杠杆后成交金额 8.33469 真实成交金额 2.77823 订单ID 100110425028",
+        "date": "2025-04-24_16:40:05"
+    },
+    "trade_ZILUSDT_SELL_10752338304_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "ZILUSDT",
+            "total_qty": 686.0,
+            "price": 0.012270000000000001,
+            "total_quote": 8.41722,
+            "real_quote": 2.80574,
+            "order_id": 10752338304
+        },
+        "description": "SELL ZILUSDT 成交数量 686.0 成交均价 0.012270000000000001 杠杆后成交金额 8.41722 真实成交金额 2.80574 订单ID 10752338304",
+        "date": "2025-04-24_16:40:05"
+    },
+    "trade_KAVAUSDT_SELL_11123367349_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "KAVAUSDT",
+            "total_qty": 19.4,
+            "price": 0.4325,
+            "total_quote": 8.3905,
+            "real_quote": 2.7968333333333333,
+            "order_id": 11123367349
+        },
+        "description": "SELL KAVAUSDT 成交数量 19.4 成交均价 0.4325 杠杆后成交金额 8.3905 真实成交金额 2.7968333333333333 订单ID 11123367349",
+        "date": "2025-04-24_16:40:06"
+    },
+    "trade_OGNUSDT_SELL_6708509584_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "OGNUSDT",
+            "total_qty": 145.0,
+            "price": 0.0577,
+            "total_quote": 8.3665,
+            "real_quote": 2.7888333333333333,
+            "order_id": 6708509584
+        },
+        "description": "SELL OGNUSDT 成交数量 145.0 成交均价 0.0577 杠杆后成交金额 8.3665 真实成交金额 2.7888333333333333 订单ID 6708509584",
+        "date": "2025-04-24_16:40:07"
+    },
+    "trade_SUNUSDT_SELL_1342137009_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "SUNUSDT",
+            "total_qty": 496.0,
+            "price": 0.016976,
+            "total_quote": 8.420096000000001,
+            "real_quote": 2.806698666666667,
+            "order_id": 1342137009
+        },
+        "description": "SELL SUNUSDT 成交数量 496.0 成交均价 0.016976 杠杆后成交金额 8.420096000000001 真实成交金额 2.806698666666667 订单ID 1342137009",
+        "date": "2025-04-24_16:40:08"
+    },
+    "trade_FUNUSDT_BUY_323213141_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "FUNUSDT",
+            "total_qty": 1360.0,
+            "price": 0.005914999999999999,
+            "total_quote": 8.0444,
+            "real_quote": 2.6814666666666667,
+            "order_id": 323213141
+        },
+        "description": "BUY FUNUSDT 成交数量 1360.0 成交均价 0.005914999999999999 杠杆后成交金额 8.0444 真实成交金额 2.6814666666666667 订单ID 323213141",
+        "date": "2025-04-24_16:40:08"
+    },
+    "trade_IOSTUSDT_SELL_8170236796_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "IOSTUSDT",
+            "total_qty": 2213.0,
+            "price": 0.0038010000000000006,
+            "total_quote": 8.411613000000001,
+            "real_quote": 2.8038710000000004,
+            "order_id": 8170236796
+        },
+        "description": "SELL IOSTUSDT 成交数量 2213.0 成交均价 0.0038010000000000006 杠杆后成交金额 8.411613000000001 真实成交金额 2.8038710000000004 订单ID 8170236796",
+        "date": "2025-04-24_16:40:09"
+    },
+    "trade_NKNUSDT_BUY_4417891543_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "NKNUSDT",
+            "total_qty": 2.0,
+            "price": 0.03365,
+            "total_quote": 0.0673,
+            "real_quote": 0.022433333333333333,
+            "order_id": 4417891543
+        },
+        "description": "BUY NKNUSDT 成交数量 2.0 成交均价 0.03365 杠杆后成交金额 0.0673 真实成交金额 0.022433333333333333 订单ID 4417891543",
+        "date": "2025-04-24_16:40:09"
+    },
+    "trade_AAVEUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "AAVEUSDT",
+            "total_qty": 0.1,
+            "price": 159.17,
+            "total_quote": 15.917,
+            "real_quote": 5.305666666666666,
+            "order_id": 18717333735
+        },
+        "description": "BUY AAVEUSDT 成交数量 0.1 成交均价 159.17 杠杆后成交金额 15.917 真实成交金额 5.305666666666666 订单ID 18717333735",
+        "date": "2025-04-24_16:40:10"
+    },
+    "trade_TRXUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "TRXUSDT",
+            "total_qty": 35.0,
+            "price": 0.24214,
+            "total_quote": 8.4749,
+            "real_quote": 2.8249666666666666,
+            "order_id": 14768719560
+        },
+        "description": "BUY TRXUSDT 成交数量 35.0 成交均价 0.24214 杠杆后成交金额 8.4749 真实成交金额 2.8249666666666666 订单ID 14768719560",
+        "date": "2025-04-24_16:40:12"
+    },
+    "trade_CELRUSDT_SELL_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "CELRUSDT",
+            "total_qty": 889.0,
+            "price": 0.00962,
+            "total_quote": 8.55218,
+            "real_quote": 2.8507266666666666,
+            "order_id": 4308775531
+        },
+        "description": "SELL CELRUSDT 成交数量 889.0 成交均价 0.00962 杠杆后成交金额 8.55218 真实成交金额 2.8507266666666666 订单ID 4308775531",
+        "date": "2025-04-24_16:40:13"
+    },
+    "trade_OMUSDT_SELL_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "OMUSDT",
+            "total_qty": 16.7,
+            "price": 0.51357,
+            "total_quote": 8.576618999999999,
+            "real_quote": 2.8588729999999996,
+            "order_id": 6205013043
+        },
+        "description": "SELL OMUSDT 成交数量 16.7 成交均价 0.51357 杠杆后成交金额 8.576618999999999 真实成交金额 2.8588729999999996 订单ID 6205013043",
+        "date": "2025-04-24_16:40:15"
+    },
+    "trade_HIVEUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "HIVEUSDT",
+            "total_qty": 36.0,
+            "price": 0.23969000000000001,
+            "total_quote": 8.62884,
+            "real_quote": 2.87628,
+            "order_id": 1062969352
+        },
+        "description": "BUY HIVEUSDT 成交数量 36.0 成交均价 0.23969000000000001 杠杆后成交金额 8.62884 真实成交金额 2.87628 订单ID 1062969352",
+        "date": "2025-04-24_16:40:16"
+    },
+    "trade_BNBUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "BNBUSDT",
+            "total_qty": 0.01,
+            "price": 598.06,
+            "total_quote": 5.9806,
+            "real_quote": 1.9935333333333334,
+            "order_id": 69851787796
+        },
+        "description": "BUY BNBUSDT 成交数量 0.01 成交均价 598.06 杠杆后成交金额 5.9806 真实成交金额 1.9935333333333334 订单ID 69851787796",
+        "date": "2025-04-24_16:40:17"
+    },
+    "trade_ARKUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "ARKUSDT",
+            "total_qty": 18.0,
+            "price": 0.46529999999999994,
+            "total_quote": 8.375399999999999,
+            "real_quote": 2.7918,
+            "order_id": 2756055487
+        },
+        "description": "BUY ARKUSDT 成交数量 18.0 成交均价 0.46529999999999994 杠杆后成交金额 8.375399999999999 真实成交金额 2.7918 订单ID 2756055487",
+        "date": "2025-04-24_16:40:20"
+    },
+    "trade_INJUSDT_SELL_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "INJUSDT",
+            "total_qty": 0.9,
+            "price": 9.14,
+            "total_quote": 8.226,
+            "real_quote": 2.7420000000000004,
+            "order_id": 9807429896
+        },
+        "description": "SELL INJUSDT 成交数量 0.9 成交均价 9.14 杠杆后成交金额 8.226 真实成交金额 2.7420000000000004 订单ID 9807429896",
+        "date": "2025-04-24_16:40:21"
+    },
+    "trade_DFUSDT_BUY_2025-04-24": {
+        "value": {
+            "side": "BUY",
+            "symbol": "DFUSDT",
+            "total_qty": 150.0,
+            "price": 0.057260000000000005,
+            "total_quote": 8.589,
+            "real_quote": 2.863,
+            "order_id": 451451785
+        },
+        "description": "BUY DFUSDT 成交数量 150.0 成交均价 0.057260000000000005 杠杆后成交金额 8.589 真实成交金额 2.863 订单ID 451451785",
+        "date": "2025-04-24_16:40:22"
+    },
+    "trade_XLMUSDT_SELL_2025-04-24": {
+        "value": {
+            "side": "SELL",
+            "symbol": "XLMUSDT",
+            "total_qty": 33.0,
+            "price": 0.25999727272727274,
+            "total_quote": 8.57991,
+            "real_quote": 2.85997,
+            "order_id": 17176388795
+        },
+        "description": "SELL XLMUSDT 成交数量 33.0 成交均价 0.25999727272727274 杠杆后成交金额 8.57991 真实成交金额 2.85997 订单ID 17176388795",
+        "date": "2025-04-24_16:40:24"
+    },
+    "after_trade_balance": {
+        "value": 44.83576265,
+        "description": "调仓后账户总保证金余额(totalMarginBalance)",
+        "date": "2025-04-24_16:40:42"
+    },
+    "balance_loss": {
+        "value": -0.12983077999999892,
+        "description": "调仓前后余额损失金额",
+        "date": "2025-04-24_16:40:42"
+    },
+    "balance_loss_rate": {
+        "value": "-0.288734%",
+        "description": "调仓前后余额损失率 (%)",
+        "date": "2025-04-24_16:40:42"
+    },
+    "after_available_balance": {
+        "value": 3.7079749,
+        "description": "调仓后可用余额",
+        "date": "2025-04-24_16:40:42"
+    },
+    "btc_usdt_price": {
+        "value": 91908.6,
+        "description": "当前btc_usdt_price:91908.6",
+        "date": "2025-04-24_16:40:42"
+    },
+    "trade_commission_summary_2025-04-24": {
+        "value": 0.08814116000000001,
+        "description": "2025-04-24 买卖交易手续费总和",
+        "date": "2025-04-24_16:40:45"
+    },
+    "trade_commission_summary_ratio_2025-04-24": {
+        "value": " 0.196019%",
+        "description": "2025-04-24 买卖交易总手续费占比",
+        "date": "2025-04-24_16:40:45"
+    },
+    "trade_realized_pnl_summary_2025-04-24": {
+        "value": -0.19892198999999994,
+        "description": "2025-04-24 买卖交易已实现盈亏总和",
+        "date": "2025-04-24_16:40:47"
+    },
+    "trade_realized_pnl_summary_ratio_2025-04-24": {
+        "value": "-0.442387%",
+        "description": "2025-04-24 买卖交易总盈亏占比",
+        "date": "2025-04-24_16:40:47"
+    }
+}
