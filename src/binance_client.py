@@ -307,8 +307,7 @@ class BinanceFuturesClient:
             return False, {"error": error_msg}, default_trade_details, order_id
 
     def place_postonly_order(self, symbol: str, side: str, quantity: float, price: float, is_close: bool = False) -> \
-            Tuple[
-                bool, Any, int, Dict[str, float]]:
+            Tuple[bool, Any, int, Dict[str, float]]:
         """下 postonly 限价单，只做 maker，平仓时跳过最小名义价值检查并设置 reduceOnly
 
         Args:
@@ -343,18 +342,21 @@ class BinanceFuturesClient:
             # 仅对开仓订单检查最小名义价值
             if not is_close and notional < min_notional:
                 self.logger.error(f"{symbol} 名义价值 {notional} 小于最小要求 {min_notional}")
-                return False, Exception(f"名义价值 {notional} 小于最小要求 {min_notional}"), 0, {"total_quote": 0.0,
-                                                                                                 "total_qty": 0.0,
-                                                                                                 "price": 0.0}
-
-            # 检查保证金
-            account_info = self.client.futures_account()
-            available_balance = float(account_info["availableBalance"])
-            required_margin = notional / self.leverage
-            if available_balance < required_margin:
-                self.logger.error(f"{symbol} 保证金不足: 可用 {available_balance}, 需求 {required_margin}")
-                return False, Exception(f"保证金不足: 可用 {available_balance}, 需求 {required_margin}"), 0, {
+                return False, Exception(f"名义价值 {notional} 小于最小要求 {min_notional}"), 0, {
                     "total_quote": 0.0, "total_qty": 0.0, "price": 0.0}
+
+            # 检查保证金，仅对非平仓订单
+            if not is_close:
+                account_info = self.client.futures_account()
+                available_balance = float(account_info["availableBalance"])
+                required_margin = notional / self.leverage
+                if available_balance < required_margin:
+                    self.logger.error(f"{symbol} 保证金不足: 可用 {available_balance}, 需求 {required_margin}")
+                    return False, Exception(f"保证金不足: 可用 {available_balance}, 需求 {required_margin}"), 0, {
+                        "total_quote": 0.0, "total_qty": 0.0, "price": 0.0}
+                self.logger.debug(f"{symbol} 保证金检查通过: 可用 {available_balance}, 需求 {required_margin}")
+            else:
+                self.logger.info(f"{symbol} 为平仓订单 (reduceOnly=True)，跳过保证金检查")
 
             # 下单，平仓订单设置 reduceOnly=True
             order_params = {
@@ -368,6 +370,8 @@ class BinanceFuturesClient:
             if is_close:
                 order_params["reduceOnly"] = True
 
+            self.logger.debug(f"{symbol} 下单参数: {order_params}")
+            order = self.client.futures_create_order(**order_params)
             order = self.client.futures_create_order(**order_params)
             order_id = order['orderId']
             self.logger.info(

@@ -1,0 +1,332 @@
+{
+    "position_file": {
+        "value": "pos20250528_v3.csv",
+        "description": "调仓文件",
+        "date": "2025-05-28_17:04:40"
+    },
+    "before_trade_balance": {
+        "value": 49.00021849,
+        "description": "调仓前账户总保证金余额(totalMarginBalance)",
+        "date": "2025-05-28_17:04:40"
+    },
+    "before_available_balance": {
+        "value": 5.49467855,
+        "description": "调仓前可用保证金余额(available_balance)",
+        "date": "2025-05-28_17:04:40"
+    },
+    "after_trade_balance": {
+        "value": 48.66862446,
+        "description": "调仓后账户总保证金余额(totalMarginBalance)",
+        "date": "2025-05-28_17:04:40"
+    },
+    "balance_loss": {
+        "value": -0.3315940300000051,
+        "description": "调仓前后余额损失金额",
+        "date": "2025-05-28_17:04:40"
+    },
+    "balance_loss_rate": {
+        "value": "-0.676719%",
+        "description": "调仓前后余额损失率 (%)",
+        "date": "2025-05-28_17:04:40"
+    },
+    "after_available_balance": {
+        "value": 1.60726227,
+        "description": "调仓后可用余额",
+        "date": "2025-05-28_17:04:40"
+    },
+    "btc_usdt_price": {
+        "value": 108903.9,
+        "description": "当前btc_usdt_price:108903.9",
+        "date": "2025-05-28_17:04:40"
+    },
+    "trade_commission_summary_2025-05-28": {
+        "value": 0.13180759000000006,
+        "description": "2025-05-28 买卖交易手续费总和（API获取，69条记录）",
+        "date": "2025-05-28_17:04:15"
+    },
+    "trade_commission_summary_ratio_2025-05-28": {
+        "value": "0.268994%",
+        "description": "2025-05-28 买卖交易总手续费占比",
+        "date": "2025-05-28_17:04:15"
+    },
+    "trade_realized_pnl_summary_2025-05-28": {
+        "value": 0.0,
+        "description": "2025-05-28 买卖交易已实现盈亏总和",
+        "date": "2025-05-28_17:04:15"
+    },
+    "trade_realized_pnl_summary_ratio_2025-05-28": {
+        "value": "0.000000%",
+        "description": "2025-05-28 买卖交易总盈亏占比",
+        "date": "2025-05-28_17:04:15"
+    },
+    "trade_FILUSDT_SELL_2025-05-28_32418099344": {
+        "value": {
+            "side": "SELL",
+            "symbol": "FILUSDT",
+            "total_qty": 3.3,
+            "price": 2.862,
+            "total_quote": 9.4446,
+            "real_quote": 3.1481999999999997,
+            "order_id": 32418099344,
+            "commission": 0.00188892,
+            "realized_pnl": 0.0
+        },
+        "description": "SELL FILUSDT 成交数量 3.3 成交均价 2.862 杠杆后成交金额 9.4446 真实成交金额 3.1481999999999997 订单ID 32418099344",
+        "date": "2025-05-28_16:55:16"
+    },
+    "trade_XMRUSDT_SELL_2025-05-28_12396286097": {
+        "value": {
+            "side": "SELL",
+            "symbol": "XMRUSDT",
+            "total_qty": 0.054,
+            "price": 345.87,
+            "total_quote": 18.67698,
+            "real_quote": 6.22566,
+            "order_id": 12396286097,
+            "commission": 0.00373539,
+            "realized_pnl": 0.0
+        },
+        "description": "SELL XMRUSDT 成交数量 0.054 成交均价 345.87 杠杆后成交金额 18.67698 真实成交金额 6.22566 订单ID 12396286097",
+        "date": "2025-05-28_16:55:16"
+    },
+    "trade_CKBUSDT_SELL_2025-05-28_3568341725": {
+        "value": {
+            "side": "SELL",
+            "symbol": "CKBUSDT",
+            "total_qty": 1837.0,
+            "price": 0.005048,
+            "total_quote": 9.273176000000001,
+            "real_quote": 3.091058666666667,
+            "order_id": 3568341725,
+            "commission": 0.00185463,
+            "realized_pnl": 0.0
+        },
+        "description": "SELL CKBUSDT 成交数量 1837.0 成交均价 0.005048 杠杆后成交金额 9.273176000000001 真实成交金额 3.091058666666667 订单ID 3568341725",
+        "date": "2025-05-28_16:55:44"
+    },
+    "trade_XMRUSDT_BUY_2025-05-28_12396312916": {
+        "value": {
+            "side": "BUY",
+            "symbol": "XMRUSDT",
+            "total_qty": 0.027,
+            "price": 347.04,
+            "total_quote": 9.37008,
+            "real_quote": 3.12336,
+            "order_id": 12396312916,
+            "commission": 0.00187401,
+            "realized_pnl": -0.03159
+        },
+        "description": "BUY XMRUSDT 成交数量 0.027 成交均价 347.04 杠杆后成交金额 9.37008 真实成交金额 3.12336 订单ID 12396312916",
+        "date": "2025-05-28_16:56:03"
+    },
+    "trade_FILUSDT_BUY_2025-05-28_32418114454": {
+        "value": {
+            "side": "BUY",
+            "symbol": "FILUSDT",
+            "total_qty": 3.3,
+            "price": 2.8639999999999994,
+            "total_quote": 9.451199999999998,
+            "real_quote": 3.1503999999999994,
+            "order_id": 32418114454,
+            "commission": 0.00189024,
+            "realized_pnl": -0.00659999
+        },
+        "description": "BUY FILUSDT 成交数量 3.3 成交均价 2.8639999999999994 杠杆后成交金额 9.451199999999998 真实成交金额 3.1503999999999994 订单ID 32418114454",
+        "date": "2025-05-28_16:56:12"
+    },
+    "trade_LRCUSDT_BUY_2025-05-28_18078558599": {
+        "value": {
+            "side": "BUY",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.0994,
+            "total_quote": 9.443,
+            "real_quote": 3.1476666666666664,
+            "order_id": 18078558599,
+            "commission": 0.0018886,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY LRCUSDT 成交数量 95.0 成交均价 0.0994 杠杆后成交金额 9.443 真实成交金额 3.1476666666666664 订单ID 18078558599",
+        "date": "2025-05-28_16:56:29"
+    },
+    "trade_LRCUSDT_SELL_2025-05-28_18078559919": {
+        "value": {
+            "side": "SELL",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09927,
+            "total_quote": 9.43065,
+            "real_quote": 3.14355,
+            "order_id": 18078559919,
+            "commission": 0.00188613,
+            "realized_pnl": -0.01235
+        },
+        "description": "SELL LRCUSDT 成交数量 95.0 成交均价 0.09927 杠杆后成交金额 9.43065 真实成交金额 3.14355 订单ID 18078559919",
+        "date": "2025-05-28_16:58:02"
+    },
+    "trade_LRCUSDT_BUY_2025-05-28_18078560356": {
+        "value": {
+            "side": "BUY",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.0993,
+            "total_quote": 9.4335,
+            "real_quote": 3.1445000000000003,
+            "order_id": 18078560356,
+            "commission": 0.0018867,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY LRCUSDT 成交数量 95.0 成交均价 0.0993 杠杆后成交金额 9.4335 真实成交金额 3.1445000000000003 订单ID 18078560356",
+        "date": "2025-05-28_16:58:14"
+    },
+    "trade_FILUSDT_BUY_2025-05-28_32418133966": {
+        "value": {
+            "side": "BUY",
+            "symbol": "FILUSDT",
+            "total_qty": 3.3,
+            "price": 2.861,
+            "total_quote": 9.4413,
+            "real_quote": 3.1471,
+            "order_id": 32418133966,
+            "commission": 0.00188826,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY FILUSDT 成交数量 3.3 成交均价 2.861 杠杆后成交金额 9.4413 真实成交金额 3.1471 订单ID 32418133966",
+        "date": "2025-05-28_16:58:26"
+    },
+    "trade_LRCUSDT_SELL_2025-05-28_18078561016": {
+        "value": {
+            "side": "SELL",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09923,
+            "total_quote": 9.42685,
+            "real_quote": 3.1422833333333333,
+            "order_id": 18078561016,
+            "commission": 0.00188537,
+            "realized_pnl": -0.00664999
+        },
+        "description": "SELL LRCUSDT 成交数量 95.0 成交均价 0.09923 杠杆后成交金额 9.42685 真实成交金额 3.1422833333333333 订单ID 18078561016",
+        "date": "2025-05-28_16:59:11"
+    },
+    "trade_CTKUSDT_SELL_2025-05-28_52304335": {
+        "value": {
+            "side": "SELL",
+            "symbol": "CTKUSDT",
+            "total_qty": 27.0,
+            "price": 0.3525,
+            "total_quote": 9.5175,
+            "real_quote": 3.1725,
+            "order_id": 52304335,
+            "commission": 0.0019035,
+            "realized_pnl": 0.0
+        },
+        "description": "SELL CTKUSDT 成交数量 27.0 成交均价 0.3525 杠杆后成交金额 9.5175 真实成交金额 3.1725 订单ID 52304335",
+        "date": "2025-05-28_16:59:16"
+    },
+    "trade_CTKUSDT_BUY_2025-05-28_52305395": {
+        "value": {
+            "side": "BUY",
+            "symbol": "CTKUSDT",
+            "total_qty": 27.0,
+            "price": 0.3525,
+            "total_quote": 9.5175,
+            "real_quote": 3.1725,
+            "order_id": 52305395,
+            "commission": 0.0019035,
+            "realized_pnl": 0.00089999
+        },
+        "description": "BUY CTKUSDT 成交数量 27.0 成交均价 0.3525 杠杆后成交金额 9.5175 真实成交金额 3.1725 订单ID 52305395",
+        "date": "2025-05-28_17:00:16"
+    },
+    "trade_LRCUSDT_BUY_2025-05-28_18078562359": {
+        "value": {
+            "side": "BUY",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09928,
+            "total_quote": 9.4316,
+            "real_quote": 3.1438666666666664,
+            "order_id": 18078562359,
+            "commission": 0.00188632,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY LRCUSDT 成交数量 95.0 成交均价 0.09928 杠杆后成交金额 9.4316 真实成交金额 3.1438666666666664 订单ID 18078562359",
+        "date": "2025-05-28_17:00:30"
+    },
+    "trade_LRCUSDT_SELL_2025-05-28_18078562500": {
+        "value": {
+            "side": "SELL",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.0993,
+            "total_quote": 9.4335,
+            "real_quote": 3.1445000000000003,
+            "order_id": 18078562500,
+            "commission": 0.0018867,
+            "realized_pnl": 0.0019
+        },
+        "description": "SELL LRCUSDT 成交数量 95.0 成交均价 0.0993 杠杆后成交金额 9.4335 真实成交金额 3.1445000000000003 订单ID 18078562500",
+        "date": "2025-05-28_17:00:50"
+    },
+    "trade_LRCUSDT_BUY_2025-05-28_18078562674": {
+        "value": {
+            "side": "BUY",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09927,
+            "total_quote": 9.43065,
+            "real_quote": 3.14355,
+            "order_id": 18078562674,
+            "commission": 0.00188613,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY LRCUSDT 成交数量 95.0 成交均价 0.09927 杠杆后成交金额 9.43065 真实成交金额 3.14355 订单ID 18078562674",
+        "date": "2025-05-28_17:01:02"
+    },
+    "trade_LRCUSDT_SELL_2025-05-28_18078562814": {
+        "value": {
+            "side": "SELL",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09927,
+            "total_quote": 9.43065,
+            "real_quote": 3.14355,
+            "order_id": 18078562814,
+            "commission": 0.00188613,
+            "realized_pnl": 0.0
+        },
+        "description": "SELL LRCUSDT 成交数量 95.0 成交均价 0.09927 杠杆后成交金额 9.43065 真实成交金额 3.14355 订单ID 18078562814",
+        "date": "2025-05-28_17:01:21"
+    },
+    "trade_RLCUSDT_SELL_2025-05-28_7721195104": {
+        "value": {
+            "side": "SELL",
+            "symbol": "RLCUSDT",
+            "total_qty": 8.1,
+            "price": 1.1686,
+            "total_quote": 9.46566,
+            "real_quote": 3.15522,
+            "order_id": 7721195104,
+            "commission": 0.00189313,
+            "realized_pnl": -0.00350999
+        },
+        "description": "SELL RLCUSDT 成交数量 8.1 成交均价 1.1686 杠杆后成交金额 9.46566 真实成交金额 3.15522 订单ID 7721195104",
+        "date": "2025-05-28_17:03:14"
+    },
+    "trade_LRCUSDT_BUY_2025-05-28_18078565337": {
+        "value": {
+            "side": "BUY",
+            "symbol": "LRCUSDT",
+            "total_qty": 95.0,
+            "price": 0.09928999999999999,
+            "total_quote": 9.432549999999999,
+            "real_quote": 3.144183333333333,
+            "order_id": 18078565337,
+            "commission": 0.0018865,
+            "realized_pnl": 0.0
+        },
+        "description": "BUY LRCUSDT 成交数量 95.0 成交均价 0.09928999999999999 杠杆后成交金额 9.432549999999999 真实成交金额 3.144183333333333 订单ID 18078565337",
+        "date": "2025-05-28_17:03:30"
+    }
+}
