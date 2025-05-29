@@ -371,8 +371,7 @@ class BinanceFuturesClient:
                 order_params["reduceOnly"] = True
 
             self.logger.debug(f"{symbol} 下单参数: {order_params}")
-            order = self.client.futures_create_order(**order_params)
-            order = self.client.futures_create_order(**order_params)
+            order = self.client.futures_create_order(**order_params)  # 仅调用一次
             order_id = order['orderId']
             self.logger.info(
                 f"{symbol} postonly 挂单成功: 方向={side}, 数量={adjusted_quantity}, 价格={adjusted_price}, 订单ID={order_id}, is_close={is_close}, reduceOnly={is_close}"
@@ -529,6 +528,22 @@ class BinanceFuturesClient:
                 time.sleep(delay)
         logger.error(f"{symbol} 多次尝试后仍未获取到成交记录，订单ID={order_id}")
         return []
+
+    def get_open_orders(self, symbol: str) -> List[Dict]:
+        """
+        查询指定交易对的未成交订单。
+
+        :param symbol: 交易对符号（如 'FLMUSDT'）
+        :return: 未成交订单列表，每个订单为字典格式
+        """
+        try:
+            # 调用 Binance Futures API 获取未成交订单
+            open_orders = self.client.futures_get_open_orders(symbol=symbol)
+            self.logger.debug(f"成功获取 {symbol} 的未成交订单: {len(open_orders)} 条")
+            return open_orders
+        except Exception as e:
+            self.logger.error(f"获取 {symbol} 未成交订单失败: {str(e)}")
+            raise  # 抛出异常，交给上层处理
 
     def cancel_order(self, symbol: str, order_id: int) -> bool:
         try:

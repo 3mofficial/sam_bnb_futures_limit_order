@@ -1,39 +1,57 @@
 # -*- coding: utf-8 -*-
 # 指定文件编码为 UTF-8，确保支持中文字符
+
 import os
 # 导入 os 模块，用于文件和目录操作，如路径处理、文件存在性检查
+
 import smtplib
 # 导入 smtplib 模块，用于通过 SMTP 协议发送电子邮件
+
 import imaplib
 # 导入 imaplib 模块，用于通过 IMAP 协议接收和处理电子邮件
+
 import email
 # 导入 email 模块，用于解析和处理电子邮件内容
+
 import time
 # 导入 time 模块，用于处理时间相关操作，如延时等待
+
 import hashlib
 # 导入 hashlib 模块，用于计算文件的 MD5 哈希值以标识文件唯一性
+
 from datetime import datetime, timedelta
 # 从 datetime 模块导入 datetime 和 timedelta，用于处理日期和时间计算
+
 from email import encoders
 # 从 email 模块导入 encoders，用于对邮件附件进行 Base64 编码
+
 from email.mime.base import MIMEBase
 # 从 email.mime.base 导入 MIMEBase，用于创建邮件附件的 MIME 对象
+
 from email.mime.multipart import MIMEMultipart
 # 从 email.mime.multipart 导入 MIMEMultipart，用于创建多部分邮件对象
+
 from email.mime.text import MIMEText
 # 从 email.mime.text 导入 MIMEText，用于创建邮件正文的文本部分
+
 import pandas as pd
 # 导入 pandas 库并命名为 pd，用于数据处理和分析，如读取 CSV 和 Excel 文件
+
 from src.binance_client import BinanceFuturesClient
 # 从 src.binance_client 模块导入 BinanceFuturesClient 类，用于与 Binance 期货 API 交互
+
 from src.config_loader import ConfigLoader
 # 从 src.config_loader 模块导入 ConfigLoader 类，用于加载配置文件
+
 from src.logger import setup_logger
 # 从 src.logger 模块导入 setup_logger 函数，用于初始化日志记录器
+
 from src.trading_engine_new import TradingEngine
 # 从 src.trading_engine_new 模块导入 TradingEngine 类，用于执行交易逻辑
+
 from src.util_account_metrics_visualizer import AccountMetricsVisualizer
 # 从 src.util_account_metrics_visualizer 模块导入 AccountMetricsVisualizer 类，用于生成账户指标可视化
+
 from typing import Dict
 # 从 typing 模块导入 Dict，用于类型注解，表示字典类型
 
@@ -41,26 +59,37 @@ def receive_and_download_attachments(logger):
     # 定义函数 receive_and_download_attachments，接收 logger 参数，用于接收邮件并下载附件
     sender_email = "igrklo@163.com"
     # 定义发件人邮箱地址
+
     receiver_email = "yanzhiyuan3@gmail.com"
     # 定义收件人邮箱地址
+
     imap_server = "imap.gmail.com"
     # 定义 IMAP 服务器地址（Gmail 的 IMAP 服务器）
+
     imap_port = 993
     # 定义 IMAP 服务器端口（标准 SSL 端口）
+
     imap_user = receiver_email
     # 设置 IMAP 用户名，与收件人邮箱相同
+
     imap_password = "pyrf nykw jeai kgdf"
     # 设置 IMAP 密码（Gmail 应用专用密码）
+
     current_date = datetime.now().strftime("%Y%m%d")
     # 获取当前日期，格式为 YYYYMMDD（如 20250529）
+
     save_dir = 'data'
     # 定义附件保存目录为 data 文件夹
+
     subject = f"pos{current_date}_v3.csv"
     # 定义邮件主题，格式为 posYYYYMMDD_v3.csv，表示当天的资金费率文件
+
     max_retries = 10
     # 定义最大重试次数为 10 次
+
     retry_delay = 5
     # 定义重试间隔为 5 秒
+
     for attempt in range(max_retries):
         # 循环尝试连接和处理邮件，最多 max_retries 次
         try:
@@ -71,85 +100,116 @@ def receive_and_download_attachments(logger):
                 # 使用 IMAP4_SSL 创建 IMAP 连接，使用 with 语句确保连接关闭
                 mail.socket().settimeout(30)  # 手动设置 socket 超时
                 # 设置 socket 超时时间为 30 秒，防止连接卡死
+
                 logger.info("连接成功，开始登录")
                 # 记录成功连接的日志
+
                 mail.login(imap_user, imap_password)
                 # 使用用户名和密码登录 IMAP 服务器
+
                 logger.info("登录成功，开始扫描邮箱")
                 # 记录成功登录的日志
+
                 mail.select("INBOX")
                 # 选择收件箱（INBOX）作为操作目标
+
                 search_date = datetime.now().strftime("%d-%b-%Y").upper()
                 # 获取当前日期，格式为 DD-MMM-YYYY（如 29-May-2025），并转换为大写
+
                 status, messages = mail.search(None, f'SINCE {search_date}')
                 # 搜索当天收到的邮件，返回状态和邮件 ID 列表
+
                 if status != "OK" or not messages[0]:
                     # 检查搜索状态是否为 OK 且是否有邮件
                     logger.info("未找到符合条件的邮件")
                     # 记录未找到邮件的日志
+
                     return False, None
                     # 返回 False 和 None，表示未找到目标邮件
+
                 email_ids = messages[0].split()
                 # 将邮件 ID 列表分割为单独的 ID
+
                 logger.info(f"找到 {len(email_ids)} 封邮件")
                 # 记录找到的邮件数量
+
                 for email_id in email_ids:
                     # 遍历每封邮件的 ID
                     status, msg_data = mail.fetch(email_id, "(RFC822)")
                     # 获取邮件的完整内容（RFC822 格式）
+
                     if status != "OK":
                         # 如果获取失败，跳过当前邮件
                         continue
+
                     msg = email.message_from_bytes(msg_data[0][1])
                     # 将邮件数据转换为 email 消息对象
+
                     from_header = msg.get("From", "")
                     # 获取邮件的发件人信息，默认为空字符串
+
                     expected_from = f"{datetime.now().strftime('%Y-%m-%d')}<{sender_email}>"
                     # 构造期望的发件人格式，包含日期和发件人邮箱
+
                     if msg["Subject"] == subject and from_header == expected_from:
                         # 检查邮件主题和发件人是否匹配目标
                         logger.info(f"找到目标邮件: {msg['Subject']}")
                         # 记录找到目标邮件的日志
+
                         run_id = datetime.now().strftime("%Y-%m-%d_%H%M%S")
                         # 生成运行 ID，格式为 YYYY-MM-DD_HHMMSS
+
                         for part in msg.walk():
                             # 遍历邮件的所有部分（如文本、附件等）
                             if part.get_content_maintype() == "multipart":
                                 # 如果是 multipart 类型（容器），跳过
                                 continue
+
                             if not part.get("Content-Disposition"):
                                 # 如果没有 Content-Disposition（非附件），跳过
                                 continue
+
                             filename = part.get_filename()
                             # 获取附件文件名
+
                             if filename and filename.endswith('.csv'):
                                 # 检查是否为 CSV 文件
                                 filepath = os.path.join(save_dir, filename)
                                 # 构造附件保存路径
+
                                 with open(filepath, "wb") as f:
                                     # 以二进制写模式打开文件
                                     f.write(part.get_payload(decode=True))
                                     # 写入解码后的附件内容
+
                                 logger.info(f"附件下载成功: {filepath}")
                                 # 记录附件下载成功的日志
+
                                 return True, run_id
                                 # 返回 True 和运行 ID，表示成功下载附件
+
                 logger.info("未找到目标附件")
                 # 记录未找到目标附件的日志
+
                 return False, None
                 # 返回 False 和 None，表示未找到目标附件
+
         except Exception as e:
             # 捕获所有异常
             logger.error(f"操作失败: {str(e)}")
             # 记录操作失败的错误日志
+
             if attempt < max_retries - 1:
                 # 如果未达到最大重试次数
                 logger.info(f"{retry_delay}秒后重试...")
                 # 记录重试等待的日志
+
                 time.sleep(retry_delay)
                 # 等待指定的重试间隔
+
     logger.error("达到最大重试次数，操作终止")
     # 记录达到最大重试次数的错误日志
+
     return False, None
     # 返回 False 和 None，表示操作失败
 
@@ -157,110 +217,147 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
     # 定义函数 analyze_positions，分析持仓数据并添加错误原因列，接收 logger、run_id 和 error_reasons 参数
     """分析持仓数据，添加失败原因列"""
     # 函数文档字符串，描述函数功能
+
     date_str = datetime.now().strftime("%Y-%m-%d")
     # 获取当前日期，格式为 YYYY-MM-DD
+
     logger.info(f"当前日期: {date_str}, Run_ID: {run_id}")
     # 记录当前日期和运行 ID 的日志
+
     positions_file = 'data/positions_output.csv'
     # 定义持仓文件路径
+
     if not os.path.exists(positions_file):
         # 检查持仓文件是否存在
         logger.info(f"{positions_file} 不存在，创建空持仓记录")
         # 记录文件不存在的日志
+
         positions_df = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格', '运行时间', 'Run_ID'])
         # 创建空的持仓 DataFrame，包含指定列
+
     else:
         # 如果持仓文件存在
         try:
             positions_df = pd.read_csv(positions_file, index_col=None)
             # 读取持仓 CSV 文件，不使用索引列
+
             if 'Run_ID' not in positions_df.columns:
                 # 检查是否存在 Run_ID 列
                 logger.warning(f"{positions_file} 缺少 Run_ID 列，添加空列")
                 # 记录缺少 Run_ID 列的警告日志
+
                 positions_df['Run_ID'] = ''
                 # 添加空的 Run_ID 列
+
             # 兼容 Run_ID 为空的情况，尝试匹配日期
             positions_df['Run_ID'] = positions_df['Run_ID'].fillna('')
             # 将 Run_ID 列的空值填充为空字符串
+
             positions_df = positions_df.drop_duplicates(subset=['交易对', '调仓日期', 'Run_ID'], keep='last')
             # 按交易对、调仓日期和 Run_ID 去重，保留最新记录
+
             logger.info(f"读取 {positions_file}，去重后包含 {len(positions_df)} 条记录")
             # 记录读取和去重后的记录数
+
         except Exception as e:
             # 捕获读取文件时的异常
             logger.error(f"读取 {positions_file} 失败: {str(e)}")
             # 记录读取失败的错误日志
+
             positions_df = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格', '运行时间', 'Run_ID'])
             # 创建空的持仓 DataFrame
+
     # 过滤当前 Run_ID 或当天数据
     current_positions = positions_df[
         (positions_df['Run_ID'] == run_id) |
         ((positions_df['Run_ID'] == '') & (positions_df['调仓日期'] == date_str))
     ]
     # 筛选 Run_ID 匹配或当天日期且 Run_ID 为空的记录
+
     logger.info(f"找到 {len(current_positions)} 条 Run_ID={run_id} 或日期={date_str} 的记录")
     # 记录筛选出的记录数
+
     if not current_positions.empty:
         # 如果筛选结果不为空
         current_positions = current_positions[['调仓日期', '交易对', '持仓数量', '入场价格', 'Run_ID']]
         # 提取需要的列
+
         logger.info("已提取所需字段的持仓数据")
         # 记录提取字段的日志
+
     else:
         # 如果筛选结果为空
         logger.info("当前 Run_ID 无持仓数据，创建空结果")
         # 记录无持仓数据的日志
+
         current_positions = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格', 'Run_ID'])
         # 创建空的持仓 DataFrame
+
     positive_positions = current_positions[current_positions['持仓数量'] > 0]
     # 筛选持仓数量大于 0 的记录（多头持仓）
+
     negative_positions = current_positions[current_positions['持仓数量'] < 0]
     # 筛选持仓数量小于 0 的记录（空头持仓）
+
     logger.info(f"正持仓数量: {len(positive_positions)}, 负持仓数量: {len(negative_positions)}")
     # 记录多头和空头持仓的数量
+
     funding_file = f'data/pos{datetime.now().strftime("%Y%m%d")}_v3.csv'
     # 构造资金费率文件路径，格式为 data/posYYYYMMDD_v3.csv
+
     if os.path.exists(funding_file):
         # 检查资金费率文件是否存在
         try:
             funding_df = pd.read_csv(funding_file, index_col=None)
             # 读取资金费率 CSV 文件
+
             funding_df = funding_df.drop_duplicates(subset=['ticker'], keep='last')
             # 按 ticker 列去重，保留最新记录
+
             logger.info(f"资金费率文件 {funding_file} 已加载，去重后包含 {len(funding_df)} 条记录")
             # 记录加载和去重后的记录数
+
         except Exception as e:
             # 捕获读取文件时的异常
             logger.error(f"读取 {funding_file} 失败: {str(e)}")
             # 记录读取失败的错误日志
+
             funding_df = pd.DataFrame(columns=['id', 'ticker', 'fundingRate'])
             # 创建空的资金费率 DataFrame
+
     else:
         # 如果资金费率文件不存在
         logger.info(f"资金费率文件 {funding_file} 不存在，创建空资金费率数据")
         # 记录文件不存在的日志
+
         funding_df = pd.DataFrame(columns=['id', 'ticker', 'fundingRate'])
         # 创建空的资金费率 DataFrame
+
     # 初始化 ErrorReason 列
     funding_df['ErrorReason'] = ''
     # 为资金费率 DataFrame 添加空的 ErrorReason 列
+
     # 处理黑名单过滤的币种
     if "blacklisted_tickers" in error_reasons:
         # 检查错误原因中是否包含黑名单过滤
         blacklisted_tickers_str = error_reasons["blacklisted_tickers"]
         # 获取黑名单交易对字符串
+
         if blacklisted_tickers_str:
             # 如果黑名单字符串不为空
             blacklisted_tickers = [ticker.strip() for ticker in blacklisted_tickers_str.split(",")]
             # 将黑名单字符串分割为列表并去除空格
+
             funding_df.loc[funding_df['ticker'].isin(blacklisted_tickers), 'ErrorReason'] = "黑名单过滤"
             # 为黑名单中的交易对设置 ErrorReason 为 "黑名单过滤"
+
             logger.info(f"已为 {len(blacklisted_tickers)} 个黑名单币种设置 ErrorReason: 黑名单过滤")
             # 记录设置黑名单错误原因的日志
+
     # 映射其他错误原因（优先级高于黑名单过滤）
     ticker_errors = {k: v for k, v in error_reasons.items() if
                      k not in ["blacklisted_tickers", "file_not_found", "position_adjustment_failed", "system_error"]}    # 筛选出非特定类型的错误原因（交易对特定错误）
+
     logger.error(f"已筛选出 {len(ticker_errors)} 个币种映射错误原因")
     if ticker_errors:
         # 如果存在其他错误记录
@@ -274,10 +371,13 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
 
     positive_tickers = positive_positions['交易对'].tolist()
     # 获取多头持仓的交易对列表
+
     positive_funding = funding_df[funding_df['ticker'].isin(positive_tickers)]
     # 筛选资金费率数据中包含多头交易对的记录
+
     positive_funding_sorted = positive_funding.sort_values('id')
     # 按 id 升序排序多头资金费率数据
+
     if not positive_funding_sorted.empty:
         # 如果多头资金费率数据不为空
         max_id = positive_funding_sorted['id'].max()
