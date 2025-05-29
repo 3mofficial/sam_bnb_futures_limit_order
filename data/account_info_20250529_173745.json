@@ -1,0 +1,92 @@
+{
+    "position_file": {
+        "value": "pos20250529_v3.csv",
+        "description": "调仓文件",
+        "date": "2025-05-29_17:37:45"
+    },
+    "before_trade_balance": {
+        "value": 47.91525752,
+        "description": "调仓前账户总保证金余额(totalMarginBalance)",
+        "date": "2025-05-29_17:37:45"
+    },
+    "before_available_balance": {
+        "value": 5.88433189,
+        "description": "调仓前可用保证金余额(available_balance)",
+        "date": "2025-05-29_17:37:45"
+    },
+    "after_trade_balance": {
+        "value": 47.93078373,
+        "description": "调仓后账户总保证金余额(totalMarginBalance)",
+        "date": "2025-05-29_17:37:45"
+    },
+    "balance_loss": {
+        "value": 0.015526210000004426,
+        "description": "调仓前后余额损失金额",
+        "date": "2025-05-29_17:37:45"
+    },
+    "balance_loss_rate": {
+        "value": "0.032403%",
+        "description": "调仓前后余额损失率 (%)",
+        "date": "2025-05-29_17:37:45"
+    },
+    "after_available_balance": {
+        "value": 5.94767154,
+        "description": "调仓后可用余额",
+        "date": "2025-05-29_17:37:45"
+    },
+    "btc_usdt_price": {
+        "value": 108447.4,
+        "description": "当前btc_usdt_price:108447.4",
+        "date": "2025-05-29_17:37:45"
+    },
+    "trade_commission_summary_2025-05-29": {
+        "value": 0,
+        "description": "2025-05-29 买卖交易手续费总和",
+        "date": "2025-05-29_17:37:45"
+    },
+    "trade_commission_summary_ratio_2025-05-29": {
+        "value": "0.000000%",
+        "description": "2025-05-29 买卖交易总手续费占比",
+        "date": "2025-05-29_17:37:45"
+    },
+    "trade_realized_pnl_summary_2025-05-29": {
+        "value": 0,
+        "description": "2025-05-29 买卖交易已实现盈亏总和",
+        "date": "2025-05-29_17:37:45"
+    },
+    "trade_realized_pnl_summary_ratio_2025-05-29": {
+        "value": "0.000000%",
+        "description": "2025-05-29 买卖交易总盈亏占比",
+        "date": "2025-05-29_17:37:45"
+    },
+    "trade_OMUSDT_BUY_2025-05-29_6873200898": {
+        "value": {
+            "side": "BUY",
+            "symbol": "OMUSDT",
+            "total_qty": 0.1,
+            "price": 0.39302000000000004,
+            "total_quote": 0.039302000000000004,
+            "real_quote": 0.013100666666666668,
+            "order_id": 6873200898,
+            "commission": 7.86e-06,
+            "realized_pnl": -6.2e-05
+        },
+        "description": "BUY OMUSDT 成交数量 0.1 成交均价 0.39302000000000004 杠杆后成交金额 0.039302000000000004 真实成交金额 0.013100666666666668 订单ID 6873200898",
+        "date": "2025-05-29_17:37:03"
+    },
+    "trade_FLMUSDT_BUY_2025-05-29_8393493699": {
+        "value": {
+            "side": "BUY",
+            "symbol": "FLMUSDT",
+            "total_qty": 3.0,
+            "price": 0.04800000000000001,
+            "total_quote": 0.14400000000000002,
+            "real_quote": 0.04800000000000001,
+            "order_id": 8393493699,
+            "commission": 2.88e-05,
+            "realized_pnl": -0.0018
+        },
+        "description": "BUY FLMUSDT 成交数量 3.0 成交均价 0.04800000000000001 杠杆后成交金额 0.14400000000000002 真实成交金额 0.04800000000000001 订单ID 8393493699",
+        "date": "2025-05-29_17:37:14"
+    }
+}

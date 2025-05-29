@@ -1433,129 +1433,137 @@ class TradingEngine:
             return pd.DataFrame()  # 返回空数据框架
 
     def calculate_and_append_returns(self):
-        """计算并追加调仓前/后回报率"""
+        """计算并追加调仓前/后回报率，基于 account_metrics.xlsx 中上一次记录"""
         try:
             # 获取当前 run_id，优先从 after_trade_balance 获取
-            run_id = self.account_metrics.get("after_trade_balance", {}).get("Run_ID", datetime.now().strftime("%Y%m%d%H%M%S"))  # 获取运行 ID，优先从调仓后余额获取，否则使用当前时间
-            current_date = pd.to_datetime(datetime.now().strftime('%Y-%m-%d'))  # 获取当前日期，转换为 datetime 格式
+            run_id = self.account_metrics.get("after_trade_balance", {}).get("Run_ID",
+                                                                             datetime.now().strftime("%Y%m%d%H%M%S"))
+            current_date = pd.to_datetime(datetime.now().strftime('%Y-%m-%d'))
 
             # 加载历史数据
-            df = pd.DataFrame()  # 加载账户指标历史数据
-            if df.empty:  # 如果历史数据为空
-                self.logger.info("account_metrics.xlsx 为空或不存在，回报率设为 0")  # 记录无历史数据的日志
-            self.account_metrics["pre_rebalance_return"] = {
-                "value": "0.000000%",  # 设置调仓前回报率为 0
-                "description": "调仓前回报率: 无历史数据",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                "Run_ID": run_id  # 记录运行 ID
-            }
-            self.account_metrics["post_rebalance_return"] = {
-                "value": "0.000000%",  # 设置调仓后回报率为 0
-                "description": "调仓后回报率: 无历史数据",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                "Run_ID": run_id  # 记录运行 ID
-            }
-            return  # 结束方法
+            df = self._load_account_metrics()
+            if df.empty:
+                self.logger.info("account_metrics.xlsx 为空或不存在，回报率设为 0")
+                self.account_metrics["pre_rebalance_return"] = {
+                    "value": "0.000000%",
+                    "description": "调仓前回报率: 无历史数据",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
+                }
+                self.account_metrics["post_rebalance_return"] = {
+                    "value": "0.000000%",
+                    "description": "调仓后回报率: 无历史数据",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
+                }
+                return
 
-            # 处理日期格式，兼容字符串和 datetime 类型
-            def normalize_date(date_val):  # 定义日期规范化函数
-                if pd.isna(date_val):  # 如果日期值为空
-                    return pd.NaT  # 返回无效日期
-                if isinstance(date_val, (pd.Timestamp, datetime)):  # 如果是时间戳或 datetime 类型
-                    return date_val  # 直接返回
-                if isinstance(date_val, str):  # 如果是字符串类型
-                    # 尝试处理字符串格式（YYYY-MM-DD_HH:MM:SS 或 YYYY-MM-DD）
+            # 规范化 Record_Time 和 Date 列
+            def normalize_date_time(time_val):
+                if pd.isna(time_val) or time_val is None:
+                    self.logger.warning("时间值为空或无效，返回 pd.NaT")
+                    return pd.NaT
+                if isinstance(time_val, (pd.Timestamp, datetime)):
+                    return time_val
+                if isinstance(time_val, str):
                     try:
-                        return pd.to_datetime(date_val.split('_')[0], errors='coerce')  # 提取日期部分并转换为日期
+                        # 尝试解析 YYYY-MM-DD HH:MM:SS 格式
+                        return pd.to_datetime(time_val, format='%Y-%m-%d %H:%M:%S', errors='coerce')
                     except ValueError:
-                        return pd.to_datetime(date_val, errors='coerce')  # 尝试直接转换
-                return pd.NaT  # 返回无效日期
+                        try:
+                            # 尝试解析 YYYY-MM-DD_HH:MM:SS 格式
+                            return pd.to_datetime(time_val, format='%Y-%m-%d_%H:%M:%S', errors='coerce')
+                        except ValueError:
+                            try:
+                                # 尝试解析无格式指定，直接转换
+                                return pd.to_datetime(time_val, errors='coerce')
+                            except ValueError:
+                                self.logger.warning(f"无法解析时间格式: {time_val}")
+                                return pd.NaT
+                self.logger.warning(f"时间值类型不支持: {type(time_val)}，值: {time_val}")
+                return pd.NaT
 
-            df['Date'] = df['Date'].apply(normalize_date)  # 应用日期规范化函数到 Date 列
-            df = df.dropna(subset=['Date'])  # 删除日期无效的记录
+            # 规范化 Record_Time 和 Date 列
+            df['Record_Time'] = df['Record_Time'].apply(normalize_date_time)
+            df['Date'] = df['Date'].apply(normalize_date_time)
+            df = df.dropna(subset=['Record_Time'])
 
-            # 筛选当前日期和前一天的数据
-            prev_date = current_date - timedelta(days=1)  # 计算前一天的日期
-            current_day_data = df[df['Date'].dt.date == current_date.date()]  # 筛选当前日期的数据
-            prev_day_data = df[df['Date'].dt.date == prev_date.date()]  # 筛选前一天的数据
+            # 获取当前余额数据
+            current_before = self.account_metrics.get("before_trade_balance", {}).get("value", 0)
+            current_after = self.account_metrics.get("after_trade_balance", {}).get("value", 0)
+            # 从 Record_Time 获取当前记录时间，优先使用 after_trade_balance 的 date
+            current_record_time_str = self.account_metrics.get("after_trade_balance", {}).get("date",
+                                                                                              datetime.now().strftime(
+                                                                                                  '%Y-%m-%d_%H:%M:%S'))
+            current_record_time = normalize_date_time(current_record_time_str)
+            if current_record_time is pd.NaT:
+                self.logger.warning(f"无法解析当前记录时间: {current_record_time_str}，使用当前时间作为默认值")
+                current_record_time = pd.to_datetime(datetime.now())
 
-            # 获取当前余额数据，宽松匹配 Run_ID
-            current_before = current_day_data[current_day_data['Metric'] == 'before_trade_balance']  # 获取当前调仓前余额数据
-            current_after = current_day_data[current_day_data['Metric'] == 'after_trade_balance']  # 获取当前调仓后余额数据
-            if not current_before.empty:  # 如果当前调仓前数据不为空
-                current_before = current_before.sort_values('Record_Time').iloc[-1:]  # 取最新记录
-            if not current_after.empty:  # 如果当前调仓后数据不为空
-                current_after = current_after.sort_values('Record_Time').iloc[-1:]  # 取最新记录
-
-            # 获取前一天的最后一条记录
-            prev_before = prev_day_data[prev_day_data['Metric'] == 'before_trade_balance']  # 获取前一天调仓前余额数据
-            prev_after = prev_day_data[prev_day_data['Metric'] == 'after_trade_balance']  # 获取前一天调仓后余额数据
-            if not prev_before.empty:  # 如果前一天调仓前数据不为空
-                prev_before = prev_before.sort_values('Record_Time').iloc[-1:]  # 取最新记录
-            if not prev_after.empty:  # 如果前一天调仓后数据不为空
-                prev_after = prev_after.sort_values('Record_Time').iloc[-1:]  # 取最新记录
+            # 筛选上一次的 after_trade_balance
+            previous_data = df[(df['Metric'] == 'after_trade_balance') & (df['Record_Time'] < current_record_time)]
+            previous_after_value = None
+            previous_record_time = None
+            if not previous_data.empty:
+                previous_data = previous_data.sort_values('Record_Time', ascending=True)
+                previous_after_value = float(previous_data.iloc[-1]['Value'])
+                previous_record_time = previous_data.iloc[-1]['Record_Time']
+                self.logger.info(
+                    f"找到上一次记录: Record_Time={previous_record_time}, after_trade_balance={previous_after_value}")
+            else:
+                self.logger.warning("未找到上一次 after_trade_balance 记录")
 
             # 计算 Pre-rebalance return
-            if not current_before.empty and not prev_after.empty:  # 如果当前调仓前和前一天调仓后数据都存在
-                current_before_value = float(current_before['Value'].iloc[0])  # 获取当前调仓前余额
-                prev_after_value = float(prev_after['Value'].iloc[0])  # 获取前一天调仓后余额
-                pre_rebalance_return = ((current_before_value - prev_after_value) / prev_after_value) * 100  # 计算调仓前回报率
+            if current_before and previous_after_value and previous_after_value != 0:
+                pre_rebalance_return = ((float(current_before) - previous_after_value) / previous_after_value) * 100
                 self.account_metrics["pre_rebalance_return"] = {
-                    "value": f"{pre_rebalance_return:.6f}%",  # 保存回报率，保留6位小数
-                    "description": f"调仓前回报率: ({current_before_value} - {prev_after_value}) / {prev_after_value} * 100",
-                    # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                    "Run_ID": run_id  # 记录运行 ID
+                    "value": f"{pre_rebalance_return:.6f}%",
+                    "description": f"调仓前回报率: ({current_before} - {previous_after_value}) / {previous_after_value} * 100",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
                 }
-                self.logger.info(f"Pre-rebalance return: {pre_rebalance_return:.6f}%")  # 记录调仓前回报率日志
-            else:  # 如果缺少必要数据
+                self.logger.info(f"Pre-rebalance return: {pre_rebalance_return:.6f}%")
+            else:
                 self.account_metrics["pre_rebalance_return"] = {
-                    "value": "0.000000%",  # 设置默认回报率为 0
-                    "description": f"调仓前回报率: 缺少 {current_date.date()} 的 before_trade_balance 或 {prev_date.date()} 的 after_trade_balance 数据",
-                    # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                    "Run_ID": run_id  # 记录运行 ID
+                    "value": "0.000000%",
+                    "description": f"调仓前回报率: 缺少上一次 after_trade_balance 数据或数据无效",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
                 }
-                self.logger.warning(
-                    f"无法计算 Pre-rebalance return: 缺少 {current_date.date()} 的 before_trade_balance 或 {prev_date.date()} 的 after_trade_balance 数据")  # 记录警告日志
+                self.logger.warning("无法计算 Pre-rebalance return: 缺少上一次 after_trade_balance 数据或数据无效")
 
             # 计算 Post-rebalance return
-            if not current_after.empty and not prev_after.empty:  # 如果当前调仓后和前一天调仓后数据都存在
-                current_after_value = float(current_after['Value'].iloc[0])  # 获取当前调仓后余额
-                prev_after_value = float(prev_after['Value'].iloc[0])  # 获取前一天调仓后余额
-                post_rebalance_return = ((current_after_value - prev_after_value) / prev_after_value) * 100  # 计算调仓后回报率
+            if current_after and previous_after_value and previous_after_value != 0:
+                post_rebalance_return = ((float(current_after) - previous_after_value) / previous_after_value) * 100
                 self.account_metrics["post_rebalance_return"] = {
-                    "value": f"{post_rebalance_return:.6f}%",  # 保存回报率，保留6位小数
-                    "description": f"调仓后回报率: ({current_after_value - prev_after_value}) / {prev_after_value} * 100",
-                    # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                    "Run_ID": run_id  # 记录运行 ID
+                    "value": f"{post_rebalance_return:.6f}%",
+                    "description": f"调仓后回报率: ({current_after} - {previous_after_value}) / {previous_after_value} * 100",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
                 }
-                self.logger.info(f"Post-rebalance return: {post_rebalance_return:.6f}%")  # 记录调仓后回报率日志
-            else:  # 如果缺少必要数据
+                self.logger.info(f"Post-rebalance return: {post_rebalance_return:.6f}%")
+            else:
                 self.account_metrics["post_rebalance_return"] = {
-                    "value": "0.000000%",  # 设置默认回报率为 0
-                    "description": f"调仓后回报率: 缺少 {current_date.date()} 的 after_trade_balance 或 {prev_date.date()} 的 after_trade_balance 数据",
-                    # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                    "Run_ID": run_id  # 记录运行 ID
+                    "value": "0.000000%",
+                    "description": f"调仓后回报率: 缺少上一次 after_trade_balance 数据或数据无效",
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                    "Run_ID": run_id
                 }
-                self.logger.warning(
-                    f"无法计算 Post-rebalance return: 缺少 {current_date.date()} 的 after_trade_balance 或 {prev_date.date()} 的 after_trade_balance 数据")  # 记录警告日志
+                self.logger.warning("无法计算 Post-rebalance return: 缺少上一次 after_trade_balance 数据或数据无效")
 
         except Exception as e:
-            self.logger.error(f"计算回报率失败: {str(e)}")  # 记录计算回报率失败的错误日志
+            self.logger.error(f"计算回报率失败: {str(e)}", exc_info=True)
             self.account_metrics["pre_rebalance_return"] = {
-                "value": "0.000000%",  # 设置默认调仓前回报率为 0
-                "description": f"调仓前回报率: 计算失败 ({str(e)})",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                "Run_ID": run_id  # 记录运行 ID
+                "value": "0.000000%",
+                "description": f"调仓前回报率: 计算失败 ({str(e)})",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                "Run_ID": run_id
             }
             self.account_metrics["post_rebalance_return"] = {
-                "value": "0.000000%",  # 设置默认调仓后回报率为 0
-                "description": f"调仓后回报率: 计算失败 ({str(e)})",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录当前时间
-                "Run_ID": run_id  # 记录运行 ID
+                "value": "0.000000%",
+                "description": f"调仓后回报率: 计算失败 ({str(e)})",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                "Run_ID": run_id
             }
 
     def save_to_json(self, date_str: str, run_id: str):

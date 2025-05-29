@@ -2,76 +2,61 @@
     "position_file": {
         "value": "pos20250529_v3.csv",
         "description": "调仓文件",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "before_trade_balance": {
-        "value": 48.07547531,
+        "value": 47.84358375,
         "description": "调仓前账户总保证金余额(totalMarginBalance)",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "before_available_balance": {
-        "value": 6.02660723,
+        "value": 5.86483361,
         "description": "调仓前可用保证金余额(available_balance)",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "after_trade_balance": {
-        "value": 48.08622186,
+        "value": 47.88073321,
         "description": "调仓后账户总保证金余额(totalMarginBalance)",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "balance_loss": {
-        "value": 0.010746550000000354,
+        "value": 0.037149460000001966,
         "description": "调仓前后余额损失金额",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "balance_loss_rate": {
-        "value": "0.022353%",
+        "value": "0.077648%",
         "description": "调仓前后余额损失率 (%)",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "after_available_balance": {
-        "value": 6.02981117,
+        "value": 5.90048594,
         "description": "调仓后可用余额",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "btc_usdt_price": {
-        "value": 107879.1,
-        "description": "当前btc_usdt_price:107879.1",
-        "date": "2025-05-29_15:35:37"
+        "value": 108353.2,
+        "description": "当前btc_usdt_price:108353.2",
+        "date": "2025-05-29_17:47:38"
     },
     "trade_commission_summary_2025-05-29": {
         "value": 0,
         "description": "2025-05-29 买卖交易手续费总和",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "trade_commission_summary_ratio_2025-05-29": {
         "value": "0.000000%",
         "description": "2025-05-29 买卖交易总手续费占比",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "trade_realized_pnl_summary_2025-05-29": {
         "value": 0,
         "description": "2025-05-29 买卖交易已实现盈亏总和",
-        "date": "2025-05-29_15:35:37"
+        "date": "2025-05-29_17:47:38"
     },
     "trade_realized_pnl_summary_ratio_2025-05-29": {
         "value": "0.000000%",
         "description": "2025-05-29 买卖交易总盈亏占比",
-        "date": "2025-05-29_15:35:37"
-    },
-    "trade_IOSTUSDT_SELL_2025-05-29_8218138592": {
-        "value": {
-            "side": "SELL",
-            "symbol": "IOSTUSDT",
-            "total_qty": 1.0,
-            "price": 0.003877,
-            "total_quote": 0.003877,
-            "real_quote": 0.0012923333333333333,
-            "order_id": 8218138592,
-            "commission": 7.7e-07,
-            "realized_pnl": 8e-06
-        },
-        "description": "SELL IOSTUSDT 成交数量 1.0 成交均价 0.003877 杠杆后成交金额 0.003877 真实成交金额 0.0012923333333333333 订单ID 8218138592",
-        "date": "2025-05-29_15:34:50"
+        "date": "2025-05-29_17:47:38"
     }
 }
