@@ -34,7 +34,7 @@ class TradingEngine:
         self.positions_file = 'data/positions_output.csv'  # 设置持仓文件路径
         if not os.path.exists(self.positions_file):  # 检查持仓文件是否存在
             os.makedirs(os.path.dirname(self.positions_file), exist_ok=True)  # 创建文件所在目录
-            df = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格'])  # 创建空的持仓数据框架
+            df = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格', 'Run_ID', '运行时间'])  # 创建空的持仓数据框架
             df.to_csv(self.positions_file, index=False, encoding='utf-8')  # 保存空持仓数据到 CSV 文件
             self.logger.info(f"初始化空持仓文件: {self.positions_file}")  # 记录持仓文件初始化日志
 
