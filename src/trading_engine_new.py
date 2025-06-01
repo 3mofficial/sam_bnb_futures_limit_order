@@ -12,6 +12,7 @@ from .data_processor import DataProcessor  # 导入自定义的数据处理模�
 from .logger import setup_logger  # 导入自定义的日志设置模块，初始化日志记录器
 from typing import Set, Dict  # 导入 Set 和 Dict 类型提示，用于黑名单和持仓数据
 
+
 class TradingEngine:
     """交易引擎类，负责执行交易逻辑"""
 
@@ -337,20 +338,26 @@ class TradingEngine:
             if missing_metrics:  # 如果存在缺失指标
                 self.logger.warning(f"缺失指标: {missing_metrics}，已初始化默认值")  # 记录警告日志
 
-            data = []  # 初始化数据列表，用于存储指标记录
-            record_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 获取当前记录时间
-            run_id = run_id or f"{record_time.replace(' ', '_').replace(':', '')}"  # 生成运行 ID
-            for metric in required_metrics:  # 遍历所需指标
-                if metric in self.account_metrics:  # 如果指标存在
+            data = []
+            record_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 标准格式
+            run_id = run_id or f"{record_time.replace(' ', '_').replace(':', '')}"
+            for metric in required_metrics:
+                if metric in self.account_metrics:
+                    date_str = self.account_metrics[metric]["date"]
+                    try:
+                        normalized_date = self.normalize_date_time(date_str).strftime('%Y-%m-%d %H:%M:%S')
+                    except Exception as e:
+                        self.logger.warning(f"规范化日期失败: {date_str}, 使用原始值: {str(e)}")
+                        normalized_date = date_str
                     entry = {
-                        "Metric": metric,  # 指标名称
-                        "Value": self.account_metrics[metric]["value"],  # 指标值
-                        "Description": self.account_metrics[metric]["description"],  # 指标描述
-                        "Date": self.account_metrics[metric]["date"],  # 记录时间
-                        "Record_Time": record_time,  # 记录时间戳
-                        "Run_ID": run_id  # 运行 ID
+                        "Metric": metric,
+                        "Value": self.account_metrics[metric]["value"],
+                        "Description": self.account_metrics[metric]["description"],
+                        "Date": normalized_date,  # 使用规范化后的日期
+                        "Record_Time": record_time,
+                        "Run_ID": run_id
                     }
-                    data.append(entry)  # 添加到数据列表
+                    data.append(entry)
 
             # 如果无数据，写入空文件
             if not data:  # 如果数据列表为空
@@ -1203,102 +1210,102 @@ class TradingEngine:
 
     def record_post_trade_metrics(self, total_balance: float = None):
         """记录调仓后的账户信息、手续费和盈亏"""
-        account_info = self.client.get_account_info()  # 获取最新账户信息
-        after_trade_balance = float(account_info["totalMarginBalance"])  # 获取调仓后总保证金余额
-        after_available_balance = float(account_info["availableBalance"])  # 获取调仓后可用余额
+        account_info = self.client.get_account_info()
+        after_trade_balance = float(account_info["totalMarginBalance"])
+        self.logger.debug(f"记录调仓后余额: after_trade_balance={after_trade_balance}")
+        if after_trade_balance == 0:
+            self.logger.warning("after_trade_balance 为 0，可能导致回报率计算失败")
+        after_available_balance = float(account_info["availableBalance"])
 
-        # 如果未提供 total_balance，则使用当前账户总余额减去基本资金
-        if total_balance is None:  # 检查是否提供了总余额参数
-            total_balance = after_trade_balance - self.basic_funds  # 计算可用总余额（扣除基础资金）
-            self.logger.info(f"未提供 total_balance，使用账户余额计算: {total_balance}")  # 记录使用计算余额的日志
+        if total_balance is None:
+            total_balance = after_trade_balance - self.basic_funds
+            self.logger.info(f"未提供 total_balance，使用账户余额计算: {total_balance}")
 
-        # 确保 before_trade_balance 存在
-        if "before_trade_balance" not in self.account_metrics:  # 检查是否已有调仓前余额记录
+        if "before_trade_balance" not in self.account_metrics:
             self.account_metrics["before_trade_balance"] = {
-                "value": total_balance + self.basic_funds,  # 保存估算的调仓前总余额
-                "description": "调仓前账户总保证金余额（未记录，使用当前余额估算）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": total_balance + self.basic_funds,
+                "description": "调仓前账户总保证金余额（未记录，使用当前余额估算）",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
-            self.logger.warning("缺少 before_trade_balance，使用估算值")  # 记录缺少调仓前余额的警告日志
+            self.logger.warning("缺少 before_trade_balance，使用估算值")
 
-        # 更新账户指标
         self.account_metrics.update({
             "after_trade_balance": {
-                "value": after_trade_balance,  # 保存调仓后总余额
-                "description": "调仓后账户总保证金余额",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": after_trade_balance,
+                "description": "调仓后账户总保证金余额",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             },
             "after_available_balance": {
-                "value": after_available_balance,  # 保存调仓后可用余额
-                "description": "调仓后可用余额",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": after_available_balance,
+                "description": "调仓后可用余额",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             },
             "balance_loss": {
-                "value": self.account_metrics["before_trade_balance"]["value"] - after_trade_balance,  # 计算余额损失
-                "description": "调仓前后余额损失金额",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录
+                "value": self.account_metrics["before_trade_balance"]["value"] - after_trade_balance,
+                "description": "调仓前后余额损失金额",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             },
             "balance_loss_rate": {
                 "value": f"{((self.account_metrics['before_trade_balance']['value'] - after_trade_balance) / self.account_metrics['before_trade_balance']['value'] * 100) if self.account_metrics['before_trade_balance']['value'] != 0 else 0:.6f}%",
-                # 计算余额损失率，格式为百分比，保留6位小数
-                "description": "调仓前后余额损失率 (%)",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录
+                "description": "调仓前后余额损失率 (%)",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
         })
 
         self.logger.info(
-            f"调仓后: totalMarginBalance={after_trade_balance}, "  # 记录调仓后总余额
-            f"available_balance={after_available_balance}, "  # 记录调仓后可用余额
-            f"balance_loss={self.account_metrics['balance_loss']['value']}"  # 记录余额损失金额
+            f"调仓后: totalMarginBalance={after_trade_balance}, "
+            f"available_balance={after_available_balance}, "
+            f"balance_loss={self.account_metrics['balance_loss']['value']}"
         )
 
-        current_date = datetime.now().strftime('%Y-%m-%d')  # 获取当前日期，格式为 YYYY-MM-DD
-        commission_key = f"trade_commission_summary_{current_date}"  # 生成当天的交易手续费汇总键
-        commission_ratio = f"trade_commission_summary_ratio_{current_date}"  # 生成当天的交易手续费比例键
-        pnl_key = f"trade_realized_pnl_summary_{current_date}"  # 生成当天的已实现盈亏汇总键
-        pnl_ratio_key = f"trade_realized_pnl_summary_ratio_{current_date}"  # 生成当天的已实现盈亏比例键
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        commission_key = f"trade_commission_summary_{current_date}"
+        commission_ratio = f"trade_commission_summary_ratio_{current_date}"
+        pnl_key = f"trade_realized_pnl_summary_{current_date}"
+        pnl_ratio_key = f"trade_realized_pnl_summary_ratio_{current_date}"
 
-        # 计算手续费和盈亏
-        if commission_key not in self.account_metrics:  # 检查是否已计算手续费汇总
-            self.process_trade_commissions()  # 调用方法处理交易手续费
-        if pnl_key not in self.account_metrics:  # 检查是否已计算盈亏汇总
-            self.process_trade_realized_pnl()  # 调用方法处理已实现盈亏
+        # 强制计算手续费
+        self.logger.debug(f"强制调用 process_trade_commissions for {commission_key}")
+        commission_record = self.process_trade_commissions()
+        self.logger.info(f"手续费计算结果: {commission_record}")
 
-        # 计算手续费和盈亏占比
-        before_balance = float(self.account_metrics["before_trade_balance"]["value"])  # 获取调仓前余额
-        if commission_key in self.account_metrics:  # 如果存在手续费汇总
-            commission_value = float(self.account_metrics[commission_key]["value"])  # 获取手续费总金额
+        if pnl_key not in self.account_metrics:
+            self.process_trade_realized_pnl()
+
+        before_balance = float(self.account_metrics["before_trade_balance"]["value"])
+        if commission_key in self.account_metrics:
+            commission_value = float(self.account_metrics[commission_key]["value"])
             self.account_metrics[commission_ratio] = {
-                "value": f"{(commission_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",  # 计算手续费占比
-                "description": f"{current_date} 买卖交易总手续费占比",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": f"{(commission_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
+                "description": f"{current_date} 买卖交易总手续费占比",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
-        else:  # 如果没有手续费记录
+        else:
             self.account_metrics[commission_ratio] = {
-                "value": "0.000000%",  # 默认值为 0%
-                "description": f"{current_date} 买卖交易总手续费占比（未计算）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": "0.000000%",
+                "description": f"{current_date} 买卖交易总手续费占比（未计算）",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
 
-        if pnl_key in self.account_metrics:  # 如果存在盈亏汇总
-            pnl_value = float(self.account_metrics[pnl_key]["value"])  # 获取总盈亏金额
+        if pnl_key in self.account_metrics:
+            pnl_value = float(self.account_metrics[pnl_key]["value"])
             self.account_metrics[pnl_ratio_key] = {
-                "value": f"{(pnl_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",  # 计算盈亏占比
-                "description": f"{current_date} 买卖交易总盈亏占比",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": f"{(pnl_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
+                "description": f"{current_date} 买卖交易总盈亏占比",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
-        else:  # 如果没有盈亏汇总
+        else:
             self.account_metrics[pnl_ratio_key] = {
-                "value": "0.000000%",  # 默认值为 0%
-                "description": f"{current_date} 买卖交易总盈亏占比（未计算）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+                "value": "0.000000%",
+                "description": f"{current_date} 买卖交易总盈亏占比（未计算）",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
 
-        btc_usdt_price = self.client.get_symbol_price("BTCUSDT")  # 获取 BTC/USDT 的当前价格
+        btc_usdt_price = self.client.get_symbol_price("BTCUSDT")
         self.account_metrics["btc_usdt_price"] = {
-            "value": btc_usdt_price,  # 存储 BTC/USDT 价格
-            "description": f"当前 BTC/USDT 价格: {btc_usdt_price}",  # 设置描述
-            "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录当前时间
+            "value": btc_usdt_price,
+            "description": f"当前 BTC/USDT 价格: {btc_usdt_price}",
+            "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         }
 
     def balance_long_short(self, long_candidates: List[Dict], short_candidates: List[Dict], total_balance: float):
@@ -1374,73 +1381,115 @@ class TradingEngine:
 
     def save_positions_to_csv(self, positions: List[Dict], run_id: str):
         try:
-            date_str = datetime.now().strftime("%Y-%m-%d")  # 获取当前日期，格式为 YYYY-MM-DD
-            run_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 获取当前时间，格式为 YYYY-MM-DD HH:MM:SS
-            data = []  # 初始化数据列表，用于存储持仓记录
-            for pos in positions:  # 遍历持仓列表
-                qty = float(pos["positionAmt"])  # 将持仓数量转换为浮点数
-                if qty != 0:  # 仅处理非零持仓
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            run_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            data = []
+            for pos in positions:
+                qty = float(pos["positionAmt"])
+                if qty != 0:
                     data.append({
-                        "调仓日期": date_str,  # 记录调仓日期
-                        "交易对": pos["symbol"],  # 记录交易对符号
-                        "持仓数量": qty,  # 记录持仓数量
-                        "入场价格": float(pos["entryPrice"]),  # 记录入场价格
-                        "运行时间": run_time,  # 记录运行时间
-                        "Run_ID": run_id  # 记录运行ID
+                        "调仓日期": date_str,
+                        "交易对": pos["symbol"],
+                        "持仓数量": qty,
+                        "入场价格": float(pos["entryPrice"]),
+                        "运行时间": run_time,
+                        "Run_ID": run_id
                     })
-            if data:  # 如果有有效数据
-                df_new = pd.DataFrame(data)  # 将数据转换为 pandas DataFrame
-                if os.path.exists(self.positions_file):  # 检查持仓文件是否存在
+            self.logger.info(f"准备保存 {len(data)} 条持仓记录，Run_ID={run_id}, 调仓日期={date_str}")
+            if not data:
+                self.logger.warning("无有效持仓数据可保存，检查 positions 数据是否为空")
+                return  # 提前退出
+            if data:
+                df_new = pd.DataFrame(data)
+                if os.path.exists(self.positions_file):
                     try:
-                        df_existing = pd.read_csv(self.positions_file)  # 读取现有持仓文件
-                        # 确保现有文件有 Run_ID 列
-                        if 'Run_ID' not in df_existing.columns:  # 如果文件中没有 Run_ID 列
-                            df_existing['Run_ID'] = ''  # 添加空的 Run_ID 列
-                        df_combined = pd.concat([df_existing, df_new], ignore_index=True)  # 合并新旧数据
-                        df_combined = df_combined.drop_duplicates(['Run_ID', '交易对'],
-                                                                  keep="last")  # 按 Run_ID 和交易对去重，保留最新记录
-                        df_combined.to_csv(self.positions_file, index=False, encoding='utf-8')  # 保存合并后的数据到CSV文件
+                        df_existing = pd.read_csv(self.positions_file)
+                        if 'Run_ID' not in df_existing.columns:
+                            df_existing['Run_ID'] = ''
+                        df_combined = pd.concat([df_existing, df_new], ignore_index=True)
+                        df_combined = df_combined.drop_duplicates(['Run_ID', '交易对'], keep="last")
+                        df_combined.to_csv(self.positions_file, index=False, encoding='utf-8')
+                        self.logger.info(f"持仓数据已保存到 {self.positions_file}，合并后记录数: {len(df_combined)}")
                     except Exception as e:
-                        self.logger.error(f"合并持仓数据失败: {str(e)}")  # 记录合并数据失败的错误日志
-                        df_new.to_csv(self.positions_file, index=False, encoding='utf-8')  # 如果合并失败，直接保存新数据
+                        self.logger.error(f"合并持仓数据失败: {str(e)}")
+                        df_new.to_csv(self.positions_file, index=False, encoding='utf-8')
+                        self.logger.info(f"直接保存新持仓数据到 {self.positions_file}，记录数: {len(df_new)}")
                 else:
-                    df_new.to_csv(self.positions_file, index=False, encoding='utf-8')  # 如果文件不存在，直接保存新数据
-                self.logger.info(
-                    f"持仓数据已保存到 {self.positions_file}，记录数: {len(data)}，Run_ID: {run_id}")  # 记录持仓保存成功的日志记录
-                # 验证已写入的数据
-                df_verify = pd.read_csv(self.positions_file)  # 读取保存后的文件进行验证
-                run_id_records = df_verify[df_verify['Run_ID'] == run_id]  # 筛选当前 Run_ID 的记录
-                self.logger.info(
-                    f"验证: {self.positions_file} 中 Run_ID={run_id} 的记录数: {len(run_id_records)}")  # 记录验证结果
+                    df_new.to_csv(self.positions_file, index=False, encoding='utf-8')
+                    self.logger.info(f"首次保存持仓数据到 {self.positions_file}，记录数: {len(df_new)}")
+                # 验证保存结果
+                df_verify = pd.read_csv(self.positions_file)
+                run_id_records = df_verify[df_verify['Run_ID'] == run_id]
+                self.logger.info(f"验证: {self.positions_file} 中 Run_ID={run_id} 的记录数: {len(run_id_records)}")
+                if run_id_records.empty:
+                    self.logger.error(f"保存后验证失败: 未找到 Run_ID={run_id} 的记录")
             else:
-                self.logger.info("无有效持仓数据可保存")  # 记录无有效持仓数据的日志
+                self.logger.info("无有效持仓数据可保存")
         except Exception as e:
-            self.logger.error(f"保存持仓到CSV失败: {str(e)}")  # 记录持仓保存失败的错误日志
+            self.logger.error(f"保存持仓到CSV失败: {str(e)}")
 
     def _load_account_metrics(self) -> pd.DataFrame:
         """加载 account_metrics.xlsx 文件"""
         try:
-            account_metrics_file = "data/account_metrics.xlsx"  # 设置账户指标文件路径
-            if not os.path.exists(account_metrics_file):  # 检查文件是否存存在
-                self.logger.info("account_metrics.xlsx 不存在，返回空DataFrame")  # 记录文件不存在的日志
-                return pd.DataFrame()  # 返回空 DataFrame
-            df = pd.read_excel(account_metrics_file, sheet_name='Account_Metrics')  # 读取 Excel 文件中的账户指标数据
-            # 规范化 Date 列
-            df['Date'] = pd.to_datetime(df['Date'].str.split('_').str[0], errors='coerce')  # 将日期字符串转换为日期格式，忽略时间戳中的时间部分
-            return df if not df.empty else pd.DataFrame()  # 返回数据框架 DataFrame，如果为空则返回空 DataFrame
+            account_metrics_file = "data/account_metrics.xlsx"
+            if not os.path.exists(account_metrics_file):
+                self.logger.info("account_metrics.xlsx 不存在，返回空DataFrame")
+                return pd.DataFrame()
+            df = pd.read_excel(account_metrics_file, sheet_name='Account_Metrics')
+            df['Date'] = df['Date'].apply(self.normalize_date_time)
+            df['Record_Time'] = df['Record_Time'].apply(self.normalize_date_time)
+            invalid_rows = df[df['Record_Time'].isna()]
+            if not invalid_rows.empty:
+                self.logger.warning(
+                    f"发现 {len(invalid_rows)} 条无效 Record_Time 记录: {invalid_rows[['Metric', 'Record_Time']].to_dict('records')}")
+            df = df.dropna(subset=['Record_Time'])
+            self.logger.info(f"加载 account_metrics.xlsx 成功，记录数: {len(df)}")
+            return df if not df.empty else pd.DataFrame()
         except Exception as e:
-            self.logger.error(f"加载 account_metrics.xlsx失败: {str(e)}")  # 记录加载失败的错误日志
-            return pd.DataFrame()  # 返回空数据框架
+            self.logger.error(f"加载 account_metrics.xlsx 失败: {str(e)}")
+            return pd.DataFrame()
+
+    def normalize_date_time(self, time_val):
+        """规范化时间值，支持多种格式并返回 pd.Timestamp"""
+        if pd.isna(time_val) or time_val is None:
+            self.logger.warning("时间值为空或无效，返回 pd.NaT")
+            return pd.NaT
+        if isinstance(time_val, (pd.Timestamp, datetime)):
+            return time_val
+        if isinstance(time_val, str):
+            time_val = time_val.strip()  # 去除首尾空格
+            formats = [
+                '%Y-%m-%d %H:%M:%S',  # 标准格式
+                '%Y-%m-%d_%H:%M:%S',  # 下划线分隔
+                '%Y%m%d %H:%M:%S',  # 无分隔符
+                '%Y-%m-%d',  # 仅日期
+                '%H:%M:%S',  # 仅时间
+            ]
+            for fmt in formats:
+                try:
+                    parsed_time = pd.to_datetime(time_val, format=fmt, errors='coerce')
+                    if not pd.isna(parsed_time):
+                        return parsed_time
+                except ValueError:
+                    continue
+            # 回退到 mixed 格式解析
+            try:
+                parsed_time = pd.to_datetime(time_val, format='mixed', errors='coerce')
+                if not pd.isna(parsed_time):
+                    self.logger.info(f"使用 mixed 格式成功解析时间: {time_val}")
+                    return parsed_time
+            except ValueError:
+                self.logger.warning(f"无法解析时间格式: {time_val}，尝试的格式: {formats} + mixed")
+            return pd.NaT
+        self.logger.warning(f"时间值类型不支持: {type(time_val)}，值: {time_val}")
+        return pd.NaT
 
     def calculate_and_append_returns(self):
-        """计算并追加调仓前/后回报率，基于 account_metrics.xlsx 中上一次记录"""
         try:
-            # 获取当前 run_id，优先从 after_trade_balance 获取
             run_id = self.account_metrics.get("after_trade_balance", {}).get("Run_ID",
                                                                              datetime.now().strftime("%Y%m%d%H%M%S"))
             current_date = pd.to_datetime(datetime.now().strftime('%Y-%m-%d'))
 
-            # 加载历史数据
             df = self._load_account_metrics()
             if df.empty:
                 self.logger.info("account_metrics.xlsx 为空或不存在，回报率设为 0")
@@ -1458,62 +1507,42 @@ class TradingEngine:
                 }
                 return
 
-            # 规范化 Record_Time 和 Date 列
-            def normalize_date_time(time_val):
-                if pd.isna(time_val) or time_val is None:
-                    self.logger.warning("时间值为空或无效，返回 pd.NaT")
-                    return pd.NaT
-                if isinstance(time_val, (pd.Timestamp, datetime)):
-                    return time_val
-                if isinstance(time_val, str):
-                    try:
-                        # 尝试解析 YYYY-MM-DD HH:MM:SS 格式
-                        return pd.to_datetime(time_val, format='%Y-%m-%d %H:%M:%S', errors='coerce')
-                    except ValueError:
-                        try:
-                            # 尝试解析 YYYY-MM-DD_HH:MM:SS 格式
-                            return pd.to_datetime(time_val, format='%Y-%m-%d_%H:%M:%S', errors='coerce')
-                        except ValueError:
-                            try:
-                                # 尝试解析无格式指定，直接转换
-                                return pd.to_datetime(time_val, errors='coerce')
-                            except ValueError:
-                                self.logger.warning(f"无法解析时间格式: {time_val}")
-                                return pd.NaT
-                self.logger.warning(f"时间值类型不支持: {type(time_val)}，值: {time_val}")
-                return pd.NaT
-
-            # 规范化 Record_Time 和 Date 列
-            df['Record_Time'] = df['Record_Time'].apply(normalize_date_time)
-            df['Date'] = df['Date'].apply(normalize_date_time)
+            df['Record_Time'] = df['Record_Time'].apply(self.normalize_date_time)
+            df['Date'] = df['Date'].apply(self.normalize_date_time)
             df = df.dropna(subset=['Record_Time'])
 
-            # 获取当前余额数据
             current_before = self.account_metrics.get("before_trade_balance", {}).get("value", 0)
             current_after = self.account_metrics.get("after_trade_balance", {}).get("value", 0)
-            # 从 Record_Time 获取当前记录时间，优先使用 after_trade_balance 的 date
+            self.logger.debug(f"当前余额: before={current_before}, after={current_after}")
+            if current_after == 0:
+                self.logger.warning("current_after 为 0，检查 after_trade_balance 是否正确赋值")
+
             current_record_time_str = self.account_metrics.get("after_trade_balance", {}).get("date",
                                                                                               datetime.now().strftime(
                                                                                                   '%Y-%m-%d_%H:%M:%S'))
-            current_record_time = normalize_date_time(current_record_time_str)
+            current_record_time = self.normalize_date_time(current_record_time_str)
             if current_record_time is pd.NaT:
-                self.logger.warning(f"无法解析当前记录时间: {current_record_time_str}，使用当前时间作为默认值")
+                self.logger.warning(f"无法解析当前记录时间: {current_record_time_str}，使用当前时间")
                 current_record_time = pd.to_datetime(datetime.now())
 
-            # 筛选上一次的 after_trade_balance
             previous_data = df[(df['Metric'] == 'after_trade_balance') & (df['Record_Time'] < current_record_time)]
             previous_after_value = None
             previous_record_time = None
             if not previous_data.empty:
-                previous_data = previous_data.sort_values('Record_Time', ascending=True)
-                previous_after_value = float(previous_data.iloc[-1]['Value'])
-                previous_record_time = previous_data.iloc[-1]['Record_Time']
+                previous_data = previous_data.sort_values('Record_Time', ascending=False)
+                previous_after_value = float(previous_data.iloc[0]['Value'])
+                previous_record_time = previous_data.iloc[0]['Record_Time']
                 self.logger.info(
                     f"找到上一次记录: Record_Time={previous_record_time}, after_trade_balance={previous_after_value}")
             else:
-                self.logger.warning("未找到上一次 after_trade_balance 记录")
+                self.logger.warning(f"未找到上一次 after_trade_balance 记录，尝试按 Run_ID 查找")
+                previous_data = df[df['Metric'] == 'after_trade_balance'].sort_values('Run_ID', ascending=False)
+                if not previous_data.empty and len(previous_data) > 1:
+                    previous_after_value = float(previous_data.iloc[1]['Value'])
+                    previous_record_time = previous_data.iloc[1]['Record_Time']
+                    self.logger.info(
+                        f"通过 Run_ID 找到上一次记录: Record_Time={previous_record_time}, after_trade_balance={previous_after_value}")
 
-            # 计算 Pre-rebalance return
             if current_before and previous_after_value and previous_after_value != 0:
                 pre_rebalance_return = ((float(current_before) - previous_after_value) / previous_after_value) * 100
                 self.account_metrics["pre_rebalance_return"] = {
@@ -1526,13 +1555,13 @@ class TradingEngine:
             else:
                 self.account_metrics["pre_rebalance_return"] = {
                     "value": "0.000000%",
-                    "description": f"调仓前回报率: 缺少上一次 after_trade_balance 数据或数据无效",
+                    "description": f"调仓前回报率: 缺少数据 (current_before={current_before}, previous_after_value={previous_after_value})",
                     "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
                     "Run_ID": run_id
                 }
-                self.logger.warning("无法计算 Pre-rebalance return: 缺少上一次 after_trade_balance 数据或数据无效")
+                self.logger.warning(
+                    f"无法计算 Pre-rebalance return: current_before={current_before}, previous_after_value={previous_after_value}")
 
-            # 计算 Post-rebalance return
             if current_after and previous_after_value and previous_after_value != 0:
                 post_rebalance_return = ((float(current_after) - previous_after_value) / previous_after_value) * 100
                 self.account_metrics["post_rebalance_return"] = {
@@ -1545,11 +1574,12 @@ class TradingEngine:
             else:
                 self.account_metrics["post_rebalance_return"] = {
                     "value": "0.000000%",
-                    "description": f"调仓后回报率: 缺少上一次 after_trade_balance 数据或数据无效",
+                    "description": f"调仓后回报率: 缺少数据 (current_after={current_after}, previous_after_value={previous_after_value})",
                     "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
                     "Run_ID": run_id
                 }
-                self.logger.warning("无法计算 Post-rebalance return: 缺少上一次 after_trade_balance 数据或数据无效")
+                self.logger.warning(
+                    f"无法计算 Post-rebalance return: current_after={current_after}, previous_after_value={previous_after_value}")
 
         except Exception as e:
             self.logger.error(f"计算回报率失败: {str(e)}", exc_info=True)
@@ -1678,6 +1708,9 @@ class TradingEngine:
         # ==================== 仓位调整阶段 ====================
             try:
                 self.adjust_or_open_positions(long_candidates, short_candidates, run_id, date_str)  # 执行仓位调整
+                # 确保在调仓后保存持仓
+                positions = self.client.client.futures_position_information()
+                self.save_positions_to_csv(positions, run_id)
             except Exception as e:
                 error_msg = f"仓位调整失败: {str(e)}"  # 设置错误信息
                 self.logger.error(error_msg, exc_info=True)  # 记录错误日志，包含异常详情

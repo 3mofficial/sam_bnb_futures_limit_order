@@ -1,0 +1,62 @@
+{
+    "position_file": {
+        "value": "pos20250601_v3.csv",
+        "description": "调仓文件",
+        "date": "2025-06-01_18:50:03"
+    },
+    "before_trade_balance": {
+        "value": 48.95392793,
+        "description": "调仓前账户总保证金余额(totalMarginBalance)",
+        "date": "2025-06-01_18:50:03"
+    },
+    "before_available_balance": {
+        "value": 9.19797152,
+        "description": "调仓前可用保证金余额(available_balance)",
+        "date": "2025-06-01_18:50:03"
+    },
+    "after_trade_balance": {
+        "value": 48.96234714,
+        "description": "调仓后账户总保证金余额(totalMarginBalance)",
+        "date": "2025-06-01_18:50:03"
+    },
+    "balance_loss": {
+        "value": 0.008419209999999566,
+        "description": "调仓前后余额损失金额",
+        "date": "2025-06-01_18:50:03"
+    },
+    "balance_loss_rate": {
+        "value": "0.017198%",
+        "description": "调仓前后余额损失率 (%)",
+        "date": "2025-06-01_18:50:03"
+    },
+    "after_available_balance": {
+        "value": 9.21407382,
+        "description": "调仓后可用余额",
+        "date": "2025-06-01_18:50:03"
+    },
+    "btc_usdt_price": {
+        "value": 103762.5,
+        "description": "当前btc_usdt_price:103762.5",
+        "date": "2025-06-01_18:50:03"
+    },
+    "trade_commission_summary_2025-06-01": {
+        "value": 0,
+        "description": "2025-06-01 买卖交易手续费总和",
+        "date": "2025-06-01_18:50:03"
+    },
+    "trade_commission_summary_ratio_2025-06-01": {
+        "value": "0.000000%",
+        "description": "2025-06-01 买卖交易总手续费占比",
+        "date": "2025-06-01_18:50:03"
+    },
+    "trade_realized_pnl_summary_2025-06-01": {
+        "value": 0,
+        "description": "2025-06-01 买卖交易已实现盈亏总和",
+        "date": "2025-06-01_18:50:03"
+    },
+    "trade_realized_pnl_summary_ratio_2025-06-01": {
+        "value": "0.000000%",
+        "description": "2025-06-01 买卖交易总盈亏占比",
+        "date": "2025-06-01_18:50:03"
+    }
+}

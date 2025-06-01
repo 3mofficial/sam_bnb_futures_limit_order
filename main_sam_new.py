@@ -106,10 +106,33 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
             if 'Run_ID' not in positions_df.columns:
                 logger.warning(f"{positions_file} 缺少 Run_ID 列，添加空列")
                 positions_df['Run_ID'] = ''
-            # 兼容 Run_ID 为空的情况，尝试匹配日期
             positions_df['Run_ID'] = positions_df['Run_ID'].fillna('')
+
+            # 规范化调仓日期
+            def safe_parse_date(val):
+                try:
+                    if pd.isna(val):
+                        return pd.NaT
+                    # 去除首尾空格
+                    val = str(val).strip()
+                    # 尝试多种格式
+                    return pd.to_datetime(val, errors='coerce', format='mixed')
+                except Exception as e:
+                    logger.warning(f"解析日期失败: {val}, 错误: {str(e)}")
+                    return pd.NaT
+
+            positions_df['调仓日期'] = positions_df['调仓日期'].apply(safe_parse_date)
+            positions_df['运行时间'] = positions_df['运行时间'].apply(safe_parse_date)
+            # 检查无效日期
+            invalid_dates = positions_df[positions_df['调仓日期'].isna() & positions_df['调仓日期'].notna()]
+            if not invalid_dates.empty:
+                logger.warning(f"发现无效调仓日期记录:\n{invalid_dates[['调仓日期', '运行时间', 'Run_ID']].to_string()}")
+            # 格式化为字符串
+            positions_df['调仓日期'] = positions_df['调仓日期'].dt.strftime('%Y-%m-%d')
             positions_df = positions_df.drop_duplicates(subset=['交易对', '调仓日期', 'Run_ID'], keep='last')
             logger.info(f"读取 {positions_file}，去重后包含 {len(positions_df)} 条记录")
+            logger.info(f"所有 Run_ID: {positions_df['Run_ID'].unique().tolist()}")
+            logger.info(f"所有调仓日期: {positions_df['调仓日期'].unique().tolist()}")
         except Exception as e:
             logger.error(f"读取 {positions_file} 失败: {str(e)}")
             positions_df = pd.DataFrame(columns=['调仓日期', '交易对', '持仓数量', '入场价格', '运行时间', 'Run_ID'])
@@ -120,6 +143,9 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
         ((positions_df['Run_ID'] == '') & (positions_df['调仓日期'] == date_str))
     ]
     logger.info(f"找到 {len(current_positions)} 条 Run_ID={run_id} 或日期={date_str} 的记录")
+    if current_positions.empty:
+        logger.warning(f"未找到匹配记录，检查 Run_ID={run_id} 和 调仓日期={date_str} 是否正确")
+        logger.info(f"positions_df 内容:\n{positions_df.to_string()}")
 
     if not current_positions.empty:
         current_positions = current_positions[['调仓日期', '交易对', '持仓数量', '入场价格', 'Run_ID']]
@@ -131,6 +157,7 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
     positive_positions = current_positions[current_positions['持仓数量'] > 0]
     negative_positions = current_positions[current_positions['持仓数量'] < 0]
     logger.info(f"正持仓数量: {len(positive_positions)}, 负持仓数量: {len(negative_positions)}")
+
     funding_file = f'data/pos{datetime.now().strftime("%Y%m%d")}_v3.csv'
     if os.path.exists(funding_file):
         try:
@@ -155,7 +182,7 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
             funding_df.loc[funding_df['ticker'].isin(blacklisted_tickers), 'ErrorReason'] = "黑名单过滤"
             logger.info(f"已为 {len(blacklisted_tickers)} 个黑名单币种设置 ErrorReason: 黑名单过滤")
 
-    # 映射其他错误原因（优先级高于黑名单过滤）
+    # 映射其他错误原因
     ticker_errors = {k: v for k, v in error_reasons.items() if k not in ["blacklisted_tickers", "file_not_found", "position_adjustment_failed", "system_error"]}
     if ticker_errors:
         funding_df['ErrorReason'] = funding_df['ErrorReason'].where(
@@ -178,7 +205,6 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
         )[['调仓日期', '交易对', '持仓数量', '入场价格', 'id', 'ticker', 'fundingRate', 'ErrorReason', 'Run_ID']]
         positive_result['调仓日期'] = positive_result['调仓日期'].fillna(date_str)
         positive_result['Run_ID'] = positive_result['Run_ID'].fillna(run_id)
-        # 对于持仓数量非 NaN 的记录，清空 ErrorReason
         positive_result.loc[positive_result['持仓数量'].notna(), 'ErrorReason'] = ''
         logger.info("正持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason")
     else:
@@ -199,7 +225,6 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
         )[['调仓日期', '交易对', '持仓数量', '入场价格', 'id', 'ticker', 'fundingRate', 'ErrorReason', 'Run_ID']]
         negative_result['调仓日期'] = negative_result['调仓日期'].fillna(date_str)
         negative_result['Run_ID'] = negative_result['Run_ID'].fillna(run_id)
-        # 对于持仓数量非 NaN 的记录，清空 ErrorReason
         negative_result.loc[negative_result['持仓数量'].notna(), 'ErrorReason'] = ''
         logger.info("负持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason")
     else:
@@ -216,23 +241,28 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
         logger.info("无有效持仓数据，生成空结果")
 
     output_file = 'data/position_analysis.xlsx'
-    if os.path.exists(output_file):
-        existing_df = pd.read_excel(output_file)
-        # 添加缺失的 ErrorReason 列
-        if 'ErrorReason' not in existing_df.columns:
-            existing_df['ErrorReason'] = ''
-        concat_list = [df for df in [existing_df, final_result] if not df.empty and not df.isna().all().all()]
-        if concat_list:
-            updated_df = pd.concat(concat_list, ignore_index=True)
-            updated_df = updated_df.drop_duplicates(subset=['Run_ID', '交易对', 'id'], keep='last')
-            updated_df.to_excel(output_file, index=False)
-            logger.info(f"分析结果已去重并追加写入文件: {output_file}，记录数: {len(updated_df)}")
+    try:
+        if os.path.exists(output_file):
+            existing_df = pd.read_excel(output_file)
+            if 'ErrorReason' not in existing_df.columns:
+                existing_df['ErrorReason'] = ''
+            concat_list = [df for df in [existing_df, final_result] if not df.empty and not df.isna().all().all()]
+            if concat_list:
+                updated_df = pd.concat(concat_list, ignore_index=True)
+                updated_df['调仓日期'] = pd.to_datetime(updated_df['调仓日期'], errors='coerce').dt.strftime('%Y-%m-%d')
+                updated_df = updated_df.drop_duplicates(subset=['Run_ID', '交易对', 'id'], keep='last')
+                updated_df.to_excel(output_file, index=False)
+                logger.info(f"分析结果已去重并追加写入文件: {output_file}，记录数: {len(updated_df)}")
+            else:
+                logger.warning("无有效数据可拼接，跳过写入")
+                return
         else:
-            logger.warning("无有效数据可拼接，跳过写入")
-            return
-    else:
-        final_result.to_excel(output_file, index=False)
-        logger.info(f"分析结果已首次写入文件: {output_file}")
+            final_result['调仓日期'] = pd.to_datetime(final_result['调仓日期'], errors='coerce').dt.strftime('%Y-%m-%d')
+            final_result.to_excel(output_file, index=False)
+            logger.info(f"分析结果已首次写入文件: {output_file}")
+    except Exception as e:
+        logger.critical(f"写入 {output_file} 失败: {str(e)}")
+        raise
 
 def send_email_with_attachments(logger):
     sender_email = "yanzhiyuan3@gmail.com"
