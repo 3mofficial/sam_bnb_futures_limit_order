@@ -416,7 +416,7 @@ def main():
                 account_metrics_file_path = "data/account_metrics.xlsx"
                 if os.path.exists(account_metrics_file_path):
                     account_metrics_df = pd.read_excel(account_metrics_file_path)
-                    account_metrics_df['Date'] = pd.to_datetime(account_metrics_df['Date'].str.split('_').str[0])
+                    account_metrics_df['Date'] = pd.to_datetime(account_metrics_df['Date'].str.split('_').str[0], errors='coerce', format='mixed')
                     unique_dates = account_metrics_df['Date'].dt.date.nunique()
                     if unique_dates >= 3:
                         logger.info(f"唯一日期数量为 {unique_dates}，执行可视化...")

@@ -451,29 +451,40 @@ class TradingEngine:
         return self.account_metrics[commission_key]  # 返回手续费记录
 
     def process_trade_realized_pnl(self):
-        """计算特定日期买卖交易的已实现盈亏总和"""
-        current_date = datetime.now().strftime('%Y-%m-%d')  # 获取当前日期
-        trade_keys = [key for key in self.account_metrics.keys() if
-                      ("SELL" in key or "BUY" in key) and current_date in key]  # 筛选当天的交易记录键
-        total_realized_pnl = 0.0  # 初始化总盈亏
-        for trade_key in trade_keys:  # 遍历交易记录
-            trades = self.account_metrics[trade_key]["value"]  # 获取交易详情
-            if not trades:  # 如果交易详情为空
-                self.logger.warning(f"{trade_key} 无成交记录，跳过盈亏计算")  # 记录警告日志
-                continue
-            try:
-                total_realized_pnl += sum(float(trade["realizedPnl"]) for trade in trades)  # 计算总盈亏
-            except Exception as e:
-                self.logger.error(f"{trade_key} 计算盈亏失败: {str(e)}")  # 记录计算失败日志
-                continue
-        pnl_key = f"trade_realized_pnl_summary_{current_date}"  # 生成盈亏总和键
-        self.account_metrics[pnl_key] = {
-            "value": total_realized_pnl,  # 保存总盈亏
-            "description": f"{current_date} 买卖交易已实现盈亏总和",  # 设置描述
-            "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
-        }
-        self.logger.info(f"盈亏汇总 ({pnl_key}): {total_realized_pnl}")  # 记录盈亏汇总日志
-        return self.account_metrics[pnl_key]  # 返回盈亏记录
+        current_date_str = self.account_metrics.get('date', datetime.now().strftime('%Y-%m-%d'))
+        pnl_key = f'trade_realized_pnl_summary_{current_date_str}'
+        self.logger.info(f"Processing realized PnL for date: {current_date_str}")
+
+        try:
+            date_obj_for_pnl = datetime.strptime(current_date_str, '%Y-%m-%d')
+            start_time_str = f"{date_obj_for_pnl.strftime('%Y-%m-%d')} 00:00:00"
+            # Ensure end_time covers the entire day. Binance API endTime is exclusive for some endpoints, inclusive for others.
+            # For income history, it's typically inclusive up to the millisecond.
+            end_time_str = f"{date_obj_for_pnl.strftime('%Y-%m-%d')} 23:59:59.999"
+
+            start_time_ms = self.datetime_to_timestamp(start_time_str)
+            end_time_ms = self.datetime_to_timestamp(end_time_str)
+
+            if start_time_ms is None or end_time_ms is None or start_time_ms >= end_time_ms:
+                self.logger.error(f"Invalid time range for PnL calculation: {start_time_str} to {end_time_str}")
+                self.account_metrics[pnl_key] = 0
+                return
+
+            self.logger.info(f"Fetching realized PNL history from {start_time_str} ({start_time_ms}) to {end_time_str} ({end_time_ms})")
+            pnl_history = self.client.get_realized_pnl_history(start_time_ms=start_time_ms, end_time_ms=end_time_ms)
+            
+            if not pnl_history:
+                self.logger.info(f"No realized PNL history found for {current_date_str}.")
+                self.account_metrics[pnl_key] = 0
+            else:
+                # Assuming target asset for PNL is USDT
+                total_realized_pnl = self.client.calculate_total_realized_pnl(pnl_history, 'USDT') 
+                self.account_metrics[pnl_key] = total_realized_pnl
+                self.logger.info(f"Processed realized PnL for {current_date_str}. Total: {total_realized_pnl} USDT")
+
+        except Exception as e:
+            self.logger.error(f"Error in process_trade_realized_pnl: {e}")
+            self.account_metrics[pnl_key] = 0 # Ensure it's set to 0 on error
 
     def cancel_all_open_orders(self):
         """撤销所有未成交挂单"""
@@ -1089,27 +1100,44 @@ class TradingEngine:
         :return: 如果存在未成交订单，返回 True；否则返回 False
         """
         try:
-            self.logger.debug(f"检查 {ticker} {side} 未成交订单: 开始查询 pending_orders")
+            self.logger.debug(f"检查 {ticker} {side} 未成交订单: 开始查询 pending_orders 列表 (当前大小: {len(self.pending_orders)})...")
             # 检查 pending_orders 列表
-            for pending_ticker, order_id, pending_side, _ in self.pending_orders:
+            for i, (pending_ticker, order_id, pending_side, qty) in enumerate(self.pending_orders):
                 if pending_ticker == ticker and pending_side == side:
-                    self.logger.info(f"发现 {ticker} {side} 的未成交订单 (ID={order_id}) 在 pending_orders 中")
-                    return True
-
-            self.logger.debug(f"检查 {ticker} {side} 未成交订单: 开始查询交易所")
+                    # 进一步确认该订单是否仍在交易所活跃
+                    try:
+                        order_status = self.client.get_order_status(ticker, order_id)
+                        if order_status in ['NEW', 'PARTIALLY_FILLED']:
+                            self.logger.info(f"发现 {ticker} {side} 的未成交订单 (ID={order_id}, Qty={qty}, Status={order_status}) 在 pending_orders 列表中且状态活跃，将复用.")
+                            return True
+                        else:
+                            self.logger.info(f"订单 (ID={order_id}, Status={order_status}) 在 pending_orders 但已非活跃状态，将从pending_orders移除.")
+                            self.pending_orders.pop(i) # 从列表中移除不活跃的订单
+                            # 继续检查API，因为这个订单虽然在pending_orders里，但已经不活跃了
+                    except Exception as e:
+                        self.logger.warning(f"检查 pending_orders 中订单 {order_id} 状态失败: {e}, 假设其可能已失效，将尝试从API获取最新状态.")
+                        self.pending_orders.pop(i) # 无法确认状态，也移除，依赖API
+                        
+            self.logger.debug(f"检查 {ticker} {side} 未成交订单: pending_orders 中未找到活跃订单，开始查询交易所API...")
             # 通过 Binance API 查询未成交订单
-            open_orders = self.client.get_open_orders(ticker)
-            for order in open_orders:
-                if order['side'] == side and order['symbol'] == ticker:
-                    self.logger.info(f"发现 {ticker} {side} 的未成交订单 (ID={order['orderId']}) 在交易所中")
-                    self.pending_orders.append((ticker, order['orderId'], side, float(order['origQty'])))
-                    return True
+            open_orders_from_api = self.client.get_open_orders(ticker)
+            if open_orders_from_api:
+                self.logger.info(f"交易所API返回 {len(open_orders_from_api)} 条 {ticker} 的未成交订单.")
+            else:
+                self.logger.debug(f"交易所API未返回 {ticker} 的未成交订单.")
 
-            self.logger.debug(f"检查 {ticker} {side} 未成交订单: 无未成交订单")
+            for order in open_orders_from_api:
+                if order['side'] == side and order['symbol'] == ticker:
+                    self.logger.info(f"发现 {ticker} {side} 的未成交订单 (ID={order['orderId']}, Qty={order['origQty']}) 来自交易所API，状态为 {order['status']}. 将添加到 pending_orders.")
+                    # 避免重复添加，先检查是否已存在（理论上前面已处理，但作为保险）
+                    if not any(o_id == order['orderId'] for _, o_id, _, _ in self.pending_orders):
+                        self.pending_orders.append((ticker, order['orderId'], side, float(order['origQty'])))
+                    return True
+            self.logger.debug(f"检查 {ticker} {side} 未成交订单: 交易所API中也未找到匹配的活跃订单.")
             return False
         except Exception as e:
-            self.logger.error(f"检查 {ticker} {side} 未成交订单失败: {str(e)}")
-            return False  # 发生异常时默认不跳过，防止漏单
+            self.logger.error(f"检查 {ticker} {side} 未成交订单时发生错误: {e}")
+            return False # 出错时保守处理，允许下单
 
     def handle_postonly_error(self, round_num: int, ticker: str, side: str, qty: float, error_msg: str,
                               pending_orders: List[Tuple[str, int, str, float]]):
