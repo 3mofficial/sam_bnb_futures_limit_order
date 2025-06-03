@@ -389,102 +389,235 @@ class TradingEngine:
         except Exception as e:
             self.logger.error(f"写入 account_metrics.xlsx 失败: {str(e)}")  # 记录写入失败日志
 
-    def datetime_to_timestamp(self, date_time_str: str) -> int:
+    def datetime_to_timestamp(self, date_time_str) -> int:
         """将日期时间字符串转换为Unix时间戳（毫秒）"""
         try:
-            dt = datetime.strptime(date_time_str, "%Y-%m-%d_%H:%M:%S")  # 尝试解析日期时间字符串
-            return int(dt.timestamp() * 1000)  # 转换为毫秒时间戳
-        except ValueError:
+            if date_time_str is None:
+                self.logger.error("日期时间字符串为None")
+                raise ValueError("日期时间字符串不能为None")
+                
+            # 添加详细日志，显示原始输入
+            self.logger.debug(f"尝试转换日期时间: '{date_time_str}', 类型: {type(date_time_str)}")
+            
+            if isinstance(date_time_str, (int, float)):
+                # 如果已经是数字，假设是秒级时间戳
+                return int(date_time_str) * 1000
+                
+            if isinstance(date_time_str, datetime):
+                # 如果是datetime对象
+                timestamp = int(date_time_str.timestamp() * 1000)
+                self.logger.debug(f"datetime对象转换为时间戳: {timestamp}，对应时间: {date_time_str}")
+                return timestamp
+                
+            # 尝试多种格式解析字符串
+            formats = [
+                '%Y-%m-%d_%H:%M:%S',
+                '%Y-%m-%d %H:%M:%S',
+                '%Y/%m/%d %H:%M:%S',
+                '%Y-%m-%d',
+                '%Y/%m/%d',
+                '%Y-%m-%m-%d_%H:%M:%S'  # 添加错误格式以兼容现有数据
+            ]
+            
+            for fmt in formats:
+                try:
+                    dt = datetime.strptime(date_time_str, fmt)
+                    timestamp = int(dt.timestamp() * 1000)
+                    self.logger.debug(f"成功转换时间戳，格式: {fmt}, 结果: {timestamp}, 对应时间: {dt}")
+                    return timestamp
+                except ValueError:
+                    continue
+                    
+            # 尝试使用pandas解析
             try:
-                dt = datetime.strptime(date_time_str, "%Y-%m-%d %H:%M:%S")  # 尝试解析另一种格式
-                return int(dt.timestamp() * 1000)  # 转换为毫秒时间戳
-            except ValueError as e:
-                self.logger.error(f"日期时间格式错误: {str(e)}，请使用 YYYY-MM-DD_HH:MM:SS 或 YYYY-MM-DD HH:MM:SS 格式")  # 记录格式错误日志
-                raise  # 抛出异常
+                dt = pd.to_datetime(date_time_str)
+                timestamp = int(dt.timestamp() * 1000)
+                self.logger.debug(f"使用pandas成功转换时间戳，结果: {timestamp}, 对应时间: {dt}")
+                return timestamp
+            except Exception as e:
+                self.logger.warning(f"pandas转换失败: {str(e)}")
+                
+            # 所有方法都失败，记录详细错误
+            self.logger.error(f"无法解析日期时间格式: '{date_time_str}'，尝试了所有支持的格式")
+            # 返回当前时间戳作为后备方案，而不是抛出异常
+            current_timestamp = int(time.time() * 1000)
+            self.logger.warning(f"使用当前时间戳作为后备方案: {current_timestamp}")
+            return current_timestamp
+        except Exception as e:
+            self.logger.error(f"时间戳转换失败: {str(e)}，输入: '{date_time_str}'")
+            # 返回当前时间戳作为后备方案，而不是抛出异常
+            current_timestamp = int(time.time() * 1000)
+            self.logger.warning(f"使用当前时间戳作为后备方案: {current_timestamp}")
+            return current_timestamp
 
     def process_trade_commissions(self):
         """通过API获取指定日期的手续费总和"""
-        current_date = datetime.now().strftime('%Y-%m-%d')  # 获取当前日期
-        commission_key = f"trade_commission_summary_{current_date}"  # 生成手续费总和键
-
-        # 获取调仓时间范围
-        start_time_str = self.account_metrics.get("before_trade_balance", {}).get("date")  # 获取调仓前时间
-        end_time_str = self.account_metrics.get("after_trade_balance", {}).get("date")  # 获取调仓后时间
-
-        if not start_time_str or not end_time_str:  # 如果缺少时间信息
-            self.logger.warning(f"缺少调仓时间信息，无法获取手续费: start={start_time_str}, end={end_time_str}")  # 记录警告日志
-            self.account_metrics[commission_key] = {
-                "value": 0.0,  # 设置默认值
-                "description": f"{current_date} 买卖交易手续费总和（缺少时间信息）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
-            }
-            return self.account_metrics[commission_key]  # 返回手续费记录
-
         try:
-            start_time = self.datetime_to_timestamp(start_time_str)  # 转换为开始时间戳
-            end_time = self.datetime_to_timestamp(end_time_str)  # 转换为结束时间戳
-            if start_time >= end_time:  # 如果时间范围无效
-                self.logger.warning(f"无效时间范围: 开始时间 {start_time_str} 不早于结束时间 {end_time_str}")  # 记录警告日志
+            current_date = datetime.now().strftime('%Y-%m-%d')  # 获取当前日期
+            commission_key = f"trade_commission_summary_{current_date}"  # 生成手续费总和键
+            
+            # 如果已经计算过，直接返回
+            if commission_key in self.account_metrics and isinstance(self.account_metrics[commission_key], dict) and "value" in self.account_metrics[commission_key]:
+                self.logger.info(f"已存在手续费记录 ({commission_key}): {self.account_metrics[commission_key]['value']} USDT")
+                return self.account_metrics[commission_key]
+
+            # 获取调仓时间范围
+            start_time_str = self.account_metrics.get("before_trade_balance", {}).get("date")  # 获取调仓前时间
+            end_time_str = self.account_metrics.get("after_trade_balance", {}).get("date")  # 获取调仓后时间
+
+            # 添加调试日志，显示原始时间字符串
+            self.logger.debug(f"手续费计算时间范围原始字符串: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
+
+            if not start_time_str or not end_time_str:  # 如果缺少时间信息
+                self.logger.warning(f"缺少调仓时间信息，无法获取手续费: start={start_time_str}, end={end_time_str}")  # 记录警告日志
                 self.account_metrics[commission_key] = {
                     "value": 0.0,  # 设置默认值
-                    "description": f"{current_date} 买卖交易手续费总和（无效时间范围）",  # 设置描述
+                    "description": f"{current_date} 买卖交易手续费总和（缺少时间信息）",  # 设置描述
                     "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 }
                 return self.account_metrics[commission_key]  # 返回手续费记录
 
-            records = self.client.get_commission_history(start_time, end_time)  # 获取手续费记录
-            total_commission = self.client.calculate_total_commission(records)  # 计算总手续费
+            try:
+                # 转换时间戳前记录原始值
+                self.logger.info(f"尝试转换时间戳: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
+                
+                start_time = self.datetime_to_timestamp(start_time_str)  # 转换为开始时间戳
+                end_time = self.datetime_to_timestamp(end_time_str)  # 转换为结束时间戳
+                
+                # 添加调试日志，显示转换后的时间戳和对应的日期时间
+                start_dt = datetime.fromtimestamp(start_time/1000)
+                end_dt = datetime.fromtimestamp(end_time/1000)
+                self.logger.debug(f"转换后的时间戳: start={start_time} ({start_dt}) - end={end_time} ({end_dt})")
+                self.logger.info(f"获取手续费记录，时间范围: {start_time} ({start_dt}) - {end_time} ({end_dt})")
+                
+                if start_time >= end_time:  # 如果时间范围无效
+                    self.logger.warning(f"无效时间范围: 开始时间 '{start_time_str}' ({start_time}) 不早于结束时间 '{end_time_str}' ({end_time})")
+                    self.account_metrics[commission_key] = {
+                        "value": 0.0,  # 设置默认值
+                        "description": f"{current_date} 买卖交易手续费总和（无效时间范围）",  # 设置描述
+                        "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    }
+                    return self.account_metrics[commission_key]  # 返回手续费记录
 
-            self.account_metrics[commission_key] = {
-                "value": total_commission,  # 保存总手续费
-                "description": f"{current_date} 买卖交易手续费总和（API获取，{len(records)}条记录）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
-            }
-            self.logger.info(f"手续费汇总 ({commission_key}): {total_commission} USDT, 记录数: {len(records)}")  # 记录手续费汇总日志
+                # 使用新的API获取手续费记录，支持分页
+                records = []
+                has_more = True
+                current_start_time = start_time
+                max_retries = 3
+                
+                while has_more and current_start_time < end_time:
+                    for retry in range(max_retries):
+                        try:
+                            self.logger.debug(f"请求手续费记录: start_time={current_start_time}, end_time={end_time}")
+                            batch_records = self.client.get_commission_history(start_time_ms=current_start_time, end_time_ms=end_time, limit=1000)
+                            self.logger.debug(f"API响应: 获取到 {len(batch_records)} 条记录")
+                            
+                            if not batch_records:
+                                self.logger.info(f"API返回空记录，可能该时间段内没有交易")
+                                has_more = False
+                                break
+                                
+                            records.extend(batch_records)
+                            
+                            # 更新时间戳，从最后一条记录的时间开始
+                            if batch_records:
+                                last_record_time = int(batch_records[-1].get('time', current_start_time))
+                                current_start_time = last_record_time + 1
+                                if len(batch_records) < 1000:
+                                    has_more = False
+                            else:
+                                has_more = False
+                            break  # 成功获取数据，跳出重试循环
+                        except Exception as e:
+                            self.logger.warning(f"获取手续费记录批次失败 (尝试 {retry+1}/{max_retries}): {str(e)}")
+                            if retry == max_retries - 1:  # 最后一次重试
+                                self.logger.error(f"多次尝试后仍无法获取手续费记录: {str(e)}")
+                                self.logger.exception("详细错误信息:")
+                                has_more = False
+                            else:
+                                time.sleep(1)  # 等待1秒后重试
+                
+                self.logger.info(f"获取到 {len(records)} 条手续费记录")
+                
+                if len(records) > 0:
+                    self.logger.debug(f"手续费记录示例: {records[0]}")
+                
+                total_commission = self.client.calculate_total_commission(records)  # 计算总手续费
+
+                self.account_metrics[commission_key] = {
+                    "value": total_commission,  # 保存总手续费
+                    "description": f"{current_date} 买卖交易手续费总和",  # 设置描述
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
+                    "records_count": len(records)  # 记录数量
+                }
+                self.logger.info(f"手续费汇总 ({commission_key}): {total_commission} USDT, 记录数: {len(records)}")  # 记录手续费汇总日志
+                return self.account_metrics[commission_key]  # 返回手续费记录
+            except Exception as e:
+                self.logger.error(f"获取手续费失败: {str(e)}")
+                self.logger.exception("详细错误信息:")
+                self.account_metrics[commission_key] = {
+                    "value": 0.0,  # 设置默认值
+                    "description": f"{current_date} 买卖交易手续费总和（未计算）",  # 设置描述
+                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
+                    "error": str(e)  # 错误信息
+                }
+                return self.account_metrics[commission_key]  # 返回手续费记录
         except Exception as e:
-            self.logger.error(f"获取手续费失败: {str(e)}")  # 记录获取失败日志
+            self.logger.error(f"处理手续费计算过程中发生错误: {str(e)}")
+            self.logger.exception("详细错误信息:")
             self.account_metrics[commission_key] = {
                 "value": 0.0,  # 设置默认值
-                "description": f"{current_date} 买卖交易手续费总和（获取失败: {str(e)}）",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                "description": f"{current_date} 买卖交易手续费总和（未计算）",  # 设置描述
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
+                "error": str(e)  # 错误信息
             }
-        return self.account_metrics[commission_key]  # 返回手续费记录
+            return self.account_metrics[commission_key]  # 返回手续费记录
+
 
     def process_trade_realized_pnl(self):
-        current_date_str = self.account_metrics.get('date', datetime.now().strftime('%Y-%m-%d'))
-        pnl_key = f'trade_realized_pnl_summary_{current_date_str}'
-        self.logger.info(f"Processing realized PnL for date: {current_date_str}")
-
         try:
-            date_obj_for_pnl = datetime.strptime(current_date_str, '%Y-%m-%d')
-            start_time_str = f"{date_obj_for_pnl.strftime('%Y-%m-%d')} 00:00:00"
-            # Ensure end_time covers the entire day. Binance API endTime is exclusive for some endpoints, inclusive for others.
-            # For income history, it's typically inclusive up to the millisecond.
-            end_time_str = f"{date_obj_for_pnl.strftime('%Y-%m-%d')} 23:59:59.999"
-
-            start_time_ms = self.datetime_to_timestamp(start_time_str)
-            end_time_ms = self.datetime_to_timestamp(end_time_str)
-
-            if start_time_ms is None or end_time_ms is None or start_time_ms >= end_time_ms:
-                self.logger.error(f"Invalid time range for PnL calculation: {start_time_str} to {end_time_str}")
-                self.account_metrics[pnl_key] = 0
-                return
-
-            self.logger.info(f"Fetching realized PNL history from {start_time_str} ({start_time_ms}) to {end_time_str} ({end_time_ms})")
-            pnl_history = self.client.get_realized_pnl_history(start_time_ms=start_time_ms, end_time_ms=end_time_ms)
+            current_date_str = datetime.now().strftime("%Y-%m-%d")
+            pnl_key = f'trade_realized_pnl_summary_{current_date_str}'
             
-            if not pnl_history:
-                self.logger.info(f"No realized PNL history found for {current_date_str}.")
-                self.account_metrics[pnl_key] = 0
-            else:
-                # Assuming target asset for PNL is USDT
-                total_realized_pnl = self.client.calculate_total_realized_pnl(pnl_history, 'USDT') 
-                self.account_metrics[pnl_key] = total_realized_pnl
-                self.logger.info(f"Processed realized PnL for {current_date_str}. Total: {total_realized_pnl} USDT")
-
+            # 如果已经计算过，直接返回
+            if pnl_key in self.account_metrics and isinstance(self.account_metrics[pnl_key], dict) and "value" in self.account_metrics[pnl_key]:
+                self.logger.info(f"已存在已实现盈亏记录 ({pnl_key}): {self.account_metrics[pnl_key]['value']} USDT")
+                return self.account_metrics[pnl_key]
+            
+            # 计算当天的开始和结束时间
+            today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            start_time_ms = int(today.timestamp() * 1000)
+            end_time_ms = int((today.replace(hour=23, minute=59, second=59) + timedelta(days=1)).timestamp() * 1000)
+            
+            self.logger.info(f"获取已实现盈亏记录，时间范围: {start_time_ms} ({datetime.fromtimestamp(start_time_ms/1000)}) - {end_time_ms} ({datetime.fromtimestamp(end_time_ms/1000)})")
+            
+            # 获取已实现盈亏记录
+            pnl_history = self.client.get_realized_pnl_history(start_time_ms=start_time_ms, end_time_ms=end_time_ms)
+            self.logger.info(f"获取到 {len(pnl_history)} 条已实现盈亏记录")
+            
+            if len(pnl_history) > 0:
+                self.logger.debug(f"已实现盈亏记录示例: {pnl_history[0]}")
+            
+            # 计算总已实现盈亏
+            total_realized_pnl = self.client.calculate_total_realized_pnl(pnl_history, 'USDT')
+            self.account_metrics[pnl_key] = {
+                "value": total_realized_pnl,
+                "description": f"{current_date_str} 买卖交易已实现盈亏总和",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                "records_count": len(pnl_history)
+            }
+            self.logger.info(f"Processed realized PnL for {current_date_str}. Total: {total_realized_pnl} USDT, Records: {len(pnl_history)}")
+            return self.account_metrics[pnl_key]
         except Exception as e:
             self.logger.error(f"Error in process_trade_realized_pnl: {e}")
-            self.account_metrics[pnl_key] = 0 # Ensure it's set to 0 on error
+            self.logger.exception("详细错误信息:")
+            self.account_metrics[pnl_key] = {
+                "value": 0,
+                "description": f"{current_date_str} 买卖交易已实现盈亏总和（未计算）",
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
+                "error": str(e)
+            }
+            return self.account_metrics[pnl_key]
 
     def cancel_all_open_orders(self):
         """撤销所有未成交挂单"""
@@ -529,16 +662,20 @@ class TradingEngine:
                 f"available_balance = {available_balance}====="
             )  # 记录账户信息日志
 
+            # 从self.account_metrics获取调仓前余额信息，而不是直接使用变量
+            before_trade_balance = self.account_metrics.get("before_trade_balance", {}).get("value", total_balance)
+            before_available_balance = self.account_metrics.get("before_available_balance", {}).get("value", available_balance)
+            
             # 记录调仓前账户信息
             self.account_metrics["before_trade_balance"] = {
-                "value": total_balance + self.basic_funds,  # 保存调仓前总余额
+                "value": before_trade_balance,  # 保存调仓前总余额
                 "description": "调仓前账户总保证金余额(totalMarginBalance)",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 修复日期格式
             }
             self.account_metrics["before_available_balance"] = {
-                "value": available_balance,  # 保存调仓前可用余额
+                "value": before_available_balance,  # 保存调仓前可用余额
                 "description": "调仓前可用保证金余额(available_balance)",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 修复日期格式
             }
 
             # 计算每笔交易的资金份额
@@ -1730,7 +1867,7 @@ class TradingEngine:
             self.account_metrics["before_available_balance"] = {
                 "value": before_available_balance,  # 保存调仓前可用余额
                 "description": "调仓前可用保证金余额(available_balance)",  # 设置描述
-                "date": datetime.now().strftime('%Y-%m-%m-%d_%H:%M:%S')  # 记录当前时间
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 修复日期格式，删除多余的-m
             }
 
         # ==================== 仓位调整阶段 ====================
@@ -1805,22 +1942,22 @@ class TradingEngine:
                 'after_trade_balance': {
                     'value': after_trade_balance,  # 保存调仓后总余额
                     'description': '调仓后账户总保证金余额(totalMarginBalance)',  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 'balance_loss': {
                     'value': balance_loss,  # 保存余额损失金额
                     'description': '调仓前后余额损失金额',  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 'balance_loss_rate': {
                     'value': f"{balance_loss_rate:.6f}%",  # 保存余额损失率，保留6位小数
                     'description': '调仓前后余额损失率 (%)',  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 'after_available_balance': {
                     'value': after_available_balance,  # 保存调仓后可用余额
                     'description': '调仓后可用余额',  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 'btc_usdt_price': {
                     'value': btc_price,  # 保存 BTC/USDT 价格
@@ -1830,22 +1967,22 @@ class TradingEngine:
                 f'trade_commission_summary_{current_date}': {
                     'value': total_commission,  # 保存当天的总手续费
                     'description': f"{current_date} 买卖交易手续费总和",  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 f'trade_commission_summary_ratio_{current_date}': {
                     'value': f"{commission_ratio:.6f}%",  # 保存当天的手续费占比
                     'description': f"{current_date} 买卖交易总手续费占比",  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 f'trade_realized_pnl_summary_{current_date}': {
                     'value': total_realized_pnl,  # 保存当天的总盈亏
                     'description': f"{current_date} 买卖交易已实现盈亏总和",  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 },
                 f'trade_realized_pnl_summary_ratio_{current_date}': {
                     'value': f"{realized_pnl_ratio:.6f}%",  # 保存当天的盈亏占比
                     'description': f"{current_date} 买卖交易总盈亏占比",  # 设置描述
-                'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                 }
             }
 
@@ -1854,7 +1991,9 @@ class TradingEngine:
                 if key.startswith("trade_") and current_date in key:  # 筛选当天的交易记录
                     account_info_data[key] = value  # 添加到账户信息数据中
 
-            # 保存 account_info 到 JSON 文件
+            # 保存 account_info 到 JSON 文件之前，更新到self.account_metrics
+            self.account_metrics.update(account_info_data)  # 将account_info_data更新到self.account_metrics
+            
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')  # 生成时间戳，格式为 YYYYMMDD_HHMMSS
             output_file = f'data/account_info_{timestamp}.json'  # 构造输出文件名
             os.makedirs("data", exist_ok=True)  # 确保data目录存在
@@ -1863,10 +2002,26 @@ class TradingEngine:
             self.logger.info(f"账户信息已保存为JSON文件: {output_file}")  # 记录保存成功的日志
 
             # ==================== 结果持久化 ===================
-            self.calculate_and_append_returns()  # 计算并追加回报率
-            self.write_to_excel(run_id=run_id)  # 将账户指标写入Excel文件
-            # 移除对save_to_json的调用，避免生成额外的JSON文件
-            # self.save_to_json(date_str, run_id)  # 这行被注释掉
+            self.logger.info("开始计算手续费和已实现盈亏...")
+            try:
+                commission_result = self.process_trade_commissions()
+                self.logger.info(f"手续费计算结果: {commission_result}")
+                
+                pnl_result = self.process_trade_realized_pnl()
+                self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
+            except Exception as e:
+                self.logger.error(f"计算手续费或已实现盈亏失败: {str(e)}")
+                self.logger.exception("详细错误信息:")
+            
+            # 保存账户信息到JSON文件
+            self.save_to_json(date_str, run_id)
+            
+            # 计算并追加回报率
+            self.calculate_and_append_returns()
+            
+            # 写入Excel文件
+            self.write_to_excel(run_id=run_id)
+            
             self.logger.info(f"✅ 交易引擎执行完成 | RunID: {run_id}")  # 记录交易引擎执行完成的日志
 
         except Exception as e:
@@ -1879,9 +2034,26 @@ class TradingEngine:
                     self.save_positions_to_csv(positions, run_id)  # 保存持仓到CSV文件
                 except Exception as e:
                     self.logger.error(f"持仓信息保存失败: {str(e)}")  # 记录持仓保存失败的错误日志
-            self.write_to_excel(run_id=run_id)  # 将账户指标写入Excel文件
-            # 移除对save_to_json的调用，避免生成额外的JSON文件
-            # self.save_to_json(date_str, run_id)  # 这行被注释掉
+            self.logger.info("尝试计算手续费和已实现盈亏...")
+            try:
+                commission_result = self.process_trade_commissions()
+                self.logger.info(f"手续费计算结果: {commission_result}")
+                
+                pnl_result = self.process_trade_realized_pnl()
+                self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
+            except Exception as e:
+                self.logger.error(f"计算手续费和已实现盈亏失败: {str(e)}")
+                self.logger.exception("详细错误信息:")
+            
+            # 保存账户信息到JSON文件
+            self.save_to_json(date_str, run_id)
+            
+            # 计算并追加回报率
+            self.calculate_and_append_returns()
+            
+            # 写入Excel文件
+            self.write_to_excel(run_id=run_id)
+            
             self.error_reasons["system_error"] = error_msg  # 记录系统错误原因
 
         return self.error_reasons  # 返回错误原因字典

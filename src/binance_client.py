@@ -531,12 +531,12 @@ class BinanceFuturesClient:
                 trades = self.client.futures_account_trades(symbol=symbol, orderId=order_id)
                 if trades:
                     return trades
-                logger.warning(f"{symbol} 第{attempt + 1}次获取成交记录为空，订单ID={order_id}")
+                self.logger.warning(f"{symbol} 第{attempt + 1}次获取成交记录为空，订单ID={order_id}")
                 time.sleep(delay)
             except Exception as e:
-                logger.error(f"{symbol} 获取成交记录失败，订单ID={order_id}, 错误: {str(e)}")
+                self.logger.error(f"{symbol} 获取成交记录失败，订单ID={order_id}, 错误: {str(e)}")
                 time.sleep(delay)
-        logger.error(f"{symbol} 多次尝试后仍未获取到成交记录，订单ID={order_id}")
+        self.logger.error(f"{symbol} 多次尝试后仍未获取到成交记录，订单ID={order_id}")
         return []
 
     def get_open_orders(self, symbol: str) -> List[Dict]:
@@ -678,33 +678,37 @@ class BinanceFuturesClient:
     def get_commission_history(self, symbol=None, start_time_ms=None, end_time_ms=None, limit=1000):
         """获取指定时间段内的手续费记录，处理分页"""
         all_records = []
-        current_start_time = start_time
-
-        while current_start_time < end_time:
+        current_start_time = start_time_ms
+        
+        self.logger.info(f"开始获取手续费记录: start_time={start_time_ms}, end_time={end_time_ms}, limit={limit}")
+        
+        while current_start_time < end_time_ms:
             try:
+                self.logger.debug(f"API调用: futures_income_history, startTime={current_start_time}, endTime={end_time_ms}, limit={limit}")
                 records = self.client.futures_income_history(
-                 incomeType="COMMISSION",
+                    incomeType="COMMISSION",
                     startTime=current_start_time,
-                    endTime=end_time,
+                    endTime=end_time_ms,
                     limit=limit
                 )
                 if not records:
                     break
-
+        
                 all_records.extend(records)
                 self.logger.info(f"已获取 {len(records)} 条手续费记录，总计 {len(all_records)} 条")
-
+        
                 last_record_time = int(records[-1]['time'])
-                if last_record_time >= end_time:
+                if last_record_time >= end_time_ms:
                   break
                 current_start_time = last_record_time + 1
-
+        
                 if len(records) < limit:
                     break
             except Exception as e:
                 self.logger.error(f"获取手续费记录失败: {str(e)}")
+                self.logger.exception("详细错误信息:")
                 break
-
+        
         return all_records
 
     def calculate_total_commission(self, records: List[Dict[str, Any]]) -> float:
@@ -716,6 +720,94 @@ class BinanceFuturesClient:
                 total_fee += abs(income)
                 self.logger.debug(f"记录: {record['symbol']} - 支付金额: {abs(income)} USDT")
         return total_fee
+        
+    def get_realized_pnl_history(self, start_time_ms=None, end_time_ms=None, limit=1000):
+        """Fetches realized P&L history for all symbols within a given time range."""
+        all_pnl_history = []
+        last_id = None
+        params = {
+            "incomeType": "REALIZED_PNL",
+            "limit": limit
+        }
+        if start_time_ms:
+            params["startTime"] = start_time_ms
+        if end_time_ms:
+            params["endTime"] = end_time_ms
+    
+        while True:
+            try:
+                if last_id:
+                    params["fromId"] = last_id
+                
+                self.logger.debug(f"Fetching REALIZED_PNL history with params: {params}")
+                history = self.client.futures_income_history(**params)
+                self.logger.debug(f"Fetched {len(history)} REALIZED_PNL records in this page.")
+                
+                if not history:
+                    break
+                all_pnl_history.extend(history)
+                if len(history) < limit: # No more pages
+                    break
+                # To fetch next page, we can use fromId if available, or adjust time if not.
+                # For simplicity, if your trading volume is low, one call might be enough or rely on time window.
+                # A more robust pagination might be needed for high volume.
+                # For now, let's assume one call or time window is sufficient if fromId is not directly used for paging income types other than trades.
+                # Binance API for income history might not use fromId for paging in the same way as trades.
+                # Let's assume the limit and time window are primary filters.
+                # If results are consistently truncated, startTime for next call would be last entry's time + 1ms.
+                break # Simplified: assuming one page or time window is enough, or rely on multiple calls with adjusted time windows if needed.
+    
+            except Exception as e:
+                self.logger.error(f"Unexpected error while fetching realized P&L history: {e}")
+                break # Exit loop on error
+        self.logger.info(f"Total realized P&L records fetched: {len(all_pnl_history)}")
+        return all_pnl_history
+    
+    def calculate_total_realized_pnl(self, pnl_history, target_asset='USDT'):
+        """Calculates total realized P&L from history, converting to target_asset if necessary."""
+        total_pnl_in_target_asset = 0
+        for item in pnl_history:
+            try:
+                pnl_amount = float(item.get('income', 0))
+                asset = item.get('asset', item.get('incomeAsset')) # 'asset' or 'incomeAsset'
+                if asset and pnl_amount != 0: # Process only if there's an asset and non-zero PNL
+                    converted_pnl = self.convert_to_asset(abs(pnl_amount), asset, target_asset)
+                    if pnl_amount < 0: # Loss
+                        total_pnl_in_target_asset -= converted_pnl
+                    else: # Profit
+                        total_pnl_in_target_asset += converted_pnl
+                elif pnl_amount != 0: # PNL amount exists but asset info is missing
+                     self.logger.warning(f"Realized PNL record found with amount {pnl_amount} but missing asset information: {item}")
+            except ValueError as e:
+                self.logger.error(f"Error converting PNL amount to float for item {item}: {e}")
+            except Exception as e:
+                self.logger.error(f"Error processing PNL item {item}: {e}")
+        self.logger.info(f"Calculated total realized PNL in {target_asset}: {total_pnl_in_target_asset}")
+        return total_pnl_in_target_asset
+        
+    def convert_to_asset(self, amount, from_asset, to_asset):
+        if from_asset == to_asset:
+            self.logger.debug(f"Conversion not needed: {amount} {from_asset} is already {to_asset}")
+            return amount
+        try:
+            original_amount = amount
+            if to_asset == 'USDT': # Common case
+                if from_asset == 'BUSD': # Assuming BUSD is pegged to USDT
+                    self.logger.debug(f"Converting {original_amount} {from_asset} to {to_asset} (BUSD->USDT direct)")
+                    return amount
+                
+                ticker = f"{from_asset}{to_asset}" # e.g., BNBUSDT
+                self.logger.debug(f"Attempting to fetch price for ticker: {ticker}")
+                price_info = self.client.futures_ticker(symbol=ticker)
+                price = float(price_info['lastPrice'])
+                self.logger.debug(f"Fetched price for {ticker}: {price}. Converting {original_amount} {from_asset} to {original_amount * price} {to_asset}")
+                return original_amount * price
+            
+            self.logger.warning(f"Conversion from {from_asset} to {to_asset} is not directly supported. Amount {original_amount} returned as is.")
+            return original_amount # Or raise an error
+        except Exception as e:
+            self.logger.error(f"Unexpected error converting {original_amount} {from_asset} to {to_asset} (ticker: {from_asset}{to_asset}): {e}")
+            return 0 # Return 0 if conversion fails
 
     def get_trade_history(self, symbol, start_time, end_time):
         """
@@ -769,74 +861,6 @@ if __name__ == "__main__":
     client = BinanceFuturesClient(config["api_key"], config["api_secret"], config["test_net"] == "True", logger)
     # 获取并打印账户信息
     print(client.get_account_info())
-
-    def get_realized_pnl_history(self, start_time_ms=None, end_time_ms=None, limit=1000):
-        """Fetches realized P&L history for all symbols within a given time range."""
-        all_pnl_history = []
-        last_id = None
-        params = {
-            "incomeType": "REALIZED_PNL",
-            "limit": limit
-        }
-        if start_time_ms:
-            params["startTime"] = start_time_ms
-        if end_time_ms:
-            params["endTime"] = end_time_ms
-    
-        while True:
-            try:
-                if last_id:
-                    params["fromId"] = last_id
-                
-                logger.debug(f"Fetching REALIZED_PNL history with params: {params}")
-                history = self.client.futures_income_history(**params)
-                logger.debug(f"Fetched {len(history)} REALIZED_PNL records in this page.")
-                
-                if not history:
-                    break
-                all_pnl_history.extend(history)
-                if len(history) < limit: # No more pages
-                    break
-                # To fetch next page, we can use fromId if available, or adjust time if not.
-                # For simplicity, if your trading volume is low, one call might be enough or rely on time window.
-                # A more robust pagination might be needed for high volume.
-                # For now, let's assume one call or time window is sufficient if fromId is not directly used for paging income types other than trades.
-                # Binance API for income history might not use fromId for paging in the same way as trades.
-                # Let's assume the limit and time window are primary filters.
-                # If results are consistently truncated, startTime for next call would be last entry's time + 1ms.
-                break # Simplified: assuming one page or time window is enough, or rely on multiple calls with adjusted time windows if needed.
-    
-            except BinanceAPIException as e:
-                logger.error(f"Binance API Exception while fetching realized P&L history: {e}")
-                # Potentially retry or handle error appropriately
-                break # Exit loop on error
-            except Exception as e:
-                logger.error(f"Unexpected error while fetching realized P&L history: {e}")
-                break # Exit loop on error
-        logger.info(f"Total realized P&L records fetched: {len(all_pnl_history)}")
-        return all_pnl_history
-    
-    def calculate_total_realized_pnl(self, pnl_history, target_asset='USDT'):
-        """Calculates total realized P&L from history, converting to target_asset if necessary."""
-        total_pnl_in_target_asset = 0
-        for item in pnl_history:
-            try:
-                pnl_amount = float(item.get('income', 0))
-                asset = item.get('asset', item.get('incomeAsset')) # 'asset' or 'incomeAsset'
-                if asset and pnl_amount != 0: # Process only if there's an asset and non-zero PNL
-                    converted_pnl = self.convert_to_asset(abs(pnl_amount), asset, target_asset)
-                    if pnl_amount < 0: # Loss
-                        total_pnl_in_target_asset -= converted_pnl
-                    else: # Profit
-                        total_pnl_in_target_asset += converted_pnl
-                elif pnl_amount != 0: # PNL amount exists but asset info is missing
-                     logger.warning(f"Realized PNL record found with amount {pnl_amount} but missing asset information: {item}")
-            except ValueError as e:
-                logger.error(f"Error converting PNL amount to float for item {item}: {e}")
-            except Exception as e:
-                logger.error(f"Error processing PNL item {item}: {e}")
-        logger.info(f"Calculated total realized PNL in {target_asset}: {total_pnl_in_target_asset}")
-        return total_pnl_in_target_asset
     
     def calculate_total_commission(self, commission_data, target_asset='USDT'):
         total_commission_in_target_asset = 0
@@ -937,72 +961,3 @@ if __name__ == "__main__":
     # 创建BinanceFuturesClient实例
     client = BinanceFuturesClient(config["api_key"], config["api_secret"], config["test_net"] == "True", logger)
     # 获取并打印账户信息
-    print(client.get_account_info())
-
-    def get_realized_pnl_history(self, start_time_ms=None, end_time_ms=None, limit=1000):
-        """Fetches realized P&L history for all symbols within a given time range."""
-        all_pnl_history = []
-        last_id = None
-        params = {
-            "incomeType": "REALIZED_PNL",
-            "limit": limit
-        }
-        if start_time_ms:
-            params["startTime"] = start_time_ms
-        if end_time_ms:
-            params["endTime"] = end_time_ms
-    
-        while True:
-            try:
-                if last_id:
-                    params["fromId"] = last_id
-                
-                logger.debug(f"Fetching REALIZED_PNL history with params: {params}")
-                history = self.client.futures_income_history(**params)
-                logger.debug(f"Fetched {len(history)} REALIZED_PNL records in this page.")
-                
-                if not history:
-                    break
-                all_pnl_history.extend(history)
-                if len(history) < limit: # No more pages
-                    break
-                # To fetch next page, we can use fromId if available, or adjust time if not.
-                # For simplicity, if your trading volume is low, one call might be enough or rely on time window.
-                # A more robust pagination might be needed for high volume.
-                # For now, let's assume one call or time window is sufficient if fromId is not directly used for paging income types other than trades.
-                # Binance API for income history might not use fromId for paging in the same way as trades.
-                # Let's assume the limit and time window are primary filters.
-                # If results are consistently truncated, startTime for next call would be last entry's time + 1ms.
-                break # Simplified: assuming one page or time window is enough, or rely on multiple calls with adjusted time windows if needed.
-    
-            except BinanceAPIException as e:
-                logger.error(f"Binance API Exception while fetching realized P&L history: {e}")
-                # Potentially retry or handle error appropriately
-                break # Exit loop on error
-            except Exception as e:
-                logger.error(f"Unexpected error while fetching realized P&L history: {e}")
-                break # Exit loop on error
-        logger.info(f"Total realized P&L records fetched: {len(all_pnl_history)}")
-        return all_pnl_history
-    
-    def calculate_total_realized_pnl(self, pnl_history, target_asset='USDT'):
-        """Calculates total realized P&L from history, converting to target_asset if necessary."""
-        total_pnl_in_target_asset = 0
-        for item in pnl_history:
-            try:
-                pnl_amount = float(item.get('income', 0))
-                asset = item.get('asset', item.get('incomeAsset')) # 'asset' or 'incomeAsset'
-                if asset and pnl_amount != 0: # Process only if there's an asset and non-zero PNL
-                    converted_pnl = self.convert_to_asset(abs(pnl_amount), asset, target_asset)
-                    if pnl_amount < 0: # Loss
-                        total_pnl_in_target_asset -= converted_pnl
-                    else: # Profit
-                        total_pnl_in_target_asset += converted_pnl
-                elif pnl_amount != 0: # PNL amount exists but asset info is missing
-                     logger.warning(f"Realized PNL record found with amount {pnl_amount} but missing asset information: {item}")
-            except ValueError as e:
-                logger.error(f"Error converting PNL amount to float for item {item}: {e}")
-            except Exception as e:
-                logger.error(f"Error processing PNL item {item}: {e}")
-        logger.info(f"Calculated total realized PNL in {target_asset}: {total_pnl_in_target_asset}")
-        return total_pnl_in_target_asset
