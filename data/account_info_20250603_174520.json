@@ -1,10 +1,10 @@
 {
     "account_info": {
-        "totalMarginBalance": 48.18984292,
-        "availableBalance": 4.80043418,
-        "totalWalletBalance": 48.22786804,
-        "totalUnrealizedProfit": -0.03802512,
-        "totalPositionInitialMargin": 43.34875974,
+        "totalMarginBalance": 48.2369806,
+        "availableBalance": 4.89226973,
+        "totalWalletBalance": 48.21140823,
+        "totalUnrealizedProfit": 0.02557237,
+        "totalPositionInitialMargin": 43.33536799,
         "totalOpenOrderInitialMargin": 0.0,
         "assets": [
             {
@@ -105,19 +105,19 @@
             },
             {
                 "asset": "USDT",
-                "walletBalance": "48.22786804",
-                "unrealizedProfit": "-0.03802512",
-                "marginBalance": "48.18984292",
-                "maintMargin": "1.57972177",
-                "initialMargin": "43.34875974",
-                "positionInitialMargin": "43.34875974",
+                "walletBalance": "48.21140823",
+                "unrealizedProfit": "0.02557237",
+                "marginBalance": "48.23698060",
+                "maintMargin": "1.57652924",
+                "initialMargin": "43.33536799",
+                "positionInitialMargin": "43.33536799",
                 "openOrderInitialMargin": "0.00000000",
-                "maxWithdrawAmount": "4.80043418",
-                "crossWalletBalance": "48.22786804",
-                "crossUnPnl": "-0.03802512",
-                "availableBalance": "4.80043418",
+                "maxWithdrawAmount": "4.89226973",
+                "crossWalletBalance": "48.21140823",
+                "crossUnPnl": "0.02557237",
+                "availableBalance": "4.89226973",
                 "marginAvailable": true,
-                "updateTime": 1748942459660
+                "updateTime": 1748944323693
             },
             {
                 "asset": "USDC",
@@ -142,158 +142,158 @@
         {
             "symbol": "DEXEUSDT",
             "positionAmt": -1.0,
-            "entryPrice": 9.313,
-            "markPrice": 9.315,
-            "unRealizedProfit": -0.002,
-            "liquidationPrice": 55.4636348,
+            "entryPrice": 9.282,
+            "markPrice": 9.29924226,
+            "unRealizedProfit": -0.01724226,
+            "liquidationPrice": 55.49770895,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942253040
+            "updateTime": 1748943942451
         },
         {
             "symbol": "ZECUSDT",
-            "positionAmt": -0.175,
-            "entryPrice": 53.1,
-            "markPrice": 53.04928758,
-            "unRealizedProfit": 0.00887467,
-            "liquidationPrice": 314.17041445,
+            "positionAmt": -0.174,
+            "entryPrice": 53.21,
+            "markPrice": 53.19919444,
+            "unRealizedProfit": 0.00188016,
+            "liquidationPrice": 316.1045999,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942248032
+            "updateTime": 1748944005068
         },
         {
             "symbol": "STXUSDT",
             "positionAmt": 12.0,
-            "entryPrice": 0.7773,
-            "markPrice": 0.77660903,
-            "unRealizedProfit": -0.00829164,
+            "entryPrice": 0.7826,
+            "markPrice": 0.78265529,
+            "unRealizedProfit": 0.00066348,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942332971
+            "updateTime": 1748943933037
         },
         {
             "symbol": "IOTAUSDT",
-            "positionAmt": 49.3,
-            "entryPrice": 0.1881,
-            "markPrice": 0.18813323,
-            "unRealizedProfit": 0.00163823,
+            "positionAmt": 49.1,
+            "entryPrice": 0.1887,
+            "markPrice": 0.18934726,
+            "unRealizedProfit": 0.03178046,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942273332
+            "updateTime": 1748944129043
         },
         {
             "symbol": "DENTUSDT",
-            "positionAmt": 12508.0,
-            "entryPrice": 0.000741,
-            "markPrice": 0.00074004,
-            "unRealizedProfit": -0.01200768,
+            "positionAmt": 12420.0,
+            "entryPrice": 0.000748,
+            "markPrice": 0.00074785,
+            "unRealizedProfit": -0.001863,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942359010
+            "updateTime": 1748944323693
         },
         {
             "symbol": "XMRUSDT",
             "positionAmt": 0.026,
-            "entryPrice": 359.07,
-            "markPrice": 357.80971189,
-            "unRealizedProfit": -0.03276749,
+            "entryPrice": 359.23,
+            "markPrice": 360.60796667,
+            "unRealizedProfit": 0.03582713,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942266377
+            "updateTime": 1748943936953
         },
         {
             "symbol": "DOGEUSDT",
             "positionAmt": -48.0,
-            "entryPrice": 0.19406,
-            "markPrice": 0.19371933,
-            "unRealizedProfit": 0.01635216,
-            "liquidationPrice": 1.15993245,
+            "entryPrice": 0.19457,
+            "markPrice": 0.19508492,
+            "unRealizedProfit": -0.02471616,
+            "liquidationPrice": 1.16234137,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942282146
+            "updateTime": 1748943949955
         },
         {
             "symbol": "XLMUSDT",
             "positionAmt": 34.0,
-            "entryPrice": 0.27046,
-            "markPrice": 0.27034178,
-            "unRealizedProfit": -0.00401948,
+            "entryPrice": 0.27107,
+            "markPrice": 0.27153054,
+            "unRealizedProfit": 0.01565836,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942254606
+            "updateTime": 1748943977321
         },
         {
             "symbol": "AERGOUSDT",
             "positionAmt": -77.0,
-            "entryPrice": 0.12047,
-            "markPrice": 0.12042438,
-            "unRealizedProfit": 0.00351274,
-            "liquidationPrice": 0.71680492,
+            "entryPrice": 0.12079,
+            "markPrice": 0.12085,
+            "unRealizedProfit": -0.00462,
+            "liquidationPrice": 0.71787452,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942459660
+            "updateTime": 1748944004731
         },
         {
             "symbol": "BELUSDT",
-            "positionAmt": -32.0,
-            "entryPrice": 0.2929,
-            "markPrice": 0.29264626,
-            "unRealizedProfit": 0.00811968,
-            "liquidationPrice": 1.72065242,
+            "positionAmt": -31.0,
+            "entryPrice": 0.2953,
+            "markPrice": 0.29547256,
+            "unRealizedProfit": -0.00534936,
+            "liquidationPrice": 1.77113516,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942272052
+            "updateTime": 1748944014347
         },
         {
             "symbol": "STEEMUSDT",
-            "positionAmt": -67.0,
-            "entryPrice": 0.13913,
-            "markPrice": 0.13917363,
-            "unRealizedProfit": -0.00292321,
-            "liquidationPrice": 0.82456619,
+            "positionAmt": -66.0,
+            "entryPrice": 0.13975,
+            "markPrice": 0.13986923,
+            "unRealizedProfit": -0.00786918,
+            "liquidationPrice": 0.83639784,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942342834
+            "updateTime": 1748944029550
         },
         {
             "symbol": "GRTUSDT",
-            "positionAmt": 95.0,
-            "entryPrice": 0.098,
-            "markPrice": 0.09785036,
-            "unRealizedProfit": -0.0142158,
+            "positionAmt": 94.0,
+            "entryPrice": 0.09854,
+            "markPrice": 0.09872134,
+            "unRealizedProfit": 0.01704596,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942333012
+            "updateTime": 1748944002239
         },
         {
             "symbol": "AUCTIONUSDT",
-            "positionAmt": -0.86,
-            "entryPrice": 10.809,
-            "markPrice": 10.8,
-            "unRealizedProfit": 0.00774,
-            "liquidationPrice": 64.46120326,
+            "positionAmt": -0.85,
+            "entryPrice": 10.844,
+            "markPrice": 10.869388,
+            "unRealizedProfit": -0.0215798,
+            "liquidationPrice": 65.22052528,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942317877
+            "updateTime": 1748943951631
         },
         {
             "symbol": "CKBUSDT",
-            "positionAmt": 2202.0,
-            "entryPrice": 0.004208,
-            "markPrice": 0.00420435,
-            "unRealizedProfit": -0.0080373,
+            "positionAmt": 2198.0,
+            "entryPrice": 0.004222,
+            "markPrice": 0.00422471,
+            "unRealizedProfit": 0.00595658,
             "liquidationPrice": 0.0,
             "leverage": 1,
             "positionSide": "BOTH",
-            "updateTime": 1748942275419
+            "updateTime": 1748944056278
         }
     ],
-    "timestamp": "2025-06-03 17:21:24",
-    "run_id": "2025-06-03_171718"
+    "timestamp": "2025-06-03 17:52:33",
+    "run_id": "2025-06-03_174520"
 }

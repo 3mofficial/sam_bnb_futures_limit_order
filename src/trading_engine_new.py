@@ -2034,6 +2034,11 @@ class TradingEngine:
                     self.save_positions_to_csv(positions, run_id)  # 保存持仓到CSV文件
                 except Exception as e:
                     self.logger.error(f"持仓信息保存失败: {str(e)}")  # 记录持仓保存失败的错误日志
+            
+            # 确保account_metrics已更新
+            if account_info_data and not self.account_metrics.get("after_trade_balance", {}).get("date"):
+                self.account_metrics.update(account_info_data)  # 将account_info_data更新到self.account_metrics
+                
             self.logger.info("尝试计算手续费和已实现盈亏...")
             try:
                 commission_result = self.process_trade_commissions()

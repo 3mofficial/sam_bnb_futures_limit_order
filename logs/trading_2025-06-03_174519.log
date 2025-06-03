@@ -1,0 +1,665 @@
+2025-06-03 17:45:19,251 - TradingBot - INFO - 日志初始化成功，当前日志文件: logs\trading_2025-06-03_174519.log
+2025-06-03 17:45:19,252 - TradingBot - INFO - 交易程序启动，进入日内多次换仓模式
+2025-06-03 17:45:19,290 - TradingBot - INFO - 初始化空分析文件: data/position_analysis.xlsx
+2025-06-03 17:45:19,956 - TradingBot - INFO - Binance 客户端初始化成功，测试网络: False
+2025-06-03 17:45:20,394 - TradingBot - INFO - 所有交易对已是全仓模式 (CROSSED)，无需修改
+2025-06-03 17:45:20,523 - TradingBot - INFO - 账户已是单币种模式 (Single)，无需修改
+2025-06-03 17:45:20,674 - TradingBot - INFO - 账户已是单向模式 (One-way)，无需修改
+2025-06-03 17:45:20,677 - TradingBot - INFO - 初始化空持仓文件: data/positions_output.csv
+2025-06-03 17:45:20,679 - TradingBot - INFO - 检查 20250603 的文件或邮件，Run_ID: 2025-06-03_174520
+2025-06-03 17:45:20,679 - TradingBot - INFO - 检查本地文件: data/pos20250603_v3.csv
+2025-06-03 17:45:20,679 - TradingBot - INFO - 本地找到文件 data/pos20250603_v3.csv，哈希: f2d6d69cc10d49563db93aaffd43c314，未处理，直接使用
+2025-06-03 17:45:20,680 - TradingBot - INFO - 处理 20250603 的pos文件，Run_ID: 2025-06-03_174520
+2025-06-03 17:45:20,680 - TradingBot - INFO - 🚀 开始执行交易引擎 | Date: 20250603 | RunID: 2025-06-03_174520
+2025-06-03 17:45:21,140 - TradingBot - INFO - 当前没有未成交的挂单
+2025-06-03 17:45:21,157 - TradingBot - INFO - 📋 黑名单过滤结果
+├─ 被过滤币种 (7个): BADGERUSDT, BALUSDT, LINAUSDT, NULSUSDT, SNTUSDT, TROYUSDT, VIDTUSDT
+└─ 剩余候选池: 166/173
+2025-06-03 17:45:21,166 - TradingBot - INFO - 🔍 有效候选列表
+├─ 多头候选: 83个
+└─ 空头候选: 83个
+2025-06-03 17:45:21,492 - TradingBot - INFO - =====账户信息获取成功: totalMarginBalance = 48.2373725, available_balance = 48.2373725=====
+2025-06-03 17:45:21,492 - TradingBot - INFO - 每笔交易资金份额: per_share=3.0883837499999998
+2025-06-03 17:45:21,607 - TradingBot - INFO - 获取到 0 个非零持仓
+2025-06-03 17:45:21,607 - TradingBot - INFO - 当前持仓: {}, 是否第一天: True
+2025-06-03 17:45:21,844 - TradingBot - INFO - 交易所信息获取成功
+2025-06-03 17:45:21,844 - TradingBot - WARNING - 交易对 MDTUSDT 不可交易，跳过
+2025-06-03 17:45:21,845 - TradingBot - WARNING - 交易对 WAVESUSDT 不可交易，跳过
+2025-06-03 17:45:21,845 - TradingBot - WARNING - 交易对 STRAXUSDT 不可交易，跳过
+2025-06-03 17:45:21,845 - TradingBot - WARNING - 交易对 DGBUSDT 不可交易，跳过
+2025-06-03 17:45:21,845 - TradingBot - WARNING - 交易对 SCUSDT 不可交易，跳过
+2025-06-03 17:45:22,335 - TradingBot - WARNING - BTCUSDT 数量调整为 0 (原值: 0 小于最小值: 0.001)
+2025-06-03 17:45:22,335 - TradingBot - WARNING - BTCUSDT 数量调整为 0 (因名义价值 0.0 小于最小值 100.0)
+2025-06-03 17:45:22,335 - TradingBot - INFO - BTCUSDT 数量调整: 8.807504508246977e-05 -> 0, 最小值: 0.001, 最大值: 1000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=3
+2025-06-03 17:45:22,335 - TradingBot - WARNING - BTCUSDT 数量调整为 0，跳过
+2025-06-03 17:45:22,820 - TradingBot - INFO - XMRUSDT 数量调整: 0.0258003153629807 -> 0.026, 最小值: 0.001, 最大值: 10000.0, 名义价值=9.33686, 真实保证金=3.112287, 数量精度=3
+2025-06-03 17:45:22,822 - TradingBot - INFO - 添加多头目标: XMRUSDT, 数量=0.026
+2025-06-03 17:45:22,822 - TradingBot - WARNING - 交易对 RENUSDT 不可交易，跳过
+2025-06-03 17:45:23,307 - TradingBot - INFO - CKBUSDT 数量调整: 2197.6165203984815 -> 2198.0, 最小值: 1.0, 最大值: 20000000.0, 名义价值=9.266768, 真实保证金=3.088923, 数量精度=0
+2025-06-03 17:45:23,307 - TradingBot - INFO - 添加多头目标: CKBUSDT, 数量=2198.0
+2025-06-03 17:45:23,942 - TradingBot - INFO - GRTUSDT 数量调整: 94.07199969540054 -> 94.0, 最小值: 1.0, 最大值: 1000000.0, 名义价值=9.258059999999999, 真实保证金=3.086020, 数量精度=0
+2025-06-03 17:45:23,944 - TradingBot - INFO - 添加多头目标: GRTUSDT, 数量=94.0
+2025-06-03 17:45:24,487 - TradingBot - INFO - STXUSDT 数量调整: 11.840448881789136 -> 12.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.39, 真实保证金=3.130000, 数量精度=0
+2025-06-03 17:45:24,490 - TradingBot - INFO - 添加多头目标: STXUSDT, 数量=12.0
+2025-06-03 17:45:25,244 - TradingBot - INFO - XLMUSDT 数量调整: 34.178660358565736 -> 34.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.216719999999999, 真实保证金=3.072240, 数量精度=0
+2025-06-03 17:45:25,246 - TradingBot - INFO - 添加多头目标: XLMUSDT, 数量=34.0
+2025-06-03 17:45:25,693 - TradingBot - INFO - DENTUSDT 数量调整: 12419.773793565682 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.265320000000001, 真实保证金=3.088440, 数量精度=0
+2025-06-03 17:45:25,694 - TradingBot - INFO - 添加多头目标: DENTUSDT, 数量=12420.0
+2025-06-03 17:45:25,694 - TradingBot - WARNING - 交易对 UNFIUSDT 不可交易，跳过
+2025-06-03 17:45:26,216 - TradingBot - INFO - IOTAUSDT 数量调整: 49.12593451749734 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.26026, 真实保证金=3.086753, 数量精度=1
+2025-06-03 17:45:26,217 - TradingBot - INFO - 添加多头目标: IOTAUSDT, 数量=49.1
+2025-06-03 17:45:26,709 - TradingBot - INFO - BELUSDT 数量调整: 31.449936354378817 -> 31.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.1326, 真实保证金=3.044200, 数量精度=0
+2025-06-03 17:45:26,711 - TradingBot - INFO - 添加空头目标: BELUSDT, 数量=-31.0
+2025-06-03 17:45:27,827 - TradingBot - INFO - DEXEUSDT 数量调整: 0.9981847931480283 -> 1.0, 最小值: 0.01, 最大值: 800000.0, 名义价值=9.282, 真实保证金=3.094000, 数量精度=2
+2025-06-03 17:45:27,828 - TradingBot - INFO - 添加空头目标: DEXEUSDT, 数量=-1.0
+2025-06-03 17:45:28,300 - TradingBot - INFO - AUCTIONUSDT 数量调整: 0.8543246887966803 -> 0.85, 最小值: 0.01, 最大值: 100000.0, 名义价值=9.218250000000001, 真实保证金=3.072750, 数量精度=2
+2025-06-03 17:45:28,303 - TradingBot - INFO - 添加空头目标: AUCTIONUSDT, 数量=-0.85
+2025-06-03 17:45:28,303 - TradingBot - WARNING - 交易对 OMGUSDT 不可交易，跳过
+2025-06-03 17:45:28,774 - TradingBot - INFO - ZECUSDT 数量调整: 0.1738954814189189 -> 0.174, 最小值: 0.001, 最大值: 6000.0, 名义价值=9.270719999999999, 真实保证金=3.090240, 数量精度=3
+2025-06-03 17:45:28,776 - TradingBot - INFO - 添加空头目标: ZECUSDT, 数量=-0.174
+2025-06-03 17:45:28,776 - TradingBot - WARNING - 交易对 XEMUSDT 不可交易，跳过
+2025-06-03 17:45:28,776 - TradingBot - WARNING - 交易对 FTTUSDT 不可交易，跳过
+2025-06-03 17:45:29,308 - TradingBot - INFO - AERGOUSDT 数量调整: 76.69827193708608 -> 77.0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=9.3016, 真实保证金=3.100533, 数量精度=0
+2025-06-03 17:45:29,310 - TradingBot - INFO - 添加空头目标: AERGOUSDT, 数量=-77.0
+2025-06-03 17:45:29,987 - TradingBot - INFO - STEEMUSDT 数量调整: 66.32176986399426 -> 66.0, 最小值: 1.0, 最大值: 2000000.0, 名义价值=9.2202, 真实保证金=3.073400, 数量精度=0
+2025-06-03 17:45:29,989 - TradingBot - INFO - 添加空头目标: STEEMUSDT, 数量=-66.0
+2025-06-03 17:45:29,989 - TradingBot - WARNING - 交易对 AMBUSDT 不可交易，跳过
+2025-06-03 17:45:30,443 - TradingBot - INFO - DOGEUSDT 数量调整: 47.611260277492285 -> 48.0, 最小值: 1.0, 最大值: 50000000.0, 名义价值=9.3408, 真实保证金=3.113600, 数量精度=0
+2025-06-03 17:45:30,445 - TradingBot - INFO - 添加空头目标: DOGEUSDT, 数量=-48.0
+2025-06-03 17:45:30,446 - TradingBot - INFO - 初始化目标持仓: {'XMRUSDT': 0.026, 'CKBUSDT': 2198.0, 'GRTUSDT': 94.0, 'STXUSDT': 12.0, 'XLMUSDT': 34.0, 'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1, 'BELUSDT': -31.0, 'DEXEUSDT': -1.0, 'AUCTIONUSDT': -0.85, 'ZECUSDT': -0.174, 'AERGOUSDT': -77.0, 'STEEMUSDT': -66.0, 'DOGEUSDT': -48.0}
+2025-06-03 17:45:30,572 - TradingBot - INFO - 获取到 0 个非零持仓
+2025-06-03 17:45:30,573 - TradingBot - INFO - ==================== 开始持续限价单调仓 ====================
+2025-06-03 17:45:30,573 - TradingBot - INFO - 开始第 1 轮调仓...
+2025-06-03 17:45:30,717 - TradingBot - INFO - 第 1 轮开始时可用余额: 48.2373725
+2025-06-03 17:45:30,836 - TradingBot - INFO - 第 1 轮开仓前可用余额: 48.2373725, 开仓需求: {'STXUSDT': 12.0, 'AUCTIONUSDT': -0.85, 'XLMUSDT': 34.0, 'XMRUSDT': 0.026, 'AERGOUSDT': -77.0, 'BELUSDT': -31.0, 'DEXEUSDT': -1.0, 'GRTUSDT': 94.0, 'DOGEUSDT': -48.0, 'STEEMUSDT': -66.0, 'ZECUSDT': -0.174, 'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1, 'CKBUSDT': 2198.0}
+2025-06-03 17:45:30,836 - TradingBot - INFO - 第 1 轮: 处理开仓 STXUSDT BUY, 需求数量=12.0
+2025-06-03 17:45:31,307 - TradingBot - INFO - STXUSDT 数量调整: 12.0 -> 12.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.3924, 真实保证金=3.130800, 数量精度=0
+2025-06-03 17:45:31,310 - TradingBot - INFO - 第 1 轮: STXUSDT 开仓调整后数量=12.0, is_reverse_open=False
+2025-06-03 17:45:31,310 - TradingBot - INFO - 第 1 轮: STXUSDT 开仓保证金需求=3.1308000000000002, 可用余额=48.2373725
+2025-06-03 17:45:31,456 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 STXUSDT BUY, 数量=12.0, 价格=0.7827000000000001, is_close=False
+2025-06-03 17:45:31,986 - TradingBot - INFO - STXUSDT 杠杆设置为 3
+2025-06-03 17:45:31,986 - TradingBot - INFO - STXUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:32,437 - TradingBot - ERROR - STXUSDT postonly 挂单失败: APIError(code=-5022): Due to the order could not be executed as maker, the Post Only order will be rejected. The order will not be recorded in the order history, is_close=False
+2025-06-03 17:45:32,437 - TradingBot - INFO - 第 1 轮: STXUSDT 开仓挂单结果 success=False, order_id=0, order=APIError(code=-5022): Due to the order could not be executed as maker, the Post Only order will be rejected. The order will not be recorded in the order history
+2025-06-03 17:45:32,438 - TradingBot - ERROR - 第 1 轮: STXUSDT BUY postOnly 挂单失败，错误: APIError(code=-5022): Due to the order could not be executed as maker, the Post Only order will be rejected. The order will not be recorded in the order history
+2025-06-03 17:45:33,118 - TradingBot - INFO - STXUSDT 数量调整: 12.0 -> 12.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.391200000000001, 真实保证金=3.130400, 数量精度=0
+2025-06-03 17:45:33,240 - TradingBot - INFO - STXUSDT 杠杆设置为 3
+2025-06-03 17:45:33,240 - TradingBot - INFO - STXUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:33,694 - TradingBot - INFO - STXUSDT postonly 挂单成功: 方向=BUY, 数量=12.0, 价格=0.7826, 订单ID=7492272493, is_close=False, reduceOnly=False
+2025-06-03 17:45:33,833 - TradingBot - INFO - 第 1 轮: STXUSDT BUY postOnly 挂单重试成功，订单ID=7492272493
+2025-06-03 17:45:33,833 - TradingBot - INFO - 第 1 轮: 处理开仓 AUCTIONUSDT SELL, 需求数量=-0.85
+2025-06-03 17:45:34,302 - TradingBot - INFO - AUCTIONUSDT 数量调整: 0.85 -> 0.85, 最小值: 0.01, 最大值: 100000.0, 名义价值=9.2174, 真实保证金=3.072467, 数量精度=2
+2025-06-03 17:45:34,303 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT 开仓调整后数量=0.85, is_reverse_open=False
+2025-06-03 17:45:34,303 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT 开仓保证金需求=3.0724666666666667, 可用余额=48.2373725
+2025-06-03 17:45:34,430 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 AUCTIONUSDT SELL, 数量=0.85, 价格=10.844, is_close=False
+2025-06-03 17:45:34,550 - TradingBot - INFO - AUCTIONUSDT 杠杆设置为 3
+2025-06-03 17:45:34,550 - TradingBot - INFO - AUCTIONUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:34,992 - TradingBot - INFO - AUCTIONUSDT postonly 挂单成功: 方向=SELL, 数量=0.85, 价格=10.844, 订单ID=3972844400, is_close=False, reduceOnly=False
+2025-06-03 17:45:35,137 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT 开仓挂单结果 success=True, order_id=3972844400, order={'orderId': 3972844400, 'symbol': 'AUCTIONUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJa20c0fb052080d1b9ff956', 'price': '10.844000', 'avgPrice': '0.00', 'origQty': '0.85', 'executedQty': '0.00', 'cumQty': '0.00', 'cumQuote': '0.00000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943933971}
+2025-06-03 17:45:35,137 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT SELL postOnly 开仓挂单成功，订单ID=3972844400, is_close=False
+2025-06-03 17:45:35,138 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT 开仓后更新余额: 45.164905833333336
+2025-06-03 17:45:35,138 - TradingBot - INFO - 第 1 轮: 处理开仓 XLMUSDT BUY, 需求数量=34.0
+2025-06-03 17:45:35,621 - TradingBot - INFO - XLMUSDT 数量调整: 34.0 -> 34.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.216380000000001, 真实保证金=3.072127, 数量精度=0
+2025-06-03 17:45:35,624 - TradingBot - INFO - 第 1 轮: XLMUSDT 开仓调整后数量=34.0, is_reverse_open=False
+2025-06-03 17:45:35,624 - TradingBot - INFO - 第 1 轮: XLMUSDT 开仓保证金需求=3.072126666666667, 可用余额=45.164905833333336
+2025-06-03 17:45:35,770 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 XLMUSDT BUY, 数量=34.0, 价格=0.27107000000000003, is_close=False
+2025-06-03 17:45:35,909 - TradingBot - INFO - XLMUSDT 杠杆设置为 3
+2025-06-03 17:45:35,909 - TradingBot - INFO - XLMUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:36,396 - TradingBot - INFO - XLMUSDT postonly 挂单成功: 方向=BUY, 数量=34.0, 价格=0.27107, 订单ID=17625659169, is_close=False, reduceOnly=False
+2025-06-03 17:45:36,539 - TradingBot - INFO - 第 1 轮: XLMUSDT 开仓挂单结果 success=True, order_id=17625659169, order={'orderId': 17625659169, 'symbol': 'XLMUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ489f29bcc9ce3729f35803', 'price': '0.27107', 'avgPrice': '0.00', 'origQty': '34', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943935350}
+2025-06-03 17:45:36,540 - TradingBot - INFO - 第 1 轮: XLMUSDT BUY postOnly 开仓挂单成功，订单ID=17625659169, is_close=False
+2025-06-03 17:45:36,540 - TradingBot - INFO - 第 1 轮: XLMUSDT 开仓后更新余额: 42.092779166666666
+2025-06-03 17:45:36,540 - TradingBot - INFO - 第 1 轮: 处理开仓 XMRUSDT BUY, 需求数量=0.026
+2025-06-03 17:45:37,054 - TradingBot - INFO - XMRUSDT 数量调整: 0.026 -> 0.026, 最小值: 0.001, 最大值: 10000.0, 名义价值=9.33998, 真实保证金=3.113327, 数量精度=3
+2025-06-03 17:45:37,055 - TradingBot - INFO - 第 1 轮: XMRUSDT 开仓调整后数量=0.026, is_reverse_open=False
+2025-06-03 17:45:37,056 - TradingBot - INFO - 第 1 轮: XMRUSDT 开仓保证金需求=3.113326666666667, 可用余额=42.092779166666666
+2025-06-03 17:45:37,217 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 XMRUSDT BUY, 数量=0.026, 价格=359.23, is_close=False
+2025-06-03 17:45:37,334 - TradingBot - INFO - XMRUSDT 杠杆设置为 3
+2025-06-03 17:45:37,334 - TradingBot - INFO - XMRUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:37,776 - TradingBot - INFO - XMRUSDT postonly 挂单成功: 方向=BUY, 数量=0.026, 价格=359.23, 订单ID=12450749577, is_close=False, reduceOnly=False
+2025-06-03 17:45:37,915 - TradingBot - INFO - 第 1 轮: XMRUSDT 开仓挂单结果 success=True, order_id=12450749577, order={'orderId': 12450749577, 'symbol': 'XMRUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJd28aa83a292e15f21616d5', 'price': '359.23', 'avgPrice': '0.00', 'origQty': '0.026', 'executedQty': '0.000', 'cumQty': '0.000', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943936748}
+2025-06-03 17:45:37,915 - TradingBot - INFO - 第 1 轮: XMRUSDT BUY postOnly 开仓挂单成功，订单ID=12450749577, is_close=False
+2025-06-03 17:45:37,916 - TradingBot - INFO - 第 1 轮: XMRUSDT 开仓后更新余额: 38.9794525
+2025-06-03 17:45:37,916 - TradingBot - INFO - 第 1 轮: 处理开仓 AERGOUSDT SELL, 需求数量=-77.0
+2025-06-03 17:45:38,380 - TradingBot - INFO - AERGOUSDT 数量调整: 77.0 -> 77.0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=9.300830000000001, 真实保证金=3.100277, 数量精度=0
+2025-06-03 17:45:38,383 - TradingBot - INFO - 第 1 轮: AERGOUSDT 开仓调整后数量=77.0, is_reverse_open=False
+2025-06-03 17:45:38,383 - TradingBot - INFO - 第 1 轮: AERGOUSDT 开仓保证金需求=3.1002766666666672, 可用余额=38.9794525
+2025-06-03 17:45:38,509 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 AERGOUSDT SELL, 数量=77.0, 价格=0.12079000000000001, is_close=False
+2025-06-03 17:45:38,638 - TradingBot - INFO - AERGOUSDT 杠杆设置为 3
+2025-06-03 17:45:38,638 - TradingBot - INFO - AERGOUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:39,096 - TradingBot - INFO - AERGOUSDT postonly 挂单成功: 方向=SELL, 数量=77.0, 价格=0.12079, 订单ID=386519645, is_close=False, reduceOnly=False
+2025-06-03 17:45:39,209 - TradingBot - INFO - 第 1 轮: AERGOUSDT 开仓挂单结果 success=True, order_id=386519645, order={'orderId': 386519645, 'symbol': 'AERGOUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ5af339c84995695d6d9ee1', 'price': '0.1207900', 'avgPrice': '0.00', 'origQty': '77', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943938069}
+2025-06-03 17:45:39,211 - TradingBot - INFO - 第 1 轮: AERGOUSDT SELL postOnly 开仓挂单成功，订单ID=386519645, is_close=False
+2025-06-03 17:45:39,211 - TradingBot - INFO - 第 1 轮: AERGOUSDT 开仓后更新余额: 35.879175833333335
+2025-06-03 17:45:39,211 - TradingBot - INFO - 第 1 轮: 处理开仓 BELUSDT SELL, 需求数量=-31.0
+2025-06-03 17:45:39,693 - TradingBot - INFO - BELUSDT 数量调整: 31.0 -> 31.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.151200000000001, 真实保证金=3.050400, 数量精度=0
+2025-06-03 17:45:39,696 - TradingBot - INFO - 第 1 轮: BELUSDT 开仓调整后数量=31.0, is_reverse_open=False
+2025-06-03 17:45:39,696 - TradingBot - INFO - 第 1 轮: BELUSDT 开仓保证金需求=3.0504000000000002, 可用余额=35.879175833333335
+2025-06-03 17:45:39,818 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 BELUSDT SELL, 数量=31.0, 价格=0.2952, is_close=False
+2025-06-03 17:45:39,937 - TradingBot - INFO - BELUSDT 杠杆设置为 3
+2025-06-03 17:45:39,937 - TradingBot - INFO - BELUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:40,351 - TradingBot - INFO - BELUSDT postonly 挂单成功: 方向=SELL, 数量=31.0, 价格=0.2952, 订单ID=6640694498, is_close=False, reduceOnly=False
+2025-06-03 17:45:40,496 - TradingBot - INFO - 第 1 轮: BELUSDT 开仓挂单结果 success=True, order_id=6640694498, order={'orderId': 6640694498, 'symbol': 'BELUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ2e360d882a994cf5ff783d', 'price': '0.29520', 'avgPrice': '0.00', 'origQty': '31', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.00000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943939338}
+2025-06-03 17:45:40,497 - TradingBot - INFO - 第 1 轮: BELUSDT SELL postOnly 开仓挂单成功，订单ID=6640694498, is_close=False
+2025-06-03 17:45:40,497 - TradingBot - INFO - 第 1 轮: BELUSDT 开仓后更新余额: 32.82877583333333
+2025-06-03 17:45:40,497 - TradingBot - INFO - 第 1 轮: 处理开仓 DEXEUSDT SELL, 需求数量=-1.0
+2025-06-03 17:45:40,963 - TradingBot - INFO - DEXEUSDT 数量调整: 1.0 -> 1.0, 最小值: 0.01, 最大值: 800000.0, 名义价值=9.282, 真实保证金=3.094000, 数量精度=2
+2025-06-03 17:45:40,964 - TradingBot - INFO - 第 1 轮: DEXEUSDT 开仓调整后数量=1.0, is_reverse_open=False
+2025-06-03 17:45:40,964 - TradingBot - INFO - 第 1 轮: DEXEUSDT 开仓保证金需求=3.094, 可用余额=32.82877583333333
+2025-06-03 17:45:41,102 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 DEXEUSDT SELL, 数量=1.0, 价格=9.282, is_close=False
+2025-06-03 17:45:41,241 - TradingBot - INFO - DEXEUSDT 杠杆设置为 3
+2025-06-03 17:45:41,241 - TradingBot - INFO - DEXEUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:41,703 - TradingBot - INFO - DEXEUSDT postonly 挂单成功: 方向=SELL, 数量=1.0, 价格=9.282, 订单ID=701551766, is_close=False, reduceOnly=False
+2025-06-03 17:45:41,822 - TradingBot - INFO - 第 1 轮: DEXEUSDT 开仓挂单结果 success=True, order_id=701551766, order={'orderId': 701551766, 'symbol': 'DEXEUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ3145ac558ad39c72150c16', 'price': '9.282000', 'avgPrice': '0.00', 'origQty': '1.00', 'executedQty': '0.00', 'cumQty': '0.00', 'cumQuote': '0.00000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943940676}
+2025-06-03 17:45:41,823 - TradingBot - INFO - 第 1 轮: DEXEUSDT SELL postOnly 开仓挂单成功，订单ID=701551766, is_close=False
+2025-06-03 17:45:41,823 - TradingBot - INFO - 第 1 轮: DEXEUSDT 开仓后更新余额: 29.73477583333333
+2025-06-03 17:45:41,823 - TradingBot - INFO - 第 1 轮: 处理开仓 GRTUSDT BUY, 需求数量=94.0
+2025-06-03 17:45:42,285 - TradingBot - INFO - GRTUSDT 数量调整: 94.0 -> 94.0, 最小值: 1.0, 最大值: 1000000.0, 名义价值=9.25712, 真实保证金=3.085707, 数量精度=0
+2025-06-03 17:45:42,286 - TradingBot - INFO - 第 1 轮: GRTUSDT 开仓调整后数量=94.0, is_reverse_open=False
+2025-06-03 17:45:42,286 - TradingBot - INFO - 第 1 轮: GRTUSDT 开仓保证金需求=3.085706666666667, 可用余额=29.73477583333333
+2025-06-03 17:45:42,404 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 GRTUSDT BUY, 数量=94.0, 价格=0.09848000000000001, is_close=False
+2025-06-03 17:45:42,540 - TradingBot - INFO - GRTUSDT 杠杆设置为 3
+2025-06-03 17:45:42,540 - TradingBot - INFO - GRTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:42,971 - TradingBot - INFO - GRTUSDT postonly 挂单成功: 方向=BUY, 数量=94.0, 价格=0.09848, 订单ID=12786231024, is_close=False, reduceOnly=False
+2025-06-03 17:45:43,092 - TradingBot - INFO - 第 1 轮: GRTUSDT 开仓挂单结果 success=True, order_id=12786231024, order={'orderId': 12786231024, 'symbol': 'GRTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ2301e876b730ac9c436376', 'price': '0.09848', 'avgPrice': '0.00', 'origQty': '94', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943941962}
+2025-06-03 17:45:43,093 - TradingBot - INFO - 第 1 轮: GRTUSDT BUY postOnly 开仓挂单成功，订单ID=12786231024, is_close=False
+2025-06-03 17:45:43,093 - TradingBot - INFO - 第 1 轮: GRTUSDT 开仓后更新余额: 26.649069166666663
+2025-06-03 17:45:43,093 - TradingBot - INFO - 第 1 轮: 处理开仓 DOGEUSDT SELL, 需求数量=-48.0
+2025-06-03 17:45:43,600 - TradingBot - INFO - DOGEUSDT 数量调整: 48.0 -> 48.0, 最小值: 1.0, 最大值: 50000000.0, 名义价值=9.339360000000001, 真实保证金=3.113120, 数量精度=0
+2025-06-03 17:45:43,601 - TradingBot - INFO - 第 1 轮: DOGEUSDT 开仓调整后数量=48.0, is_reverse_open=False
+2025-06-03 17:45:43,602 - TradingBot - INFO - 第 1 轮: DOGEUSDT 开仓保证金需求=3.1131200000000003, 可用余额=26.649069166666663
+2025-06-03 17:45:43,743 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 DOGEUSDT SELL, 数量=48.0, 价格=0.19457000000000002, is_close=False
+2025-06-03 17:45:43,880 - TradingBot - INFO - DOGEUSDT 杠杆设置为 3
+2025-06-03 17:45:43,880 - TradingBot - INFO - DOGEUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:44,625 - TradingBot - INFO - DOGEUSDT postonly 挂单成功: 方向=SELL, 数量=48.0, 价格=0.19457, 订单ID=74387762991, is_close=False, reduceOnly=False
+2025-06-03 17:45:44,766 - TradingBot - INFO - 第 1 轮: DOGEUSDT 开仓挂单结果 success=True, order_id=74387762991, order={'orderId': 74387762991, 'symbol': 'DOGEUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ342b5766ba2cedc34fb84f', 'price': '0.194570', 'avgPrice': '0.00', 'origQty': '48', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943943598}
+2025-06-03 17:45:44,766 - TradingBot - INFO - 第 1 轮: DOGEUSDT SELL postOnly 开仓挂单成功，订单ID=74387762991, is_close=False
+2025-06-03 17:45:44,766 - TradingBot - INFO - 第 1 轮: DOGEUSDT 开仓后更新余额: 23.53594916666666
+2025-06-03 17:45:44,766 - TradingBot - INFO - 第 1 轮: 处理开仓 STEEMUSDT SELL, 需求数量=-66.0
+2025-06-03 17:45:45,547 - TradingBot - INFO - STEEMUSDT 数量调整: 66.0 -> 66.0, 最小值: 1.0, 最大值: 2000000.0, 名义价值=9.220200000000002, 真实保证金=3.073400, 数量精度=0
+2025-06-03 17:45:45,548 - TradingBot - INFO - 第 1 轮: STEEMUSDT 开仓调整后数量=66.0, is_reverse_open=False
+2025-06-03 17:45:45,549 - TradingBot - INFO - 第 1 轮: STEEMUSDT 开仓保证金需求=3.073400000000001, 可用余额=23.53594916666666
+2025-06-03 17:45:45,690 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 STEEMUSDT SELL, 数量=66.0, 价格=0.13970000000000002, is_close=False
+2025-06-03 17:45:45,815 - TradingBot - INFO - STEEMUSDT 杠杆设置为 3
+2025-06-03 17:45:45,816 - TradingBot - INFO - STEEMUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:46,306 - TradingBot - INFO - STEEMUSDT postonly 挂单成功: 方向=SELL, 数量=66.0, 价格=0.1397, 订单ID=1858969044, is_close=False, reduceOnly=False
+2025-06-03 17:45:46,451 - TradingBot - INFO - 第 1 轮: STEEMUSDT 开仓挂单结果 success=True, order_id=1858969044, order={'orderId': 1858969044, 'symbol': 'STEEMUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJdf3aea7c2e57b2090c3957', 'price': '0.139700', 'avgPrice': '0.00', 'origQty': '66', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943945278}
+2025-06-03 17:45:46,452 - TradingBot - INFO - 第 1 轮: STEEMUSDT SELL postOnly 开仓挂单成功，订单ID=1858969044, is_close=False
+2025-06-03 17:45:46,452 - TradingBot - INFO - 第 1 轮: STEEMUSDT 开仓后更新余额: 20.462549166666662
+2025-06-03 17:45:46,452 - TradingBot - INFO - 第 1 轮: 处理开仓 ZECUSDT SELL, 需求数量=-0.174
+2025-06-03 17:45:47,223 - TradingBot - INFO - ZECUSDT 数量调整: 0.174 -> 0.174, 最小值: 0.001, 最大值: 6000.0, 名义价值=9.268979999999999, 真实保证金=3.089660, 数量精度=3
+2025-06-03 17:45:47,224 - TradingBot - INFO - 第 1 轮: ZECUSDT 开仓调整后数量=0.174, is_reverse_open=False
+2025-06-03 17:45:47,225 - TradingBot - INFO - 第 1 轮: ZECUSDT 开仓保证金需求=3.08966, 可用余额=20.462549166666662
+2025-06-03 17:45:47,376 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 ZECUSDT SELL, 数量=0.174, 价格=53.27, is_close=False
+2025-06-03 17:45:47,512 - TradingBot - INFO - ZECUSDT 杠杆设置为 3
+2025-06-03 17:45:47,512 - TradingBot - INFO - ZECUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:47,967 - TradingBot - INFO - ZECUSDT postonly 挂单成功: 方向=SELL, 数量=0.174, 价格=53.27, 订单ID=16986934756, is_close=False, reduceOnly=False
+2025-06-03 17:45:48,094 - TradingBot - INFO - 第 1 轮: ZECUSDT 开仓挂单结果 success=True, order_id=16986934756, order={'orderId': 16986934756, 'symbol': 'ZECUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJe483595229fdeba6fe0261', 'price': '53.27', 'avgPrice': '0.00', 'origQty': '0.174', 'executedQty': '0.000', 'cumQty': '0.000', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943946939}
+2025-06-03 17:45:48,094 - TradingBot - INFO - 第 1 轮: ZECUSDT SELL postOnly 开仓挂单成功，订单ID=16986934756, is_close=False
+2025-06-03 17:45:48,095 - TradingBot - INFO - 第 1 轮: ZECUSDT 开仓后更新余额: 17.372889166666663
+2025-06-03 17:45:48,095 - TradingBot - INFO - 第 1 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:45:48,569 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.2529, 真实保证金=3.084300, 数量精度=0
+2025-06-03 17:45:48,570 - TradingBot - INFO - 第 1 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:45:48,571 - TradingBot - INFO - 第 1 轮: DENTUSDT 开仓保证金需求=3.0843000000000003, 可用余额=17.372889166666663
+2025-06-03 17:45:48,706 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.000745, is_close=False
+2025-06-03 17:45:48,844 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:45:48,844 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:49,254 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000745, 订单ID=4686342004, is_close=False, reduceOnly=False
+2025-06-03 17:45:49,370 - TradingBot - INFO - 第 1 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686342004, order={'orderId': 4686342004, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ3524bf6191edb42f50e570', 'price': '0.000745', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943948248}
+2025-06-03 17:45:49,371 - TradingBot - INFO - 第 1 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686342004, is_close=False
+2025-06-03 17:45:49,371 - TradingBot - INFO - 第 1 轮: DENTUSDT 开仓后更新余额: 14.288589166666663
+2025-06-03 17:45:49,372 - TradingBot - INFO - 第 1 轮: 处理开仓 IOTAUSDT BUY, 需求数量=49.1
+2025-06-03 17:45:49,829 - TradingBot - INFO - IOTAUSDT 数量调整: 49.1 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.26026, 真实保证金=3.086753, 数量精度=1
+2025-06-03 17:45:49,830 - TradingBot - INFO - 第 1 轮: IOTAUSDT 开仓调整后数量=49.1, is_reverse_open=False
+2025-06-03 17:45:49,830 - TradingBot - INFO - 第 1 轮: IOTAUSDT 开仓保证金需求=3.0867533333333337, 可用余额=14.288589166666663
+2025-06-03 17:45:49,959 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 IOTAUSDT BUY, 数量=49.1, 价格=0.18860000000000002, is_close=False
+2025-06-03 17:45:50,103 - TradingBot - INFO - IOTAUSDT 杠杆设置为 3
+2025-06-03 17:45:50,103 - TradingBot - INFO - IOTAUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:50,552 - TradingBot - INFO - IOTAUSDT postonly 挂单成功: 方向=BUY, 数量=49.1, 价格=0.1886, 订单ID=9028013602, is_close=False, reduceOnly=False
+2025-06-03 17:45:50,679 - TradingBot - INFO - 第 1 轮: IOTAUSDT 开仓挂单结果 success=True, order_id=9028013602, order={'orderId': 9028013602, 'symbol': 'IOTAUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ61dc9e030eb2fe7eead635', 'price': '0.1886', 'avgPrice': '0.00', 'origQty': '49.1', 'executedQty': '0.0', 'cumQty': '0.0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943949544}
+2025-06-03 17:45:50,679 - TradingBot - INFO - 第 1 轮: IOTAUSDT BUY postOnly 开仓挂单成功，订单ID=9028013602, is_close=False
+2025-06-03 17:45:50,679 - TradingBot - INFO - 第 1 轮: IOTAUSDT 开仓后更新余额: 11.201835833333329
+2025-06-03 17:45:50,679 - TradingBot - INFO - 第 1 轮: 处理开仓 CKBUSDT BUY, 需求数量=2198.0
+2025-06-03 17:45:51,176 - TradingBot - INFO - CKBUSDT 数量调整: 2198.0 -> 2198.0, 最小值: 1.0, 最大值: 20000000.0, 名义价值=9.271163999999999, 真实保证金=3.090388, 数量精度=0
+2025-06-03 17:45:51,178 - TradingBot - INFO - 第 1 轮: CKBUSDT 开仓调整后数量=2198.0, is_reverse_open=False
+2025-06-03 17:45:51,178 - TradingBot - INFO - 第 1 轮: CKBUSDT 开仓保证金需求=3.0903879999999995, 可用余额=11.201835833333329
+2025-06-03 17:45:51,300 - TradingBot - INFO - 第 1 轮: 准备开仓挂单 CKBUSDT BUY, 数量=2198.0, 价格=0.0042179999999999995, is_close=False
+2025-06-03 17:45:51,451 - TradingBot - INFO - CKBUSDT 杠杆设置为 3
+2025-06-03 17:45:51,451 - TradingBot - INFO - CKBUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:45:51,901 - TradingBot - INFO - CKBUSDT postonly 挂单成功: 方向=BUY, 数量=2198.0, 价格=0.004218, 订单ID=3582334931, is_close=False, reduceOnly=False
+2025-06-03 17:45:52,041 - TradingBot - INFO - 第 1 轮: CKBUSDT 开仓挂单结果 success=True, order_id=3582334931, order={'orderId': 3582334931, 'symbol': 'CKBUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ39964c1ed5b1ae7aff1d9b', 'price': '0.0042180', 'avgPrice': '0.00', 'origQty': '2198', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943950886}
+2025-06-03 17:45:52,041 - TradingBot - INFO - 第 1 轮: CKBUSDT BUY postOnly 开仓挂单成功，订单ID=3582334931, is_close=False
+2025-06-03 17:45:52,041 - TradingBot - INFO - 第 1 轮: CKBUSDT 开仓后更新余额: 8.11144783333333
+2025-06-03 17:45:52,042 - TradingBot - INFO - 第 1 轮挂单等待，最多 30 秒...
+2025-06-03 17:45:52,321 - TradingBot - INFO - 第 1 轮: STXUSDT BUY 单已成交，订单ID=7492272493, 成交数量=12.0, 均价=0.7826
+2025-06-03 17:45:52,321 - TradingBot - INFO - 第 1 轮: STXUSDT BUY 已完全成交，订单ID=7492272493, 成交数量=12.0
+2025-06-03 17:45:52,859 - TradingBot - INFO - 第 1 轮: XMRUSDT BUY 单已成交，订单ID=12450749577, 成交数量=0.026, 均价=359.23
+2025-06-03 17:45:52,859 - TradingBot - INFO - 第 1 轮: XMRUSDT BUY 已完全成交，订单ID=12450749577, 成交数量=0.026
+2025-06-03 17:45:53,405 - TradingBot - INFO - 第 1 轮: DEXEUSDT SELL 单已成交，订单ID=701551766, 成交数量=1.0, 均价=9.282
+2025-06-03 17:45:53,406 - TradingBot - INFO - 第 1 轮: DEXEUSDT SELL 已完全成交，订单ID=701551766, 成交数量=1.0
+2025-06-03 17:45:53,840 - TradingBot - INFO - 第 1 轮: DOGEUSDT SELL 单已成交，订单ID=74387762991, 成交数量=48.0, 均价=0.19457
+2025-06-03 17:45:53,840 - TradingBot - INFO - 第 1 轮: DOGEUSDT SELL 已完全成交，订单ID=74387762991, 成交数量=48.0
+2025-06-03 17:45:56,915 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT SELL 单已成交，订单ID=3972844400, 成交数量=0.85, 均价=10.844
+2025-06-03 17:45:56,915 - TradingBot - INFO - 第 1 轮: AUCTIONUSDT SELL 已完全成交，订单ID=3972844400, 成交数量=0.85
+2025-06-03 17:46:20,954 - TradingBot - INFO - 第 1 轮: XLMUSDT BUY 单已成交，订单ID=17625659169, 成交数量=34.0, 均价=0.27107
+2025-06-03 17:46:20,955 - TradingBot - INFO - 第 1 轮: XLMUSDT BUY 已完全成交，订单ID=17625659169, 成交数量=34.0
+2025-06-03 17:46:24,126 - TradingBot - INFO - 第 1 轮结束，取消所有未成交挂单...
+2025-06-03 17:46:24,252 - TradingBot - INFO - 第 1 轮: 发现 8 个未成交订单
+2025-06-03 17:46:24,393 - TradingBot - INFO - 成功取消 AERGOUSDT 订单，订单ID=386519645
+2025-06-03 17:46:24,393 - TradingBot - INFO - 第 1 轮: 成功取消 AERGOUSDT SELL 挂单，订单ID=386519645
+2025-06-03 17:46:24,548 - TradingBot - INFO - 成功取消 BELUSDT 订单，订单ID=6640694498
+2025-06-03 17:46:24,548 - TradingBot - INFO - 第 1 轮: 成功取消 BELUSDT SELL 挂单，订单ID=6640694498
+2025-06-03 17:46:24,680 - TradingBot - INFO - 成功取消 GRTUSDT 订单，订单ID=12786231024
+2025-06-03 17:46:24,680 - TradingBot - INFO - 第 1 轮: 成功取消 GRTUSDT BUY 挂单，订单ID=12786231024
+2025-06-03 17:46:24,830 - TradingBot - INFO - 成功取消 STEEMUSDT 订单，订单ID=1858969044
+2025-06-03 17:46:24,830 - TradingBot - INFO - 第 1 轮: 成功取消 STEEMUSDT SELL 挂单，订单ID=1858969044
+2025-06-03 17:46:24,969 - TradingBot - INFO - 成功取消 ZECUSDT 订单，订单ID=16986934756
+2025-06-03 17:46:24,969 - TradingBot - INFO - 第 1 轮: 成功取消 ZECUSDT SELL 挂单，订单ID=16986934756
+2025-06-03 17:46:25,127 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686342004
+2025-06-03 17:46:25,128 - TradingBot - INFO - 第 1 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686342004
+2025-06-03 17:46:25,278 - TradingBot - INFO - 成功取消 IOTAUSDT 订单，订单ID=9028013602
+2025-06-03 17:46:25,278 - TradingBot - INFO - 第 1 轮: 成功取消 IOTAUSDT BUY 挂单，订单ID=9028013602
+2025-06-03 17:46:25,413 - TradingBot - INFO - 成功取消 CKBUSDT 订单，订单ID=3582334931
+2025-06-03 17:46:25,413 - TradingBot - INFO - 第 1 轮: 成功取消 CKBUSDT BUY 挂单，订单ID=3582334931
+2025-06-03 17:46:25,551 - TradingBot - INFO - 获取到 6 个非零持仓
+2025-06-03 17:46:25,551 - TradingBot - INFO - 第 1 轮完成，剩余需求: {'AERGOUSDT': -77.0, 'BELUSDT': -31.0, 'GRTUSDT': 94.0, 'STEEMUSDT': -66.0, 'DENTUSDT': 12420.0, 'CKBUSDT': 2198.0, 'ZECUSDT': -0.174, 'IOTAUSDT': 49.1}
+2025-06-03 17:46:25,552 - TradingBot - INFO - 开始第 2 轮调仓...
+2025-06-03 17:46:25,840 - TradingBot - INFO - 第 2 轮开始时可用余额: 29.59436607
+2025-06-03 17:46:25,994 - TradingBot - INFO - 第 2 轮开仓前可用余额: 29.59436607, 开仓需求: {'AERGOUSDT': -77.0, 'BELUSDT': -31.0, 'GRTUSDT': 94.0, 'STEEMUSDT': -66.0, 'DENTUSDT': 12420.0, 'CKBUSDT': 2198.0, 'ZECUSDT': -0.174, 'IOTAUSDT': 49.1}
+2025-06-03 17:46:25,994 - TradingBot - INFO - 第 2 轮: 处理开仓 AERGOUSDT SELL, 需求数量=-77.0
+2025-06-03 17:46:27,385 - TradingBot - INFO - AERGOUSDT 数量调整: 77.0 -> 77.0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=9.300830000000001, 真实保证金=3.100277, 数量精度=0
+2025-06-03 17:46:27,387 - TradingBot - INFO - 第 2 轮: AERGOUSDT 开仓调整后数量=77.0, is_reverse_open=False
+2025-06-03 17:46:27,387 - TradingBot - INFO - 第 2 轮: AERGOUSDT 开仓保证金需求=3.1002766666666672, 可用余额=29.59436607
+2025-06-03 17:46:27,821 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 AERGOUSDT SELL, 数量=77.0, 价格=0.12079000000000001, is_close=False
+2025-06-03 17:46:27,937 - TradingBot - INFO - AERGOUSDT 杠杆设置为 3
+2025-06-03 17:46:27,937 - TradingBot - INFO - AERGOUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:28,724 - TradingBot - INFO - AERGOUSDT postonly 挂单成功: 方向=SELL, 数量=77.0, 价格=0.12079, 订单ID=386520106, is_close=False, reduceOnly=False
+2025-06-03 17:46:28,873 - TradingBot - INFO - 第 2 轮: AERGOUSDT 开仓挂单结果 success=True, order_id=386520106, order={'orderId': 386520106, 'symbol': 'AERGOUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJd77d5b9f9c75ebee789b5a', 'price': '0.1207900', 'avgPrice': '0.00', 'origQty': '77', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943987694}
+2025-06-03 17:46:28,874 - TradingBot - INFO - 第 2 轮: AERGOUSDT SELL postOnly 开仓挂单成功，订单ID=386520106, is_close=False
+2025-06-03 17:46:28,874 - TradingBot - INFO - 第 2 轮: AERGOUSDT 开仓后更新余额: 26.494089403333334
+2025-06-03 17:46:28,874 - TradingBot - INFO - 第 2 轮: 处理开仓 BELUSDT SELL, 需求数量=-31.0
+2025-06-03 17:46:29,730 - TradingBot - INFO - BELUSDT 数量调整: 31.0 -> 31.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.154300000000001, 真实保证金=3.051433, 数量精度=0
+2025-06-03 17:46:29,732 - TradingBot - INFO - 第 2 轮: BELUSDT 开仓调整后数量=31.0, is_reverse_open=False
+2025-06-03 17:46:29,732 - TradingBot - INFO - 第 2 轮: BELUSDT 开仓保证金需求=3.0514333333333337, 可用余额=26.494089403333334
+2025-06-03 17:46:29,859 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 BELUSDT SELL, 数量=31.0, 价格=0.2953, is_close=False
+2025-06-03 17:46:30,019 - TradingBot - INFO - BELUSDT 杠杆设置为 3
+2025-06-03 17:46:30,019 - TradingBot - INFO - BELUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:30,737 - TradingBot - INFO - BELUSDT postonly 挂单成功: 方向=SELL, 数量=31.0, 价格=0.2953, 订单ID=6640695031, is_close=False, reduceOnly=False
+2025-06-03 17:46:31,008 - TradingBot - INFO - 第 2 轮: BELUSDT 开仓挂单结果 success=True, order_id=6640695031, order={'orderId': 6640695031, 'symbol': 'BELUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ80960344a5f25f0749f9b6', 'price': '0.29530', 'avgPrice': '0.00', 'origQty': '31', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.00000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943989703}
+2025-06-03 17:46:31,008 - TradingBot - INFO - 第 2 轮: BELUSDT SELL postOnly 开仓挂单成功，订单ID=6640695031, is_close=False
+2025-06-03 17:46:31,008 - TradingBot - INFO - 第 2 轮: BELUSDT 开仓后更新余额: 23.442656069999998
+2025-06-03 17:46:31,009 - TradingBot - INFO - 第 2 轮: 处理开仓 GRTUSDT BUY, 需求数量=94.0
+2025-06-03 17:46:32,343 - TradingBot - INFO - GRTUSDT 数量调整: 94.0 -> 94.0, 最小值: 1.0, 最大值: 1000000.0, 名义价值=9.26276, 真实保证金=3.087587, 数量精度=0
+2025-06-03 17:46:32,344 - TradingBot - INFO - 第 2 轮: GRTUSDT 开仓调整后数量=94.0, is_reverse_open=False
+2025-06-03 17:46:32,344 - TradingBot - INFO - 第 2 轮: GRTUSDT 开仓保证金需求=3.0875866666666667, 可用余额=23.442656069999998
+2025-06-03 17:46:32,489 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 GRTUSDT BUY, 数量=94.0, 价格=0.09854, is_close=False
+2025-06-03 17:46:32,631 - TradingBot - INFO - GRTUSDT 杠杆设置为 3
+2025-06-03 17:46:32,631 - TradingBot - INFO - GRTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:33,268 - TradingBot - INFO - GRTUSDT postonly 挂单成功: 方向=BUY, 数量=94.0, 价格=0.09854, 订单ID=12786232878, is_close=False, reduceOnly=False
+2025-06-03 17:46:33,409 - TradingBot - INFO - 第 2 轮: GRTUSDT 开仓挂单结果 success=True, order_id=12786232878, order={'orderId': 12786232878, 'symbol': 'GRTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJb3b500083c149d5defcb1b', 'price': '0.09854', 'avgPrice': '0.00', 'origQty': '94', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943992232}
+2025-06-03 17:46:33,410 - TradingBot - INFO - 第 2 轮: GRTUSDT BUY postOnly 开仓挂单成功，订单ID=12786232878, is_close=False
+2025-06-03 17:46:33,410 - TradingBot - INFO - 第 2 轮: GRTUSDT 开仓后更新余额: 20.35506940333333
+2025-06-03 17:46:33,410 - TradingBot - INFO - 第 2 轮: 处理开仓 STEEMUSDT SELL, 需求数量=-66.0
+2025-06-03 17:46:34,207 - TradingBot - INFO - STEEMUSDT 数量调整: 66.0 -> 66.0, 最小值: 1.0, 最大值: 2000000.0, 名义价值=9.223500000000001, 真实保证金=3.074500, 数量精度=0
+2025-06-03 17:46:34,208 - TradingBot - INFO - 第 2 轮: STEEMUSDT 开仓调整后数量=66.0, is_reverse_open=False
+2025-06-03 17:46:34,208 - TradingBot - INFO - 第 2 轮: STEEMUSDT 开仓保证金需求=3.0745000000000005, 可用余额=20.35506940333333
+2025-06-03 17:46:34,341 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 STEEMUSDT SELL, 数量=66.0, 价格=0.13975, is_close=False
+2025-06-03 17:46:34,496 - TradingBot - INFO - STEEMUSDT 杠杆设置为 3
+2025-06-03 17:46:34,496 - TradingBot - INFO - STEEMUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:35,168 - TradingBot - INFO - STEEMUSDT postonly 挂单成功: 方向=SELL, 数量=66.0, 价格=0.13975, 订单ID=1858969332, is_close=False, reduceOnly=False
+2025-06-03 17:46:35,336 - TradingBot - INFO - 第 2 轮: STEEMUSDT 开仓挂单结果 success=True, order_id=1858969332, order={'orderId': 1858969332, 'symbol': 'STEEMUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ7400c0a78f1aff3690ff50', 'price': '0.139750', 'avgPrice': '0.00', 'origQty': '66', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943994144}
+2025-06-03 17:46:35,337 - TradingBot - INFO - 第 2 轮: STEEMUSDT SELL postOnly 开仓挂单成功，订单ID=1858969332, is_close=False
+2025-06-03 17:46:35,337 - TradingBot - INFO - 第 2 轮: STEEMUSDT 开仓后更新余额: 17.28056940333333
+2025-06-03 17:46:35,337 - TradingBot - INFO - 第 2 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:46:36,104 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.2529, 真实保证金=3.084300, 数量精度=0
+2025-06-03 17:46:36,105 - TradingBot - INFO - 第 2 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:46:36,106 - TradingBot - INFO - 第 2 轮: DENTUSDT 开仓保证金需求=3.0843000000000003, 可用余额=17.28056940333333
+2025-06-03 17:46:36,252 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.000745, is_close=False
+2025-06-03 17:46:36,386 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:46:36,386 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:37,026 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000745, 订单ID=4686342669, is_close=False, reduceOnly=False
+2025-06-03 17:46:37,145 - TradingBot - INFO - 第 2 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686342669, order={'orderId': 4686342669, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJe1406e4af49749e146365', 'price': '0.000745', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943995994}
+2025-06-03 17:46:37,146 - TradingBot - INFO - 第 2 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686342669, is_close=False
+2025-06-03 17:46:37,146 - TradingBot - INFO - 第 2 轮: DENTUSDT 开仓后更新余额: 14.19626940333333
+2025-06-03 17:46:37,146 - TradingBot - INFO - 第 2 轮: 处理开仓 CKBUSDT BUY, 需求数量=2198.0
+2025-06-03 17:46:37,880 - TradingBot - INFO - CKBUSDT 数量调整: 2198.0 -> 2198.0, 最小值: 1.0, 最大值: 20000000.0, 名义价值=9.275559999999999, 真实保证金=3.091853, 数量精度=0
+2025-06-03 17:46:37,882 - TradingBot - INFO - 第 2 轮: CKBUSDT 开仓调整后数量=2198.0, is_reverse_open=False
+2025-06-03 17:46:37,883 - TradingBot - INFO - 第 2 轮: CKBUSDT 开仓保证金需求=3.091853333333333, 可用余额=14.19626940333333
+2025-06-03 17:46:38,037 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 CKBUSDT BUY, 数量=2198.0, 价格=0.00422, is_close=False
+2025-06-03 17:46:38,164 - TradingBot - INFO - CKBUSDT 杠杆设置为 3
+2025-06-03 17:46:38,164 - TradingBot - INFO - CKBUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:38,789 - TradingBot - INFO - CKBUSDT postonly 挂单成功: 方向=BUY, 数量=2198.0, 价格=0.00422, 订单ID=3582335946, is_close=False, reduceOnly=False
+2025-06-03 17:46:39,085 - TradingBot - INFO - 第 2 轮: CKBUSDT 开仓挂单结果 success=True, order_id=3582335946, order={'orderId': 3582335946, 'symbol': 'CKBUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ83384afaded4f2dc2df843', 'price': '0.0042200', 'avgPrice': '0.00', 'origQty': '2198', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943997757}
+2025-06-03 17:46:39,086 - TradingBot - INFO - 第 2 轮: CKBUSDT BUY postOnly 开仓挂单成功，订单ID=3582335946, is_close=False
+2025-06-03 17:46:39,086 - TradingBot - INFO - 第 2 轮: CKBUSDT 开仓后更新余额: 11.104416069999997
+2025-06-03 17:46:39,086 - TradingBot - INFO - 第 2 轮: 处理开仓 ZECUSDT SELL, 需求数量=-0.174
+2025-06-03 17:46:39,881 - TradingBot - INFO - ZECUSDT 数量调整: 0.174 -> 0.174, 最小值: 0.001, 最大值: 6000.0, 名义价值=9.25854, 真实保证金=3.086180, 数量精度=3
+2025-06-03 17:46:39,882 - TradingBot - INFO - 第 2 轮: ZECUSDT 开仓调整后数量=0.174, is_reverse_open=False
+2025-06-03 17:46:39,884 - TradingBot - INFO - 第 2 轮: ZECUSDT 开仓保证金需求=3.08618, 可用余额=11.104416069999997
+2025-06-03 17:46:40,026 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 ZECUSDT SELL, 数量=0.174, 价格=53.21, is_close=False
+2025-06-03 17:46:40,149 - TradingBot - INFO - ZECUSDT 杠杆设置为 3
+2025-06-03 17:46:40,149 - TradingBot - INFO - ZECUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:40,728 - TradingBot - INFO - ZECUSDT postonly 挂单成功: 方向=SELL, 数量=0.174, 价格=53.21, 订单ID=16986935797, is_close=False, reduceOnly=False
+2025-06-03 17:46:40,871 - TradingBot - INFO - 第 2 轮: ZECUSDT 开仓挂单结果 success=True, order_id=16986935797, order={'orderId': 16986935797, 'symbol': 'ZECUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ5e477469082653a4399e78', 'price': '53.21', 'avgPrice': '0.00', 'origQty': '0.174', 'executedQty': '0.000', 'cumQty': '0.000', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748943999696}
+2025-06-03 17:46:40,872 - TradingBot - INFO - 第 2 轮: ZECUSDT SELL postOnly 开仓挂单成功，订单ID=16986935797, is_close=False
+2025-06-03 17:46:40,872 - TradingBot - INFO - 第 2 轮: ZECUSDT 开仓后更新余额: 8.018236069999997
+2025-06-03 17:46:40,872 - TradingBot - INFO - 第 2 轮: 处理开仓 IOTAUSDT BUY, 需求数量=49.1
+2025-06-03 17:46:41,900 - TradingBot - INFO - IOTAUSDT 数量调整: 49.1 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.265170000000001, 真实保证金=3.088390, 数量精度=1
+2025-06-03 17:46:41,902 - TradingBot - INFO - 第 2 轮: IOTAUSDT 开仓调整后数量=49.1, is_reverse_open=False
+2025-06-03 17:46:41,902 - TradingBot - INFO - 第 2 轮: IOTAUSDT 开仓保证金需求=3.0883900000000004, 可用余额=8.018236069999997
+2025-06-03 17:46:42,042 - TradingBot - INFO - 第 2 轮: 准备开仓挂单 IOTAUSDT BUY, 数量=49.1, 价格=0.1887, is_close=False
+2025-06-03 17:46:42,563 - TradingBot - INFO - IOTAUSDT 杠杆设置为 3
+2025-06-03 17:46:42,563 - TradingBot - INFO - IOTAUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:46:43,128 - TradingBot - INFO - IOTAUSDT postonly 挂单成功: 方向=BUY, 数量=49.1, 价格=0.1887, 订单ID=9028014136, is_close=False, reduceOnly=False
+2025-06-03 17:46:43,274 - TradingBot - INFO - 第 2 轮: IOTAUSDT 开仓挂单结果 success=True, order_id=9028014136, order={'orderId': 9028014136, 'symbol': 'IOTAUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ47020d2975729fe68b3d86', 'price': '0.1887', 'avgPrice': '0.00', 'origQty': '49.1', 'executedQty': '0.0', 'cumQty': '0.0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944002100}
+2025-06-03 17:46:43,275 - TradingBot - INFO - 第 2 轮: IOTAUSDT BUY postOnly 开仓挂单成功，订单ID=9028014136, is_close=False
+2025-06-03 17:46:43,275 - TradingBot - INFO - 第 2 轮: IOTAUSDT 开仓后更新余额: 4.929846069999996
+2025-06-03 17:46:43,275 - TradingBot - INFO - 第 2 轮挂单等待，最多 30 秒...
+2025-06-03 17:46:43,821 - TradingBot - INFO - 第 2 轮: GRTUSDT BUY 单已成交，订单ID=12786232878, 成交数量=94.0, 均价=0.09854
+2025-06-03 17:46:43,821 - TradingBot - INFO - 第 2 轮: GRTUSDT BUY 已完全成交，订单ID=12786232878, 成交数量=94.0
+2025-06-03 17:46:46,824 - TradingBot - INFO - 第 2 轮: AERGOUSDT SELL 单已成交，订单ID=386520106, 成交数量=77.0, 均价=0.12079
+2025-06-03 17:46:46,824 - TradingBot - INFO - 第 2 轮: AERGOUSDT SELL 已完全成交，订单ID=386520106, 成交数量=77.0
+2025-06-03 17:46:47,664 - TradingBot - INFO - 第 2 轮: ZECUSDT SELL 单已成交，订单ID=16986935797, 成交数量=0.174, 均价=53.21
+2025-06-03 17:46:47,664 - TradingBot - INFO - 第 2 轮: ZECUSDT SELL 已完全成交，订单ID=16986935797, 成交数量=0.174
+2025-06-03 17:46:55,782 - TradingBot - INFO - 第 2 轮: BELUSDT SELL 单已成交，订单ID=6640695031, 成交数量=31.0, 均价=0.2953
+2025-06-03 17:46:55,783 - TradingBot - INFO - 第 2 轮: BELUSDT SELL 已完全成交，订单ID=6640695031, 成交数量=31.0
+2025-06-03 17:47:12,161 - TradingBot - INFO - 第 2 轮: STEEMUSDT SELL 单已成交，订单ID=1858969332, 成交数量=66.0, 均价=0.13975
+2025-06-03 17:47:12,161 - TradingBot - INFO - 第 2 轮: STEEMUSDT SELL 已完全成交，订单ID=1858969332, 成交数量=66.0
+2025-06-03 17:47:14,608 - TradingBot - INFO - 第 2 轮结束，取消所有未成交挂单...
+2025-06-03 17:47:14,740 - TradingBot - INFO - 第 2 轮: 发现 3 个未成交订单
+2025-06-03 17:47:14,898 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686342669
+2025-06-03 17:47:14,900 - TradingBot - INFO - 第 2 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686342669
+2025-06-03 17:47:15,414 - TradingBot - INFO - 成功取消 CKBUSDT 订单，订单ID=3582335946
+2025-06-03 17:47:15,415 - TradingBot - INFO - 第 2 轮: 成功取消 CKBUSDT BUY 挂单，订单ID=3582335946
+2025-06-03 17:47:15,558 - TradingBot - INFO - 成功取消 IOTAUSDT 订单，订单ID=9028014136
+2025-06-03 17:47:15,559 - TradingBot - INFO - 第 2 轮: 成功取消 IOTAUSDT BUY 挂单，订单ID=9028014136
+2025-06-03 17:47:15,702 - TradingBot - INFO - 获取到 11 个非零持仓
+2025-06-03 17:47:15,702 - TradingBot - INFO - 第 2 轮完成，剩余需求: {'DENTUSDT': 12420.0, 'CKBUSDT': 2198.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:47:15,703 - TradingBot - INFO - 开始第 3 轮调仓...
+2025-06-03 17:47:16,003 - TradingBot - INFO - 第 3 轮开始时可用余额: 14.13305995
+2025-06-03 17:47:16,441 - TradingBot - INFO - 第 3 轮开仓前可用余额: 14.13305995, 开仓需求: {'DENTUSDT': 12420.0, 'CKBUSDT': 2198.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:47:16,441 - TradingBot - INFO - 第 3 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:47:17,768 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.26532, 真实保证金=3.088440, 数量精度=0
+2025-06-03 17:47:17,769 - TradingBot - INFO - 第 3 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:47:17,770 - TradingBot - INFO - 第 3 轮: DENTUSDT 开仓保证金需求=3.08844, 可用余额=14.13305995
+2025-06-03 17:47:17,915 - TradingBot - INFO - 第 3 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007459999999999999, is_close=False
+2025-06-03 17:47:18,065 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:47:18,065 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:47:19,024 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000746, 订单ID=4686343276, is_close=False, reduceOnly=False
+2025-06-03 17:47:19,169 - TradingBot - INFO - 第 3 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686343276, order={'orderId': 4686343276, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ3224947b57c0b87b01f81a', 'price': '0.000746', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944037986}
+2025-06-03 17:47:19,170 - TradingBot - INFO - 第 3 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686343276, is_close=False
+2025-06-03 17:47:19,170 - TradingBot - INFO - 第 3 轮: DENTUSDT 开仓后更新余额: 11.04461995
+2025-06-03 17:47:19,171 - TradingBot - INFO - 第 3 轮: 处理开仓 CKBUSDT BUY, 需求数量=2198.0
+2025-06-03 17:47:20,142 - TradingBot - INFO - CKBUSDT 数量调整: 2198.0 -> 2198.0, 最小值: 1.0, 最大值: 20000000.0, 名义价值=9.279956, 真实保证金=3.093319, 数量精度=0
+2025-06-03 17:47:20,144 - TradingBot - INFO - 第 3 轮: CKBUSDT 开仓调整后数量=2198.0, is_reverse_open=False
+2025-06-03 17:47:20,144 - TradingBot - INFO - 第 3 轮: CKBUSDT 开仓保证金需求=3.0933186666666668, 可用余额=11.04461995
+2025-06-03 17:47:20,288 - TradingBot - INFO - 第 3 轮: 准备开仓挂单 CKBUSDT BUY, 数量=2198.0, 价格=0.004222, is_close=False
+2025-06-03 17:47:20,433 - TradingBot - INFO - CKBUSDT 杠杆设置为 3
+2025-06-03 17:47:20,433 - TradingBot - INFO - CKBUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:47:21,437 - TradingBot - INFO - CKBUSDT postonly 挂单成功: 方向=BUY, 数量=2198.0, 价格=0.004222, 订单ID=3582336842, is_close=False, reduceOnly=False
+2025-06-03 17:47:21,564 - TradingBot - INFO - 第 3 轮: CKBUSDT 开仓挂单结果 success=True, order_id=3582336842, order={'orderId': 3582336842, 'symbol': 'CKBUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJa092a9c07172908452c425', 'price': '0.0042220', 'avgPrice': '0.00', 'origQty': '2198', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944040422}
+2025-06-03 17:47:21,565 - TradingBot - INFO - 第 3 轮: CKBUSDT BUY postOnly 开仓挂单成功，订单ID=3582336842, is_close=False
+2025-06-03 17:47:21,565 - TradingBot - INFO - 第 3 轮: CKBUSDT 开仓后更新余额: 7.951301283333333
+2025-06-03 17:47:21,566 - TradingBot - INFO - 第 3 轮: 处理开仓 IOTAUSDT BUY, 需求数量=49.1
+2025-06-03 17:47:22,364 - TradingBot - INFO - IOTAUSDT 数量调整: 49.1 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.265170000000001, 真实保证金=3.088390, 数量精度=1
+2025-06-03 17:47:22,365 - TradingBot - INFO - 第 3 轮: IOTAUSDT 开仓调整后数量=49.1, is_reverse_open=False
+2025-06-03 17:47:22,365 - TradingBot - INFO - 第 3 轮: IOTAUSDT 开仓保证金需求=3.0883900000000004, 可用余额=7.951301283333333
+2025-06-03 17:47:22,531 - TradingBot - INFO - 第 3 轮: 准备开仓挂单 IOTAUSDT BUY, 数量=49.1, 价格=0.1887, is_close=False
+2025-06-03 17:47:22,664 - TradingBot - INFO - IOTAUSDT 杠杆设置为 3
+2025-06-03 17:47:22,664 - TradingBot - INFO - IOTAUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:47:23,679 - TradingBot - INFO - IOTAUSDT postonly 挂单成功: 方向=BUY, 数量=49.1, 价格=0.1887, 订单ID=9028014555, is_close=False, reduceOnly=False
+2025-06-03 17:47:23,820 - TradingBot - INFO - 第 3 轮: IOTAUSDT 开仓挂单结果 success=True, order_id=9028014555, order={'orderId': 9028014555, 'symbol': 'IOTAUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ30ca2fba046537fbfe311d', 'price': '0.1887', 'avgPrice': '0.00', 'origQty': '49.1', 'executedQty': '0.0', 'cumQty': '0.0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944042669}
+2025-06-03 17:47:23,821 - TradingBot - INFO - 第 3 轮: IOTAUSDT BUY postOnly 开仓挂单成功，订单ID=9028014555, is_close=False
+2025-06-03 17:47:23,822 - TradingBot - INFO - 第 3 轮: IOTAUSDT 开仓后更新余额: 4.862911283333332
+2025-06-03 17:47:23,822 - TradingBot - INFO - 第 3 轮挂单等待，最多 30 秒...
+2025-06-03 17:47:38,981 - TradingBot - INFO - 第 3 轮: CKBUSDT BUY 单已成交，订单ID=3582336842, 成交数量=2198.0, 均价=0.004222
+2025-06-03 17:47:38,981 - TradingBot - INFO - 第 3 轮: CKBUSDT BUY 已完全成交，订单ID=3582336842, 成交数量=2198.0
+2025-06-03 17:47:54,816 - TradingBot - INFO - 第 3 轮结束，取消所有未成交挂单...
+2025-06-03 17:47:54,934 - TradingBot - INFO - 第 3 轮: 发现 2 个未成交订单
+2025-06-03 17:47:55,066 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686343276
+2025-06-03 17:47:55,066 - TradingBot - INFO - 第 3 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686343276
+2025-06-03 17:47:55,188 - TradingBot - INFO - 成功取消 IOTAUSDT 订单，订单ID=9028014555
+2025-06-03 17:47:55,188 - TradingBot - INFO - 第 3 轮: 成功取消 IOTAUSDT BUY 挂单，订单ID=9028014555
+2025-06-03 17:47:55,302 - TradingBot - INFO - 获取到 12 个非零持仓
+2025-06-03 17:47:55,302 - TradingBot - INFO - 第 3 轮完成，剩余需求: {'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:47:55,302 - TradingBot - INFO - 开始第 4 轮调仓...
+2025-06-03 17:47:55,607 - TradingBot - INFO - 第 4 轮开始时可用余额: 11.04644494
+2025-06-03 17:47:55,722 - TradingBot - INFO - 第 4 轮开仓前可用余额: 11.04644494, 开仓需求: {'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:47:55,722 - TradingBot - INFO - 第 4 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:47:57,215 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.26532, 真实保证金=3.088440, 数量精度=0
+2025-06-03 17:47:57,216 - TradingBot - INFO - 第 4 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:47:57,216 - TradingBot - INFO - 第 4 轮: DENTUSDT 开仓保证金需求=3.08844, 可用余额=11.04644494
+2025-06-03 17:47:57,683 - TradingBot - INFO - 第 4 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007459999999999999, is_close=False
+2025-06-03 17:47:57,830 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:47:57,830 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:47:58,666 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000746, 订单ID=4686344074, is_close=False, reduceOnly=False
+2025-06-03 17:47:58,862 - TradingBot - INFO - 第 4 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686344074, order={'orderId': 4686344074, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ5293dbdeffbd3b651367ba', 'price': '0.000746', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944077625}
+2025-06-03 17:47:58,863 - TradingBot - INFO - 第 4 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686344074, is_close=False
+2025-06-03 17:47:58,863 - TradingBot - INFO - 第 4 轮: DENTUSDT 开仓后更新余额: 7.95800494
+2025-06-03 17:47:58,863 - TradingBot - INFO - 第 4 轮: 处理开仓 IOTAUSDT BUY, 需求数量=49.1
+2025-06-03 17:47:59,802 - TradingBot - INFO - IOTAUSDT 数量调整: 49.1 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.265170000000001, 真实保证金=3.088390, 数量精度=1
+2025-06-03 17:47:59,803 - TradingBot - INFO - 第 4 轮: IOTAUSDT 开仓调整后数量=49.1, is_reverse_open=False
+2025-06-03 17:47:59,804 - TradingBot - INFO - 第 4 轮: IOTAUSDT 开仓保证金需求=3.0883900000000004, 可用余额=7.95800494
+2025-06-03 17:47:59,955 - TradingBot - INFO - 第 4 轮: 准备开仓挂单 IOTAUSDT BUY, 数量=49.1, 价格=0.1887, is_close=False
+2025-06-03 17:48:00,104 - TradingBot - INFO - IOTAUSDT 杠杆设置为 3
+2025-06-03 17:48:00,104 - TradingBot - INFO - IOTAUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:48:00,813 - TradingBot - INFO - IOTAUSDT postonly 挂单成功: 方向=BUY, 数量=49.1, 价格=0.1887, 订单ID=9028014974, is_close=False, reduceOnly=False
+2025-06-03 17:48:00,940 - TradingBot - INFO - 第 4 轮: IOTAUSDT 开仓挂单结果 success=True, order_id=9028014974, order={'orderId': 9028014974, 'symbol': 'IOTAUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJe065025a2df439afaee700', 'price': '0.1887', 'avgPrice': '0.00', 'origQty': '49.1', 'executedQty': '0.0', 'cumQty': '0.0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944079779}
+2025-06-03 17:48:00,941 - TradingBot - INFO - 第 4 轮: IOTAUSDT BUY postOnly 开仓挂单成功，订单ID=9028014974, is_close=False
+2025-06-03 17:48:00,941 - TradingBot - INFO - 第 4 轮: IOTAUSDT 开仓后更新余额: 4.86961494
+2025-06-03 17:48:00,941 - TradingBot - INFO - 第 4 轮挂单等待，最多 30 秒...
+2025-06-03 17:48:32,610 - TradingBot - INFO - 第 4 轮结束，取消所有未成交挂单...
+2025-06-03 17:48:32,724 - TradingBot - INFO - 第 4 轮: 发现 2 个未成交订单
+2025-06-03 17:48:32,836 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686344074
+2025-06-03 17:48:32,837 - TradingBot - INFO - 第 4 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686344074
+2025-06-03 17:48:32,952 - TradingBot - INFO - 成功取消 IOTAUSDT 订单，订单ID=9028014974
+2025-06-03 17:48:32,953 - TradingBot - INFO - 第 4 轮: 成功取消 IOTAUSDT BUY 挂单，订单ID=9028014974
+2025-06-03 17:48:33,371 - TradingBot - INFO - 获取到 12 个非零持仓
+2025-06-03 17:48:33,371 - TradingBot - INFO - 第 4 轮完成，剩余需求: {'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:48:33,371 - TradingBot - INFO - 开始第 5 轮调仓...
+2025-06-03 17:48:33,534 - TradingBot - INFO - 第 5 轮开始时可用余额: 11.07318313
+2025-06-03 17:48:33,647 - TradingBot - INFO - 第 5 轮开仓前可用余额: 11.07318313, 开仓需求: {'DENTUSDT': 12420.0, 'IOTAUSDT': 49.1}
+2025-06-03 17:48:33,648 - TradingBot - INFO - 第 5 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:48:34,374 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.26532, 真实保证金=3.088440, 数量精度=0
+2025-06-03 17:48:34,375 - TradingBot - INFO - 第 5 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:48:34,375 - TradingBot - INFO - 第 5 轮: DENTUSDT 开仓保证金需求=3.08844, 可用余额=11.07318313
+2025-06-03 17:48:34,491 - TradingBot - INFO - 第 5 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007459999999999999, is_close=False
+2025-06-03 17:48:34,606 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:48:34,606 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:48:35,271 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000746, 订单ID=4686344466, is_close=False, reduceOnly=False
+2025-06-03 17:48:35,435 - TradingBot - INFO - 第 5 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686344466, order={'orderId': 4686344466, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ2cf5168e21b83e2ab9ea63', 'price': '0.000746', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944114232}
+2025-06-03 17:48:35,435 - TradingBot - INFO - 第 5 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686344466, is_close=False
+2025-06-03 17:48:35,437 - TradingBot - INFO - 第 5 轮: DENTUSDT 开仓后更新余额: 7.98474313
+2025-06-03 17:48:35,437 - TradingBot - INFO - 第 5 轮: 处理开仓 IOTAUSDT BUY, 需求数量=49.1
+2025-06-03 17:48:36,154 - TradingBot - INFO - IOTAUSDT 数量调整: 49.1 -> 49.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.265170000000001, 真实保证金=3.088390, 数量精度=1
+2025-06-03 17:48:36,155 - TradingBot - INFO - 第 5 轮: IOTAUSDT 开仓调整后数量=49.1, is_reverse_open=False
+2025-06-03 17:48:36,155 - TradingBot - INFO - 第 5 轮: IOTAUSDT 开仓保证金需求=3.0883900000000004, 可用余额=7.98474313
+2025-06-03 17:48:36,298 - TradingBot - INFO - 第 5 轮: 准备开仓挂单 IOTAUSDT BUY, 数量=49.1, 价格=0.1887, is_close=False
+2025-06-03 17:48:36,831 - TradingBot - INFO - IOTAUSDT 杠杆设置为 3
+2025-06-03 17:48:36,831 - TradingBot - INFO - IOTAUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:48:37,399 - TradingBot - INFO - IOTAUSDT postonly 挂单成功: 方向=BUY, 数量=49.1, 价格=0.1887, 订单ID=9028015186, is_close=False, reduceOnly=False
+2025-06-03 17:48:37,543 - TradingBot - INFO - 第 5 轮: IOTAUSDT 开仓挂单结果 success=True, order_id=9028015186, order={'orderId': 9028015186, 'symbol': 'IOTAUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ3c5f78165a1d516b5e03c1', 'price': '0.1887', 'avgPrice': '0.00', 'origQty': '49.1', 'executedQty': '0.0', 'cumQty': '0.0', 'cumQuote': '0.00000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.0000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944116392}
+2025-06-03 17:48:37,544 - TradingBot - INFO - 第 5 轮: IOTAUSDT BUY postOnly 开仓挂单成功，订单ID=9028015186, is_close=False
+2025-06-03 17:48:37,544 - TradingBot - INFO - 第 5 轮: IOTAUSDT 开仓后更新余额: 4.89635313
+2025-06-03 17:48:37,544 - TradingBot - INFO - 第 5 轮挂单等待，最多 30 秒...
+2025-06-03 17:48:51,775 - TradingBot - INFO - 第 5 轮: IOTAUSDT BUY 单已成交，订单ID=9028015186, 成交数量=49.1, 均价=0.1887
+2025-06-03 17:48:51,775 - TradingBot - INFO - 第 5 轮: IOTAUSDT BUY 已完全成交，订单ID=9028015186, 成交数量=49.1
+2025-06-03 17:49:08,789 - TradingBot - INFO - 第 5 轮结束，取消所有未成交挂单...
+2025-06-03 17:49:08,950 - TradingBot - INFO - 第 5 轮: 发现 1 个未成交订单
+2025-06-03 17:49:09,068 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686344466
+2025-06-03 17:49:09,068 - TradingBot - INFO - 第 5 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686344466
+2025-06-03 17:49:09,218 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:49:09,218 - TradingBot - INFO - 第 5 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:49:09,219 - TradingBot - INFO - 开始第 6 轮调仓...
+2025-06-03 17:49:09,374 - TradingBot - INFO - 第 6 轮开始时可用余额: 7.96659844
+2025-06-03 17:49:09,534 - TradingBot - INFO - 第 6 轮开仓前可用余额: 7.96659844, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:49:09,534 - TradingBot - INFO - 第 6 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:49:10,264 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.26532, 真实保证金=3.088440, 数量精度=0
+2025-06-03 17:49:10,266 - TradingBot - INFO - 第 6 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:49:10,266 - TradingBot - INFO - 第 6 轮: DENTUSDT 开仓保证金需求=3.08844, 可用余额=7.96659844
+2025-06-03 17:49:10,430 - TradingBot - INFO - 第 6 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007459999999999999, is_close=False
+2025-06-03 17:49:10,558 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:49:10,558 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:49:11,182 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000746, 订单ID=4686344864, is_close=False, reduceOnly=False
+2025-06-03 17:49:11,329 - TradingBot - INFO - 第 6 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686344864, order={'orderId': 4686344864, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJe9ba684a4b30d06c2783e1', 'price': '0.000746', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944150150}
+2025-06-03 17:49:11,329 - TradingBot - INFO - 第 6 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686344864, is_close=False
+2025-06-03 17:49:11,330 - TradingBot - INFO - 第 6 轮: DENTUSDT 开仓后更新余额: 4.87815844
+2025-06-03 17:49:11,330 - TradingBot - INFO - 第 6 轮挂单等待，最多 30 秒...
+2025-06-03 17:49:41,716 - TradingBot - INFO - 第 6 轮结束，取消所有未成交挂单...
+2025-06-03 17:49:42,164 - TradingBot - INFO - 第 6 轮: 发现 1 个未成交订单
+2025-06-03 17:49:42,278 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686344864
+2025-06-03 17:49:42,279 - TradingBot - INFO - 第 6 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686344864
+2025-06-03 17:49:42,401 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:49:42,402 - TradingBot - INFO - 第 6 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:49:42,402 - TradingBot - INFO - 开始第 7 轮调仓...
+2025-06-03 17:49:42,558 - TradingBot - INFO - 第 7 轮开始时可用余额: 7.94908871
+2025-06-03 17:49:42,683 - TradingBot - INFO - 第 7 轮开仓前可用余额: 7.94908871, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:49:42,683 - TradingBot - INFO - 第 7 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:49:43,365 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.27774, 真实保证金=3.092580, 数量精度=0
+2025-06-03 17:49:43,366 - TradingBot - INFO - 第 7 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:49:43,366 - TradingBot - INFO - 第 7 轮: DENTUSDT 开仓保证金需求=3.09258, 可用余额=7.94908871
+2025-06-03 17:49:43,480 - TradingBot - INFO - 第 7 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007469999999999999, is_close=False
+2025-06-03 17:49:43,601 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:49:43,601 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:49:44,269 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000747, 订单ID=4686345445, is_close=False, reduceOnly=False
+2025-06-03 17:49:44,463 - TradingBot - INFO - 第 7 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686345445, order={'orderId': 4686345445, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJb88b04711d013ba50953e8', 'price': '0.000747', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944183243}
+2025-06-03 17:49:44,464 - TradingBot - INFO - 第 7 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686345445, is_close=False
+2025-06-03 17:49:44,464 - TradingBot - INFO - 第 7 轮: DENTUSDT 开仓后更新余额: 4.85650871
+2025-06-03 17:49:44,464 - TradingBot - INFO - 第 7 轮挂单等待，最多 30 秒...
+2025-06-03 17:50:14,717 - TradingBot - INFO - 第 7 轮结束，取消所有未成交挂单...
+2025-06-03 17:50:14,832 - TradingBot - INFO - 第 7 轮: 发现 1 个未成交订单
+2025-06-03 17:50:14,948 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686345445
+2025-06-03 17:50:14,948 - TradingBot - INFO - 第 7 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686345445
+2025-06-03 17:50:15,072 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:50:15,072 - TradingBot - INFO - 第 7 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:50:15,074 - TradingBot - INFO - 开始第 8 轮调仓...
+2025-06-03 17:50:15,226 - TradingBot - INFO - 第 8 轮开始时可用余额: 7.96854731
+2025-06-03 17:50:15,342 - TradingBot - INFO - 第 8 轮开仓前可用余额: 7.96854731, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:50:15,342 - TradingBot - INFO - 第 8 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:50:15,996 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.27774, 真实保证金=3.092580, 数量精度=0
+2025-06-03 17:50:15,997 - TradingBot - INFO - 第 8 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:50:15,997 - TradingBot - INFO - 第 8 轮: DENTUSDT 开仓保证金需求=3.09258, 可用余额=7.96854731
+2025-06-03 17:50:16,127 - TradingBot - INFO - 第 8 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007469999999999999, is_close=False
+2025-06-03 17:50:16,263 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:50:16,263 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:50:16,853 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000747, 订单ID=4686345672, is_close=False, reduceOnly=False
+2025-06-03 17:50:16,998 - TradingBot - INFO - 第 8 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686345672, order={'orderId': 4686345672, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ633bece9019e182a46534d', 'price': '0.000747', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944215822}
+2025-06-03 17:50:16,998 - TradingBot - INFO - 第 8 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686345672, is_close=False
+2025-06-03 17:50:16,998 - TradingBot - INFO - 第 8 轮: DENTUSDT 开仓后更新余额: 4.87596731
+2025-06-03 17:50:16,998 - TradingBot - INFO - 第 8 轮挂单等待，最多 30 秒...
+2025-06-03 17:50:49,043 - TradingBot - INFO - 第 8 轮结束，取消所有未成交挂单...
+2025-06-03 17:50:49,174 - TradingBot - INFO - 第 8 轮: 发现 1 个未成交订单
+2025-06-03 17:50:49,307 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686345672
+2025-06-03 17:50:49,307 - TradingBot - INFO - 第 8 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686345672
+2025-06-03 17:50:49,450 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:50:49,450 - TradingBot - INFO - 第 8 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:50:49,450 - TradingBot - INFO - 开始第 9 轮调仓...
+2025-06-03 17:50:49,620 - TradingBot - INFO - 第 9 轮开始时可用余额: 7.96396888
+2025-06-03 17:50:49,743 - TradingBot - INFO - 第 9 轮开仓前可用余额: 7.96396888, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:50:49,743 - TradingBot - INFO - 第 9 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:50:50,445 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.27774, 真实保证金=3.092580, 数量精度=0
+2025-06-03 17:50:50,447 - TradingBot - INFO - 第 9 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:50:50,447 - TradingBot - INFO - 第 9 轮: DENTUSDT 开仓保证金需求=3.09258, 可用余额=7.96396888
+2025-06-03 17:50:50,581 - TradingBot - INFO - 第 9 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007469999999999999, is_close=False
+2025-06-03 17:50:50,709 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:50:50,709 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:50:51,480 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000747, 订单ID=4686346082, is_close=False, reduceOnly=False
+2025-06-03 17:50:51,605 - TradingBot - INFO - 第 9 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686346082, order={'orderId': 4686346082, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ7e9f823a27d3ea41e0d827', 'price': '0.000747', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944250252}
+2025-06-03 17:50:51,606 - TradingBot - INFO - 第 9 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686346082, is_close=False
+2025-06-03 17:50:51,606 - TradingBot - INFO - 第 9 轮: DENTUSDT 开仓后更新余额: 4.8713888800000005
+2025-06-03 17:50:51,606 - TradingBot - INFO - 第 9 轮挂单等待，最多 30 秒...
+2025-06-03 17:51:21,786 - TradingBot - INFO - 第 9 轮结束，取消所有未成交挂单...
+2025-06-03 17:51:21,899 - TradingBot - INFO - 第 9 轮: 发现 1 个未成交订单
+2025-06-03 17:51:22,012 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686346082
+2025-06-03 17:51:22,012 - TradingBot - INFO - 第 9 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686346082
+2025-06-03 17:51:22,130 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:51:22,130 - TradingBot - INFO - 第 9 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:51:22,130 - TradingBot - INFO - 开始第 10 轮调仓...
+2025-06-03 17:51:22,288 - TradingBot - INFO - 第 10 轮开始时可用余额: 7.93737737
+2025-06-03 17:51:22,404 - TradingBot - INFO - 第 10 轮开仓前可用余额: 7.93737737, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:51:22,404 - TradingBot - INFO - 第 10 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:51:23,028 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.27774, 真实保证金=3.092580, 数量精度=0
+2025-06-03 17:51:23,030 - TradingBot - INFO - 第 10 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:51:23,030 - TradingBot - INFO - 第 10 轮: DENTUSDT 开仓保证金需求=3.09258, 可用余额=7.93737737
+2025-06-03 17:51:23,146 - TradingBot - INFO - 第 10 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.0007469999999999999, is_close=False
+2025-06-03 17:51:23,261 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:51:23,261 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:51:24,568 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000747, 订单ID=4686346712, is_close=False, reduceOnly=False
+2025-06-03 17:51:24,709 - TradingBot - INFO - 第 10 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686346712, order={'orderId': 4686346712, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ8022c31d07032fb4eb3bc6', 'price': '0.000747', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944283546}
+2025-06-03 17:51:24,710 - TradingBot - INFO - 第 10 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686346712, is_close=False
+2025-06-03 17:51:24,710 - TradingBot - INFO - 第 10 轮: DENTUSDT 开仓后更新余额: 4.84479737
+2025-06-03 17:51:24,710 - TradingBot - INFO - 第 10 轮挂单等待，最多 30 秒...
+2025-06-03 17:51:54,977 - TradingBot - INFO - 第 10 轮结束，取消所有未成交挂单...
+2025-06-03 17:51:55,090 - TradingBot - INFO - 第 10 轮: 发现 1 个未成交订单
+2025-06-03 17:51:55,552 - TradingBot - INFO - 成功取消 DENTUSDT 订单，订单ID=4686346712
+2025-06-03 17:51:55,553 - TradingBot - INFO - 第 10 轮: 成功取消 DENTUSDT BUY 挂单，订单ID=4686346712
+2025-06-03 17:51:55,669 - TradingBot - INFO - 获取到 13 个非零持仓
+2025-06-03 17:51:55,670 - TradingBot - INFO - 第 10 轮完成，剩余需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:51:55,670 - TradingBot - INFO - 开始第 11 轮调仓...
+2025-06-03 17:51:55,821 - TradingBot - INFO - 第 11 轮开始时可用余额: 7.96888306
+2025-06-03 17:51:55,942 - TradingBot - INFO - 第 11 轮开仓前可用余额: 7.96888306, 开仓需求: {'DENTUSDT': 12420.0}
+2025-06-03 17:51:55,942 - TradingBot - INFO - 第 11 轮: 处理开仓 DENTUSDT BUY, 需求数量=12420.0
+2025-06-03 17:51:56,526 - TradingBot - INFO - DENTUSDT 数量调整: 12420.0 -> 12420.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.29016, 真实保证金=3.096720, 数量精度=0
+2025-06-03 17:51:56,527 - TradingBot - INFO - 第 11 轮: DENTUSDT 开仓调整后数量=12420.0, is_reverse_open=False
+2025-06-03 17:51:56,527 - TradingBot - INFO - 第 11 轮: DENTUSDT 开仓保证金需求=3.09672, 可用余额=7.96888306
+2025-06-03 17:51:56,657 - TradingBot - INFO - 第 11 轮: 准备开仓挂单 DENTUSDT BUY, 数量=12420.0, 价格=0.000748, is_close=False
+2025-06-03 17:51:56,777 - TradingBot - INFO - DENTUSDT 杠杆设置为 3
+2025-06-03 17:51:56,777 - TradingBot - INFO - DENTUSDT 杠杆已设置为 3, is_close=False
+2025-06-03 17:51:57,327 - TradingBot - INFO - DENTUSDT postonly 挂单成功: 方向=BUY, 数量=12420.0, 价格=0.000748, 订单ID=4686347566, is_close=False, reduceOnly=False
+2025-06-03 17:51:57,472 - TradingBot - INFO - 第 11 轮: DENTUSDT 开仓挂单结果 success=True, order_id=4686347566, order={'orderId': 4686347566, 'symbol': 'DENTUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJ2c94be0acc60aa07b81447', 'price': '0.000748', 'avgPrice': '0.00', 'origQty': '12420', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1748944316295}
+2025-06-03 17:51:57,473 - TradingBot - INFO - 第 11 轮: DENTUSDT BUY postOnly 开仓挂单成功，订单ID=4686347566, is_close=False
+2025-06-03 17:51:57,473 - TradingBot - INFO - 第 11 轮: DENTUSDT 开仓后更新余额: 4.87216306
+2025-06-03 17:51:57,473 - TradingBot - INFO - 第 11 轮挂单等待，最多 30 秒...
+2025-06-03 17:52:06,633 - TradingBot - INFO - 第 11 轮: DENTUSDT BUY 单已成交，订单ID=4686347566, 成交数量=12420.0, 均价=0.000748
+2025-06-03 17:52:06,634 - TradingBot - INFO - 第 11 轮: DENTUSDT BUY 已完全成交，订单ID=4686347566, 成交数量=12420.0
+2025-06-03 17:52:06,634 - TradingBot - INFO - 第 11 轮所有挂单已处理完成，提前结束等待
+2025-06-03 17:52:06,753 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-03 17:52:06,753 - TradingBot - INFO - 第 11 轮完成，剩余需求: {}
+2025-06-03 17:52:06,754 - TradingBot - INFO - 第 11 轮后所有目标已达成，结束限价单调仓
+2025-06-03 17:52:06,754 - TradingBot - INFO - ==================== 市价单补齐：第一天 ====================
+2025-06-03 17:52:06,889 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-03 17:52:06,889 - TradingBot - INFO - 市价单补齐：所有目标已达成，无需补齐
+2025-06-03 17:52:07,021 - TradingBot - INFO - 准备保存 14 条持仓记录，Run_ID=2025-06-03_174520, 调仓日期=2025-06-03
+2025-06-03 17:52:07,042 - TradingBot - INFO - 持仓数据已保存到 data/positions_output.csv，合并后记录数: 14
+2025-06-03 17:52:07,054 - TradingBot - INFO - 验证: data/positions_output.csv 中 Run_ID=2025-06-03_174520 的记录数: 14
+2025-06-03 17:52:33,283 - TradingBot - INFO - 账户信息已保存为JSON文件: data/account_info_20250603_175233.json
+2025-06-03 17:52:33,283 - TradingBot - INFO - 开始计算手续费和已实现盈亏...
+2025-06-03 17:52:33,283 - TradingBot - INFO - 已存在手续费记录 (trade_commission_summary_2025-06-03): 0 USDT
+2025-06-03 17:52:33,283 - TradingBot - INFO - 手续费计算结果: {'value': 0, 'description': '2025-06-03 买卖交易手续费总和', 'date': '2025-06-03_17:52:33'}
+2025-06-03 17:52:33,289 - TradingBot - INFO - 已存在已实现盈亏记录 (trade_realized_pnl_summary_2025-06-03): 0 USDT
+2025-06-03 17:52:33,289 - TradingBot - INFO - 已实现盈亏计算结果: {'value': 0, 'description': '2025-06-03 买卖交易已实现盈亏总和', 'date': '2025-06-03_17:52:33'}
+2025-06-03 17:52:33,595 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-03 17:52:33,598 - TradingBot - INFO - 账户信息已保存为JSON文件: data/account_info_20250603_174520.json
+2025-06-03 17:52:33,607 - TradingBot - INFO - account_metrics.xlsx 不存在，返回空DataFrame
+2025-06-03 17:52:33,608 - TradingBot - INFO - account_metrics.xlsx 为空或不存在，回报率设为 0
+2025-06-03 17:52:34,150 - TradingBot - INFO - 成功写入 14 条指标到 data/account_metrics.xlsx，Run_ID=2025-06-03_174520
+2025-06-03 17:52:34,152 - TradingBot - INFO - ✅ 交易引擎执行完成 | RunID: 2025-06-03_174520
+2025-06-03 17:52:34,152 - TradingBot - INFO - 当前日期: 2025-06-03, Run_ID: 2025-06-03_174520
+2025-06-03 17:52:34,162 - TradingBot - INFO - 读取 data/positions_output.csv，去重后包含 14 条记录
+2025-06-03 17:52:34,163 - TradingBot - INFO - 所有 Run_ID: ['2025-06-03_174520']
+2025-06-03 17:52:34,163 - TradingBot - INFO - 所有调仓日期: ['2025-06-03']
+2025-06-03 17:52:34,164 - TradingBot - INFO - 找到 14 条 Run_ID=2025-06-03_174520 或日期=2025-06-03 的记录
+2025-06-03 17:52:34,165 - TradingBot - INFO - 已提取所需字段的持仓数据
+2025-06-03 17:52:34,168 - TradingBot - INFO - 正持仓数量: 7, 负持仓数量: 7
+2025-06-03 17:52:34,171 - TradingBot - INFO - 资金费率文件 data/pos20250603_v3.csv 已加载，去重后包含 173 条记录
+2025-06-03 17:52:34,174 - TradingBot - INFO - 已为 7 个黑名单币种设置 ErrorReason: 黑名单过滤
+2025-06-03 17:52:34,178 - TradingBot - INFO - 已为 13 个币种映射其他错误原因
+2025-06-03 17:52:34,181 - TradingBot - INFO - 正持仓资金费率数据已筛选，最大 id: 16
+2025-06-03 17:52:34,192 - TradingBot - INFO - 正持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason
+2025-06-03 17:52:34,195 - TradingBot - INFO - 负持仓资金费率数据已筛选，最小 id: 163
+2025-06-03 17:52:34,198 - TradingBot - INFO - 负持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason
+2025-06-03 17:52:34,200 - TradingBot - INFO - 正负持仓结果已合并
+2025-06-03 17:52:34,885 - TradingBot - INFO - 分析结果已去重并追加写入文件: data/position_analysis.xlsx，记录数: 27
+2025-06-03 17:52:34,914 - TradingBot - INFO - 唯一日期数量为 1，少于3天，不执行可视化
+2025-06-03 17:52:34,925 - TradingBot - INFO - 今天是 2025-06-03，account_metrics.xlsx 中未找到匹配的日期，不发送邮件
+2025-06-03 17:52:34,925 - TradingBot - INFO - 20250603 交易完成，Run_ID: 2025-06-03_174520
+2025-06-03 17:52:34,925 - TradingBot - INFO - 记录已处理文件 data/pos20250603_v3.csv，哈希: f2d6d69cc10d49563db93aaffd43c314，Run_ID: 2025-06-03_174520
+2025-06-03 17:52:34,926 - TradingBot - INFO - 交易完成后等待 10 分钟
+2025-06-03 18:02:34,934 - TradingBot - INFO - 检查 20250603 的文件或邮件，Run_ID: 2025-06-03_180234
+2025-06-03 18:02:34,934 - TradingBot - INFO - 检查本地文件: data/pos20250603_v3.csv
+2025-06-03 18:02:34,935 - TradingBot - INFO - 文件 data/pos20250603_v3.csv 已处理（哈希: f2d6d69cc10d49563db93aaffd43c314），跳过
+2025-06-03 18:02:34,935 - TradingBot - INFO - 未收到 20250603 的pos文件，等待 10 分钟后重试
+2025-06-03 18:12:34,940 - TradingBot - INFO - 检查 20250603 的文件或邮件，Run_ID: 2025-06-03_181234
+2025-06-03 18:12:34,940 - TradingBot - INFO - 检查本地文件: data/pos20250603_v3.csv
+2025-06-03 18:12:34,941 - TradingBot - INFO - 文件 data/pos20250603_v3.csv 已处理（哈希: f2d6d69cc10d49563db93aaffd43c314），跳过
+2025-06-03 18:12:34,941 - TradingBot - INFO - 未收到 20250603 的pos文件，等待 10 分钟后重试
