@@ -27,7 +27,9 @@ class TradingEngine:
         self.num_short_pos = int(config["num_short_pos"])  # 从配置中获取空头持仓数量并转换为整数
         self.trade_time = config["trade_time"]  # 从配置中获取交易时间
         self.max_wait_time = float(config.get("max_wait_time", 30))  # 获取最大等待时间（分钟），默认30分钟
-        self.account_metrics = {}  # 初始化账户指标字典，存储交易相关指标
+        self.account_metrics = {}  # 初始化账户指标字典
+        self.trade_start_time = None  # 初始化交易开始时间戳
+        self.trade_end_time = None  # 初始化交易结束时间戳
         self.pending_orders = []  # 初始化挂单列表，存储未成交的订单
         self.failed_depth_tickers = set()  # 初始化失败交易对集合，记录获取深度失败的交易对
         self.error_reasons = {}  # 初始化错误原因字典，记录交易失败原因，格式为 {ticker: reason}
@@ -345,7 +347,7 @@ class TradingEngine:
                 if metric in self.account_metrics:
                     date_str = self.account_metrics[metric]["date"]
                     try:
-                        normalized_date = self.normalize_date_time(date_str).strftime('%Y-%m-%d %H:%M:%S')
+                        normalized_date = self.normalize_date_time(date_str).strftime('%Y-%m-%d')
                     except Exception as e:
                         self.logger.warning(f"规范化日期失败: {date_str}, 使用原始值: {str(e)}")
                         normalized_date = date_str
@@ -374,6 +376,16 @@ class TradingEngine:
                     if concat_list:  # 如果有有效数据
                         df_combined = pd.concat(concat_list, ignore_index=True)  # 合并数据
                         df_combined = df_combined.drop_duplicates(subset=["Metric", "Run_ID"], keep="last")  # 去重
+                        
+                        # 统一格式化Date列为YYYY-MM-DD格式
+                        try:
+                            df_combined['Date'] = pd.to_datetime(df_combined['Date'], format='mixed', errors='coerce').dt.strftime('%Y-%m-%d')
+                            # 确保 Record_Time 列保留完整的时间信息
+                            if 'Record_Time' in df_combined.columns:
+                                df_combined['Record_Time'] = pd.to_datetime(df_combined['Record_Time'], format='mixed', errors='coerce')
+                        except Exception as e:
+                            self.logger.warning(f"格式化Date列失败: {str(e)}")
+                            
                         with pd.ExcelWriter(filename, engine='openpyxl', mode='w') as writer:  # 使用 openpyxl 写入
                             df_combined.to_excel(writer, index=False, sheet_name='Account_Metrics')  # 保存到 Excel
                     else:
@@ -456,114 +468,118 @@ class TradingEngine:
             current_date = datetime.now().strftime('%Y-%m-%d')  # 获取当前日期
             commission_key = f"trade_commission_summary_{current_date}"  # 生成手续费总和键
             
-            # 如果已经计算过，直接返回
-            if commission_key in self.account_metrics and isinstance(self.account_metrics[commission_key], dict) and "value" in self.account_metrics[commission_key]:
-                self.logger.info(f"已存在手续费记录 ({commission_key}): {self.account_metrics[commission_key]['value']} USDT")
-                return self.account_metrics[commission_key]
-
-            # 获取调仓时间范围
-            start_time_str = self.account_metrics.get("before_trade_balance", {}).get("date")  # 获取调仓前时间
-            end_time_str = self.account_metrics.get("after_trade_balance", {}).get("date")  # 获取调仓后时间
-
-            # 添加调试日志，显示原始时间字符串
-            self.logger.debug(f"手续费计算时间范围原始字符串: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
-
-            if not start_time_str or not end_time_str:  # 如果缺少时间信息
-                self.logger.warning(f"缺少调仓时间信息，无法获取手续费: start={start_time_str}, end={end_time_str}")  # 记录警告日志
-                self.account_metrics[commission_key] = {
-                    "value": 0.0,  # 设置默认值
-                    "description": f"{current_date} 买卖交易手续费总和（缺少时间信息）",  # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
-                }
-                return self.account_metrics[commission_key]  # 返回手续费记录
-
-            try:
-                # 转换时间戳前记录原始值
-                self.logger.info(f"尝试转换时间戳: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
+            # 使用交易的实际开始和结束时间戳，而不是依赖account_metrics中的date字段
+            if hasattr(self, 'trade_start_time') and hasattr(self, 'trade_end_time'):
+                start_time = self.trade_start_time
+                end_time = self.trade_end_time
+                self.logger.info(f"使用实际交易时间戳: start_time={start_time}, end_time={end_time}")
                 
-                start_time = self.datetime_to_timestamp(start_time_str)  # 转换为开始时间戳
-                end_time = self.datetime_to_timestamp(end_time_str)  # 转换为结束时间戳
-                
-                # 添加调试日志，显示转换后的时间戳和对应的日期时间
+                # 添加调试日志，显示对应的日期时间
                 start_dt = datetime.fromtimestamp(start_time/1000)
                 end_dt = datetime.fromtimestamp(end_time/1000)
-                self.logger.debug(f"转换后的时间戳: start={start_time} ({start_dt}) - end={end_time} ({end_dt})")
-                self.logger.info(f"获取手续费记录，时间范围: {start_time} ({start_dt}) - {end_time} ({end_dt})")
-                
-                if start_time >= end_time:  # 如果时间范围无效
-                    self.logger.warning(f"无效时间范围: 开始时间 '{start_time_str}' ({start_time}) 不早于结束时间 '{end_time_str}' ({end_time})")
+                self.logger.debug(f"交易时间戳对应的时间: start={start_dt} - end={end_dt}")
+            else:
+                # 如果没有实际交易时间戳，回退到使用account_metrics中的date字段
+                start_time_str = self.account_metrics.get("before_trade_balance", {}).get("date")  # 获取调仓前时间
+                end_time_str = self.account_metrics.get("after_trade_balance", {}).get("date")  # 获取调仓后时间
+
+                # 添加调试日志，显示原始时间字符串
+                self.logger.debug(f"手续费计算时间范围原始字符串: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
+
+                if not start_time_str or not end_time_str:  # 如果缺少时间信息
+                    self.logger.warning(f"缺少调仓时间信息，无法获取手续费: start={start_time_str}, end={end_time_str}")  # 记录警告日志
                     self.account_metrics[commission_key] = {
                         "value": 0.0,  # 设置默认值
-                        "description": f"{current_date} 买卖交易手续费总和（无效时间范围）",  # 设置描述
+                        "description": f"{current_date} 买卖交易手续费总和（缺少时间信息）",  # 设置描述
                         "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
                     }
                     return self.account_metrics[commission_key]  # 返回手续费记录
 
-                # 使用新的API获取手续费记录，支持分页
-                records = []
-                has_more = True
-                current_start_time = start_time
-                max_retries = 3
-                
-                while has_more and current_start_time < end_time:
-                    for retry in range(max_retries):
-                        try:
-                            self.logger.debug(f"请求手续费记录: start_time={current_start_time}, end_time={end_time}")
-                            batch_records = self.client.get_commission_history(start_time_ms=current_start_time, end_time_ms=end_time, limit=1000)
-                            self.logger.debug(f"API响应: 获取到 {len(batch_records)} 条记录")
-                            
-                            if not batch_records:
-                                self.logger.info(f"API返回空记录，可能该时间段内没有交易")
-                                has_more = False
-                                break
-                                
-                            records.extend(batch_records)
-                            
-                            # 更新时间戳，从最后一条记录的时间开始
-                            if batch_records:
-                                last_record_time = int(batch_records[-1].get('time', current_start_time))
-                                current_start_time = last_record_time + 1
-                                if len(batch_records) < 1000:
-                                    has_more = False
-                            else:
-                                has_more = False
-                            break  # 成功获取数据，跳出重试循环
-                        except Exception as e:
-                            self.logger.warning(f"获取手续费记录批次失败 (尝试 {retry+1}/{max_retries}): {str(e)}")
-                            if retry == max_retries - 1:  # 最后一次重试
-                                self.logger.error(f"多次尝试后仍无法获取手续费记录: {str(e)}")
-                                self.logger.exception("详细错误信息:")
-                                has_more = False
-                            else:
-                                time.sleep(1)  # 等待1秒后重试
-                
-                self.logger.info(f"获取到 {len(records)} 条手续费记录")
-                
-                if len(records) > 0:
-                    self.logger.debug(f"手续费记录示例: {records[0]}")
-                
-                total_commission = self.client.calculate_total_commission(records)  # 计算总手续费
+                try:
+                    # 转换时间戳前记录原始值
+                    self.logger.info(f"尝试转换时间戳: start_time_str='{start_time_str}', end_time_str='{end_time_str}'")
+                    
+                    start_time = self.datetime_to_timestamp(start_time_str)  # 转换为开始时间戳
+                    end_time = self.datetime_to_timestamp(end_time_str)  # 转换为结束时间戳
+                    
+                    # 添加调试日志，显示转换后的时间戳和对应的日期时间
+                    start_dt = datetime.fromtimestamp(start_time/1000)
+                    end_dt = datetime.fromtimestamp(end_time/1000)
+                    self.logger.debug(f"转换后的时间戳: start={start_time} ({start_dt}) - end={end_time} ({end_dt})")
+                    self.logger.info(f"获取手续费记录，时间范围: {start_time} ({start_dt}) - {end_time} ({end_dt})")
+                    
+                    if start_time >= end_time:  # 如果时间范围无效
+                        self.logger.warning(f"无效时间范围: 开始时间 '{start_time_str}' ({start_time}) 不早于结束时间 '{end_time_str}' ({end_time})")
+                        self.account_metrics[commission_key] = {
+                            "value": 0.0,  # 设置默认值
+                            "description": f"{current_date} 买卖交易手续费总和（无效时间范围）",  # 设置描述
+                            "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                        }
+                        return self.account_metrics[commission_key]  # 返回手续费记录
+                except Exception as e:
+                    self.logger.error(f"时间戳转换失败: {str(e)}")
+                    self.account_metrics[commission_key] = {
+                        "value": 0.0,  # 设置默认值
+                        "description": f"{current_date} 买卖交易手续费总和（时间戳转换失败）",  # 设置描述
+                        "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    }
+                    return self.account_metrics[commission_key]  # 返回手续费记录
 
-                self.account_metrics[commission_key] = {
-                    "value": total_commission,  # 保存总手续费
-                    "description": f"{current_date} 买卖交易手续费总和",  # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
-                    "records_count": len(records)  # 记录数量
-                }
-                self.logger.info(f"手续费汇总 ({commission_key}): {total_commission} USDT, 记录数: {len(records)}")  # 记录手续费汇总日志
-                return self.account_metrics[commission_key]  # 返回手续费记录
-            except Exception as e:
-                self.logger.error(f"获取手续费失败: {str(e)}")
-                self.logger.exception("详细错误信息:")
-                self.account_metrics[commission_key] = {
-                    "value": 0.0,  # 设置默认值
-                    "description": f"{current_date} 买卖交易手续费总和（未计算）",  # 设置描述
-                    "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
-                    "error": str(e)  # 错误信息
-                }
-                return self.account_metrics[commission_key]  # 返回手续费记录
+            # 使用新的API获取手续费记录，支持分页
+            records = []
+            has_more = True
+            current_start_time = start_time
+            max_retries = 3
+            
+            while has_more and current_start_time < end_time:
+                for retry in range(max_retries):
+                    try:
+                        self.logger.debug(f"请求手续费记录: start_time={current_start_time}, end_time={end_time}")
+                        batch_records = self.client.get_commission_history(start_time_ms=current_start_time, end_time_ms=end_time, limit=1000)
+                        self.logger.debug(f"API响应: 获取到 {len(batch_records)} 条记录")
+                        
+                        if not batch_records:
+                            self.logger.info(f"API返回空记录，可能该时间段内没有交易")
+                            has_more = False
+                            break
+                            
+                        records.extend(batch_records)
+                        
+                        # 更新时间戳，从最后一条记录的时间开始
+                        if batch_records:
+                            last_record_time = int(batch_records[-1].get('time', current_start_time))
+                            current_start_time = last_record_time + 1
+                            if len(batch_records) < 1000:
+                                has_more = False
+                        else:
+                            has_more = False
+                        break  # 成功获取数据，跳出重试循环
+                    except Exception as e:
+                        self.logger.warning(f"获取手续费记录批次失败 (尝试 {retry+1}/{max_retries}): {str(e)}")
+                        if retry == max_retries - 1:  # 最后一次重试
+                            self.logger.error(f"多次尝试后仍无法获取手续费记录: {str(e)}")
+                            self.logger.exception("详细错误信息:")
+                            has_more = False
+                        else:
+                            time.sleep(1)  # 等待1秒后重试
+            
+            self.logger.info(f"获取到 {len(records)} 条手续费记录")
+            
+            if len(records) > 0:
+                self.logger.debug(f"手续费记录示例: {records[0]}")
+            
+            total_commission = self.client.calculate_total_commission(records)  # 计算总手续费
+
+            self.account_metrics[commission_key] = {
+                "value": total_commission,  # 保存总手续费
+                "description": "买卖交易手续费总和",  # 设置描述
+                "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),  # 记录时间
+                "records_count": len(records)  # 记录数量
+            }
+            self.logger.info(f"手续费汇总 ({commission_key}): {total_commission} USDT, 记录数: {len(records)}")  # 记录手续费汇总日志
+            return self.account_metrics[commission_key]  # 返回手续费记录
         except Exception as e:
-            self.logger.error(f"处理手续费计算过程中发生错误: {str(e)}")
+            self.logger.error(f"获取手续费失败: {str(e)}")
             self.logger.exception("详细错误信息:")
             self.account_metrics[commission_key] = {
                 "value": 0.0,  # 设置默认值
@@ -602,7 +618,7 @@ class TradingEngine:
             total_realized_pnl = self.client.calculate_total_realized_pnl(pnl_history, 'USDT')
             self.account_metrics[pnl_key] = {
                 "value": total_realized_pnl,
-                "description": f"{current_date_str} 买卖交易已实现盈亏总和",
+                "description": "买卖交易已实现盈亏总和",
                 "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
                 "records_count": len(pnl_history)
             }
@@ -1442,7 +1458,7 @@ class TradingEngine:
             commission_value = float(self.account_metrics[commission_key]["value"])
             self.account_metrics[commission_ratio] = {
                 "value": f"{(commission_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
-                "description": f"{current_date} 买卖交易总手续费占比",
+                "description": "买卖交易总手续费占比",
                 "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
         else:
@@ -1456,7 +1472,7 @@ class TradingEngine:
             pnl_value = float(self.account_metrics[pnl_key]["value"])
             self.account_metrics[pnl_ratio_key] = {
                 "value": f"{(pnl_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
-                "description": f"{current_date} 买卖交易总盈亏占比",
+                "description": "买卖交易总盈亏占比",
                 "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
             }
         else:
@@ -1639,12 +1655,12 @@ class TradingEngine:
                     continue
             # 回退到 mixed 格式解析
             try:
-                parsed_time = pd.to_datetime(time_val, format='mixed', errors='coerce')
+                parsed_time = pd.to_datetime(time_val, errors='coerce')
                 if not pd.isna(parsed_time):
-                    self.logger.info(f"使用 mixed 格式成功解析时间: {time_val}")
+                    self.logger.info(f"使用默认格式成功解析时间: {time_val}")
                     return parsed_time
             except ValueError:
-                self.logger.warning(f"无法解析时间格式: {time_val}，尝试的格式: {formats} + mixed")
+                self.logger.warning(f"无法解析时间格式: {time_val}，尝试的格式: {formats} + 默认格式")
             return pd.NaT
         self.logger.warning(f"时间值类型不支持: {type(time_val)}，值: {time_val}")
         return pd.NaT
@@ -1690,23 +1706,35 @@ class TradingEngine:
                 self.logger.warning(f"无法解析当前记录时间: {current_record_time_str}，使用当前时间")
                 current_record_time = pd.to_datetime(datetime.now())
 
-            previous_data = df[(df['Metric'] == 'after_trade_balance') & (df['Record_Time'] < current_record_time)]
+            # 修改这部分代码，查找最后一条记录
+            previous_data = df[(df['Metric'] == 'after_trade_balance')]
+            self.logger.info(f"找到 {len(previous_data)} 条 after_trade_balance 记录")
+            
             previous_after_value = None
             previous_record_time = None
+            
+            # 修改后的解决方案：排除当前 Run_ID，然后按时间排序获取最新记录
             if not previous_data.empty:
-                previous_data = previous_data.sort_values('Record_Time', ascending=False)
-                previous_after_value = float(previous_data.iloc[0]['Value'])
-                previous_record_time = previous_data.iloc[0]['Record_Time']
-                self.logger.info(
-                    f"找到上一次记录: Record_Time={previous_record_time}, after_trade_balance={previous_after_value}")
-            else:
-                self.logger.warning(f"未找到上一次 after_trade_balance 记录，尝试按 Run_ID 查找")
-                previous_data = df[df['Metric'] == 'after_trade_balance'].sort_values('Run_ID', ascending=False)
-                if not previous_data.empty and len(previous_data) > 1:
-                    previous_after_value = float(previous_data.iloc[1]['Value'])
-                    previous_record_time = previous_data.iloc[1]['Record_Time']
+                # 获取当前 Run_ID
+                current_run_id = self.account_metrics.get("after_trade_balance", {}).get("Run_ID")
+                
+                # 如果有当前 Run_ID，排除它
+                if current_run_id:
+                    previous_data = previous_data[previous_data['Run_ID'] != current_run_id]
+                    self.logger.info(f"排除当前 Run_ID={current_run_id} 后，剩余 {len(previous_data)} 条记录")
+                
+                # 如果还有记录，按时间排序并获取最新的一条
+                if not previous_data.empty:
+                    previous_data = previous_data.sort_values('Record_Time', ascending=False)
+                    previous_after_value = float(previous_data.iloc[0]['Value'])
+                    previous_record_time = previous_data.iloc[0]['Record_Time']
+                    previous_run_id = previous_data.iloc[0]['Run_ID']
                     self.logger.info(
-                        f"通过 Run_ID 找到上一次记录: Record_Time={previous_record_time}, after_trade_balance={previous_after_value}")
+                        f"找到上一次记录: Record_Time={previous_record_time}, Run_ID={previous_run_id}, after_trade_balance={previous_after_value}")
+                else:
+                    self.logger.warning(f"排除当前 Run_ID 后未找到上一次 after_trade_balance 记录")
+            else:
+                self.logger.warning(f"未找到任何 after_trade_balance 记录")
 
             if current_before and previous_after_value and previous_after_value != 0:
                 pre_rebalance_return = ((float(current_before) - previous_after_value) / previous_after_value) * 100
@@ -1801,6 +1829,9 @@ class TradingEngine:
         """
         self.error_reasons = {}  # 初始化错误原因字典
         start_time = int(time.time() * 1000)  # 记录调仓开始时间（毫秒时间戳）
+        
+        # 保存交易开始时间戳用于手续费计算
+        self.trade_start_time = start_time
         try:
             # ==================== 初始化阶段 ====================
             self.logger.info(f"🚀 开始执行交易引擎 | Date: {date_str} | RunID: {run_id}")  # 记录交易引擎启动日志
@@ -1882,7 +1913,9 @@ class TradingEngine:
                 self.error_reasons["position_adjustment_failed"] = error_msg  # 记录错误原因
 
             # ==================== 记录调仓后余额和交易记录 ===================
-            end_time = int(time.time() * 1000)  # 记录调仓结束时间（毫秒）
+            self.trade_end_time = int(time.time() * 1000)  # 记录调仓结束时间（毫秒）
+            end_time = self.trade_end_time  # 兼容原有代码
+            end_time = self.trade_end_time  # 兼容原有代码
             account_info = self.client.get_account_info()  # 获取最新账户信息
             after_trade_balance = float(account_info["totalMarginBalance"])  # 获取调仓后总余额
             after_available_balance = float(account_info["availableBalance"])  # 获取调仓后可用余额
@@ -1927,62 +1960,62 @@ class TradingEngine:
                 'position_file': {
                     'value': os.path.basename(funding_file),  # 保存资金费率文件名
                     'description': '调仓文件',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'before_trade_balance': {
                     'value': before_trade_balance,  # 保存调仓前总余额
                     'description': '调仓前账户总保证金余额(totalMarginBalance)',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'before_available_balance': {
                     'value': before_available_balance,  # 保存调仓前可用余额
                     'description': '调仓前可用保证金余额(available_balance)',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'after_trade_balance': {
                     'value': after_trade_balance,  # 保存调仓后总余额
                     'description': '调仓后账户总保证金余额(totalMarginBalance)',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'balance_loss': {
                     'value': balance_loss,  # 保存余额损失金额
                     'description': '调仓前后余额损失金额',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'balance_loss_rate': {
                     'value': f"{balance_loss_rate:.6f}%",  # 保存余额损失率，保留6位小数
                     'description': '调仓前后余额损失率 (%)',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'after_available_balance': {
                     'value': after_available_balance,  # 保存调仓后可用余额
                     'description': '调仓后可用余额',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 'btc_usdt_price': {
                     'value': btc_price,  # 保存 BTC/USDT 价格
                     'description': f'当前btc_usdt_price:{btc_price}',  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 f'trade_commission_summary_{current_date}': {
                     'value': total_commission,  # 保存当天的总手续费
-                    'description': f"{current_date} 买卖交易手续费总和",  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'description': "买卖交易手续费总和",  # 设置描述
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 f'trade_commission_summary_ratio_{current_date}': {
                     'value': f"{commission_ratio:.6f}%",  # 保存当天的手续费占比
-                    'description': f"{current_date} 买卖交易总手续费占比",  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'description': "买卖交易总手续费占比",  # 设置描述
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 f'trade_realized_pnl_summary_{current_date}': {
                     'value': total_realized_pnl,  # 保存当天的总盈亏
-                    'description': f"{current_date} 买卖交易已实现盈亏总和",  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'description': "买卖交易已实现盈亏总和",  # 设置描述
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 },
                 f'trade_realized_pnl_summary_ratio_{current_date}': {
                     'value': f"{realized_pnl_ratio:.6f}%",  # 保存当天的盈亏占比
-                    'description': f"{current_date} 买卖交易总盈亏占比",  # 设置描述
-                    'date': datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 记录时间
+                    'description': "买卖交易总盈亏占比",  # 设置描述
+                    'date': datetime.now().strftime('%Y-%m-%d')  # 记录时间（只保留日期）
                 }
             }
 

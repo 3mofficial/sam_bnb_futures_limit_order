@@ -1,0 +1,207 @@
+2025-06-04 17:29:54,515 - TradingBot - INFO - 日志初始化成功，当前日志文件: logs\trading_2025-06-04_172954.log
+2025-06-04 17:29:54,516 - TradingBot - INFO - 交易程序启动，进入日内多次换仓模式
+2025-06-04 17:29:54,824 - TradingBot - INFO - Binance 客户端初始化成功，测试网络: False
+2025-06-04 17:29:55,133 - TradingBot - INFO - 所有交易对已是全仓模式 (CROSSED)，无需修改
+2025-06-04 17:29:55,244 - TradingBot - INFO - 账户已是单币种模式 (Single)，无需修改
+2025-06-04 17:29:55,362 - TradingBot - INFO - 账户已是单向模式 (One-way)，无需修改
+2025-06-04 17:29:55,838 - TradingBot - INFO - 检查 20250604 的文件或邮件，Run_ID: 2025-06-04_172955
+2025-06-04 17:29:55,839 - TradingBot - INFO - 检查本地文件: data/pos20250604_v3.csv
+2025-06-04 17:29:55,839 - TradingBot - INFO - 本地找到文件 data/pos20250604_v3.csv，哈希: 2fd5f461de1ee0e3813c1573e05a1290，未处理，直接使用
+2025-06-04 17:29:55,839 - TradingBot - INFO - 处理 20250604 的pos文件，Run_ID: 2025-06-04_172955
+2025-06-04 17:29:55,839 - TradingBot - INFO - 🚀 开始执行交易引擎 | Date: 20250604 | RunID: 2025-06-04_172955
+2025-06-04 17:29:55,956 - TradingBot - INFO - 当前没有未成交的挂单
+2025-06-04 17:29:55,960 - TradingBot - INFO - 📋 黑名单过滤结果
+├─ 被过滤币种 (7个): BADGERUSDT, BALUSDT, LINAUSDT, NULSUSDT, SNTUSDT, TROYUSDT, VIDTUSDT
+└─ 剩余候选池: 166/173
+2025-06-04 17:29:55,964 - TradingBot - INFO - 🔍 有效候选列表
+├─ 多头候选: 85个
+└─ 空头候选: 81个
+2025-06-04 17:29:56,255 - TradingBot - INFO - =====账户信息获取成功: totalMarginBalance = 48.18231345, available_balance = 5.43293784=====
+2025-06-04 17:29:56,255 - TradingBot - INFO - 每笔交易资金份额: per_share=3.084450960714286
+2025-06-04 17:29:56,369 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-04 17:29:56,370 - TradingBot - INFO - 当前持仓: {'LRCUSDT': 104.0, 'FILUSDT': -3.5, 'DENTUSDT': 12245.0, 'ONGUSDT': 49.0, 'SXPUSDT': 49.8, 'XMRUSDT': -0.026, 'ARKUSDT': -24.0, 'AERGOUSDT': -76.0, 'BELUSDT': -31.0, 'SFPUSDT': 19.0, 'RLCUSDT': 9.0, 'DFUSDT': -192.0, 'CTKUSDT': -28.0, 'SUNUSDT': 490.0}, 是否第一天: False
+2025-06-04 17:29:56,553 - TradingBot - INFO - 交易所信息获取成功
+2025-06-04 17:29:56,976 - TradingBot - INFO - RLCUSDT 数量调整: 9.051504335462054 -> 9.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.30293, 真实保证金=3.100977, 数量精度=1
+2025-06-04 17:29:56,977 - TradingBot - INFO - 添加多头目标: RLCUSDT, 数量=9.1
+2025-06-04 17:29:57,382 - TradingBot - INFO - DENTUSDT 数量调整: 12470.825986715441 -> 12471.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=9.253482, 真实保证金=3.084494, 数量精度=0
+2025-06-04 17:29:57,384 - TradingBot - INFO - 添加多头目标: DENTUSDT, 数量=12471.0
+2025-06-04 17:29:57,903 - TradingBot - INFO - ONGUSDT 数量调整: 49.32490875342675 -> 49.0, 最小值: 1.0, 最大值: 1000000.0, 名义价值=9.1924, 真实保证金=3.064133, 数量精度=0
+2025-06-04 17:29:57,903 - TradingBot - INFO - 添加多头目标: ONGUSDT, 数量=49.0
+2025-06-04 17:29:58,344 - TradingBot - INFO - SFPUSDT 数量调整: 18.930754668868367 -> 19.0, 最小值: 1.0, 最大值: 5000000.0, 名义价值=9.2872, 真实保证金=3.095733, 数量精度=0
+2025-06-04 17:29:58,346 - TradingBot - INFO - 添加多头目标: SFPUSDT, 数量=19.0
+2025-06-04 17:29:59,048 - TradingBot - INFO - LRCUSDT 数量调整: 104.99662864113081 -> 105.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.25365, 真实保证金=3.084550, 数量精度=0
+2025-06-04 17:29:59,050 - TradingBot - INFO - 添加多头目标: LRCUSDT, 数量=105.0
+2025-06-04 17:29:59,474 - TradingBot - INFO - SUNUSDT 数量调整: 489.25886332907834 -> 489.0, 最小值: 1.0, 最大值: 50000000.0, 名义价值=9.248457, 真实保证金=3.082819, 数量精度=0
+2025-06-04 17:29:59,476 - TradingBot - INFO - 添加多头目标: SUNUSDT, 数量=489.0
+2025-06-04 17:30:00,032 - TradingBot - INFO - SXPUSDT 数量调整: 50.20810028292381 -> 50.2, 最小值: 0.1, 最大值: 1000000.0, 名义价值=9.25186, 真实保证金=3.083953, 数量精度=1
+2025-06-04 17:30:00,033 - TradingBot - INFO - 添加多头目标: SXPUSDT, 数量=50.2
+2025-06-04 17:30:00,515 - TradingBot - INFO - ARKUSDT 数量调整: 24.287015438695164 -> 24.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.144, 真实保证金=3.048000, 数量精度=0
+2025-06-04 17:30:00,517 - TradingBot - INFO - 添加空头目标: ARKUSDT, 数量=-24.0
+2025-06-04 17:30:00,517 - TradingBot - WARNING - 交易对 FTTUSDT 不可交易，跳过
+2025-06-04 17:30:00,517 - TradingBot - WARNING - 交易对 XEMUSDT 不可交易，跳过
+2025-06-04 17:30:00,517 - TradingBot - WARNING - 交易对 STPTUSDT 不可交易，跳过
+2025-06-04 17:30:00,964 - TradingBot - INFO - CTKUSDT 数量调整: 28.82664449265688 -> 29.0, 最小值: 1.0, 最大值: 2500000.0, 名义价值=9.309000000000001, 真实保证金=3.103000, 数量精度=0
+2025-06-04 17:30:00,966 - TradingBot - INFO - 添加空头目标: CTKUSDT, 数量=-29.0
+2025-06-04 17:30:00,966 - TradingBot - WARNING - 交易对 BLZUSDT 不可交易，跳过
+2025-06-04 17:30:00,966 - TradingBot - WARNING - 交易对 AMBUSDT 不可交易，跳过
+2025-06-04 17:30:01,383 - TradingBot - INFO - AERGOUSDT 数量调整: 76.95095951885953 -> 77.0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=9.25925, 真实保证金=3.086417, 数量精度=0
+2025-06-04 17:30:01,385 - TradingBot - INFO - 添加空头目标: AERGOUSDT, 数量=-77.0
+2025-06-04 17:30:01,385 - TradingBot - WARNING - 交易对 UNFIUSDT 不可交易，跳过
+2025-06-04 17:30:01,385 - TradingBot - WARNING - 交易对 FTMUSDT 不可交易，跳过
+2025-06-04 17:30:01,385 - TradingBot - WARNING - 交易对 STRAXUSDT 不可交易，跳过
+2025-06-04 17:30:01,385 - TradingBot - WARNING - 交易对 WAVESUSDT 不可交易，跳过
+2025-06-04 17:30:01,806 - TradingBot - INFO - DFUSDT 数量调整: 193.90932276074724 -> 194.0, 最小值: 1.0, 最大值: 5000000.0, 名义价值=9.25768, 真实保证金=3.085893, 数量精度=0
+2025-06-04 17:30:01,807 - TradingBot - INFO - 添加空头目标: DFUSDT, 数量=-194.0
+2025-06-04 17:30:02,238 - TradingBot - WARNING - BCHUSDT 数量调整为 0 (因名义价值 9.33478 小于最小值 20.0)
+2025-06-04 17:30:02,238 - TradingBot - INFO - BCHUSDT 数量调整: 0.022799371414139992 -> 0, 最小值: 0.001, 最大值: 10000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=3
+2025-06-04 17:30:02,240 - TradingBot - WARNING - BCHUSDT 数量调整为 0，跳过
+2025-06-04 17:30:02,970 - TradingBot - INFO - BELUSDT 数量调整: 31.52760777561451 -> 32.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=9.392, 真实保证金=3.130667, 数量精度=0
+2025-06-04 17:30:02,972 - TradingBot - INFO - 添加空头目标: BELUSDT, 数量=-32.0
+2025-06-04 17:30:02,972 - TradingBot - WARNING - 交易对 MDTUSDT 不可交易，跳过
+2025-06-04 17:30:02,972 - TradingBot - WARNING - 交易对 SCUSDT 不可交易，跳过
+2025-06-04 17:30:02,972 - TradingBot - WARNING - 交易对 RENUSDT 不可交易，跳过
+2025-06-04 17:30:03,391 - TradingBot - INFO - FILUSDT 数量调整: 3.5250868122448984 -> 3.5, 最小值: 0.1, 最大值: 10000000.0, 名义价值=9.1875, 真实保证金=3.062500, 数量精度=1
+2025-06-04 17:30:03,393 - TradingBot - INFO - 添加空头目标: FILUSDT, 数量=-3.5
+2025-06-04 17:30:03,805 - TradingBot - WARNING - LTCUSDT 数量调整为 0 (因名义价值 9.29575 小于最小值 20.0)
+2025-06-04 17:30:03,805 - TradingBot - INFO - LTCUSDT 数量调整: 0.10253022584091809 -> 0, 最小值: 0.001, 最大值: 10000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=3
+2025-06-04 17:30:03,807 - TradingBot - WARNING - LTCUSDT 数量调整为 0，跳过
+2025-06-04 17:30:04,270 - TradingBot - INFO - XMRUSDT 数量调整: 0.026336567189818864 -> 0.026, 最小值: 0.001, 最大值: 10000.0, 名义价值=9.1351, 真实保证金=3.045033, 数量精度=3
+2025-06-04 17:30:04,272 - TradingBot - INFO - 添加空头目标: XMRUSDT, 数量=-0.026
+2025-06-04 17:30:04,273 - TradingBot - INFO - 初始化目标持仓: {'RLCUSDT': 9.1, 'DENTUSDT': 12471.0, 'ONGUSDT': 49.0, 'SFPUSDT': 19.0, 'LRCUSDT': 105.0, 'SUNUSDT': 489.0, 'SXPUSDT': 50.2, 'ARKUSDT': -24.0, 'CTKUSDT': -29.0, 'AERGOUSDT': -77.0, 'DFUSDT': -194.0, 'BELUSDT': -32.0, 'FILUSDT': -3.5, 'XMRUSDT': -0.026}
+2025-06-04 17:30:04,388 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-04 17:30:04,389 - TradingBot - INFO - ==================== 开始持续限价单调仓 ====================
+2025-06-04 17:30:04,389 - TradingBot - INFO - 开始第 1 轮调仓...
+2025-06-04 17:30:04,538 - TradingBot - INFO - 第 1 轮开始时可用余额: 5.42654853
+2025-06-04 17:30:04,663 - TradingBot - INFO - 第 1 轮: 处理平仓 SUNUSDT SELL, 需求数量=1.0
+2025-06-04 17:30:05,102 - TradingBot - INFO - SUNUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 50000000.0, 名义价值=0.018913, 真实保证金=0.006304, 数量精度=0
+2025-06-04 17:30:05,104 - TradingBot - INFO - 第 1 轮: SUNUSDT 平仓调整后数量=1.0
+2025-06-04 17:30:05,104 - TradingBot - INFO - 第 1 轮: SUNUSDT 为平仓操作，跳过余额检查
+2025-06-04 17:30:05,237 - TradingBot - INFO - 第 1 轮: 准备平仓挂单 SUNUSDT SELL, 数量=1.0, 价格=0.018913, is_close=True
+2025-06-04 17:30:05,362 - TradingBot - INFO - SUNUSDT 杠杆设置为 3
+2025-06-04 17:30:05,363 - TradingBot - INFO - SUNUSDT 杠杆已设置为 3, is_close=True
+2025-06-04 17:30:05,516 - TradingBot - INFO - SUNUSDT 为平仓订单 (reduceOnly=True)，跳过保证金检查
+2025-06-04 17:30:05,630 - TradingBot - INFO - SUNUSDT postonly 挂单成功: 方向=SELL, 数量=1.0, 价格=0.018913, 订单ID=1398976969, is_close=True, reduceOnly=True
+2025-06-04 17:30:05,746 - TradingBot - INFO - 第 1 轮: SUNUSDT 平仓挂单结果 success=True, order_id=1398976969, order={'orderId': 1398976969, 'symbol': 'SUNUSDT', 'status': 'NEW', 'clientOrderId': 'x-Cb7ytekJabe4bf5698014c3b79d7be', 'price': '0.0189130', 'avgPrice': '0.00', 'origQty': '1', 'executedQty': '0', 'cumQty': '0', 'cumQuote': '0.0000000', 'timeInForce': 'GTX', 'type': 'LIMIT', 'reduceOnly': True, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.0000000', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1749029405621}
+2025-06-04 17:30:05,747 - TradingBot - INFO - 第 1 轮: SUNUSDT SELL postOnly 平仓挂单成功，订单ID=1398976969, is_close=True
+2025-06-04 17:30:05,747 - TradingBot - INFO - 第 1 轮开仓前可用余额: 5.42654853, 开仓需求: {'RLCUSDT': 0.09999999999999964, 'DFUSDT': -2.0, 'BELUSDT': -1.0, 'LRCUSDT': 1.0, 'DENTUSDT': 226.0, 'CTKUSDT': -1.0, 'SXPUSDT': 0.4000000000000057, 'SUNUSDT': 0.0, 'AERGOUSDT': -1.0}
+2025-06-04 17:30:05,747 - TradingBot - INFO - 第 1 轮: 处理开仓 RLCUSDT BUY, 需求数量=0.09999999999999964
+2025-06-04 17:30:06,170 - TradingBot - WARNING - RLCUSDT 数量调整为 0 (因名义价值 0.10217000000000001 小于最小值 5.0)
+2025-06-04 17:30:06,171 - TradingBot - INFO - RLCUSDT 数量调整: 0.09999999999999964 -> 0, 最小值: 0.1, 最大值: 1000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=1
+2025-06-04 17:30:06,172 - TradingBot - INFO - 第 1 轮: RLCUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:06,172 - TradingBot - WARNING - 第 1 轮: RLCUSDT 调整数量为 0，跳过
+2025-06-04 17:30:06,172 - TradingBot - INFO - 第 1 轮: 处理开仓 DFUSDT SELL, 需求数量=-2.0
+2025-06-04 17:30:06,674 - TradingBot - WARNING - DFUSDT 数量调整为 0 (因名义价值 0.09542 小于最小值 5.0)
+2025-06-04 17:30:06,675 - TradingBot - INFO - DFUSDT 数量调整: 2.0 -> 0, 最小值: 1.0, 最大值: 5000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:06,676 - TradingBot - INFO - 第 1 轮: DFUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:06,676 - TradingBot - WARNING - 第 1 轮: DFUSDT 调整数量为 0，跳过
+2025-06-04 17:30:06,676 - TradingBot - INFO - 第 1 轮: 处理开仓 BELUSDT SELL, 需求数量=-1.0
+2025-06-04 17:30:07,090 - TradingBot - WARNING - BELUSDT 数量调整为 0 (因名义价值 0.29350000000000004 小于最小值 5.0)
+2025-06-04 17:30:07,091 - TradingBot - INFO - BELUSDT 数量调整: 1.0 -> 0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:07,092 - TradingBot - INFO - 第 1 轮: BELUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:07,092 - TradingBot - WARNING - 第 1 轮: BELUSDT 调整数量为 0，跳过
+2025-06-04 17:30:07,092 - TradingBot - INFO - 第 1 轮: 处理开仓 LRCUSDT BUY, 需求数量=1.0
+2025-06-04 17:30:07,528 - TradingBot - WARNING - LRCUSDT 数量调整为 0 (因名义价值 0.08811000000000001 小于最小值 5.0)
+2025-06-04 17:30:07,529 - TradingBot - INFO - LRCUSDT 数量调整: 1.0 -> 0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:07,532 - TradingBot - INFO - 第 1 轮: LRCUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:07,532 - TradingBot - WARNING - 第 1 轮: LRCUSDT 调整数量为 0，跳过
+2025-06-04 17:30:07,532 - TradingBot - INFO - 第 1 轮: 处理开仓 DENTUSDT BUY, 需求数量=226.0
+2025-06-04 17:30:07,948 - TradingBot - WARNING - DENTUSDT 数量调整为 0 (因名义价值 0.167466 小于最小值 5.0)
+2025-06-04 17:30:07,949 - TradingBot - INFO - DENTUSDT 数量调整: 226.0 -> 0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:07,950 - TradingBot - INFO - 第 1 轮: DENTUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:07,951 - TradingBot - WARNING - 第 1 轮: DENTUSDT 调整数量为 0，跳过
+2025-06-04 17:30:07,951 - TradingBot - INFO - 第 1 轮: 处理开仓 CTKUSDT SELL, 需求数量=-1.0
+2025-06-04 17:30:08,385 - TradingBot - WARNING - CTKUSDT 数量调整为 0 (因名义价值 0.3209 小于最小值 5.0)
+2025-06-04 17:30:08,386 - TradingBot - INFO - CTKUSDT 数量调整: 1.0 -> 0, 最小值: 1.0, 最大值: 2500000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:08,387 - TradingBot - INFO - 第 1 轮: CTKUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:08,387 - TradingBot - WARNING - 第 1 轮: CTKUSDT 调整数量为 0，跳过
+2025-06-04 17:30:08,387 - TradingBot - INFO - 第 1 轮: 处理开仓 SXPUSDT BUY, 需求数量=0.4000000000000057
+2025-06-04 17:30:09,775 - TradingBot - WARNING - SXPUSDT 数量调整为 0 (因名义价值 0.07368000000000001 小于最小值 5.0)
+2025-06-04 17:30:09,776 - TradingBot - INFO - SXPUSDT 数量调整: 0.4000000000000057 -> 0, 最小值: 0.1, 最大值: 1000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=1
+2025-06-04 17:30:09,778 - TradingBot - INFO - 第 1 轮: SXPUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:09,778 - TradingBot - WARNING - 第 1 轮: SXPUSDT 调整数量为 0，跳过
+2025-06-04 17:30:09,778 - TradingBot - INFO - 第 1 轮: 跳过 SUNUSDT 开仓，原因：数量为0或已处理
+2025-06-04 17:30:09,779 - TradingBot - INFO - 第 1 轮: 处理开仓 AERGOUSDT SELL, 需求数量=-1.0
+2025-06-04 17:30:10,307 - TradingBot - WARNING - AERGOUSDT 数量调整为 0 (因名义价值 0.12026 小于最小值 5.0)
+2025-06-04 17:30:10,309 - TradingBot - INFO - AERGOUSDT 数量调整: 1.0 -> 0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=0.0, 真实保证金=0.000000, 数量精度=0
+2025-06-04 17:30:10,310 - TradingBot - INFO - 第 1 轮: AERGOUSDT 开仓调整后数量=0, is_reverse_open=False
+2025-06-04 17:30:10,311 - TradingBot - WARNING - 第 1 轮: AERGOUSDT 调整数量为 0，跳过
+2025-06-04 17:30:10,311 - TradingBot - INFO - 第 1 轮挂单等待，最多 30 秒...
+2025-06-04 17:30:42,190 - TradingBot - INFO - 第 1 轮结束，取消所有未成交挂单...
+2025-06-04 17:30:42,298 - TradingBot - INFO - 第 1 轮: 发现 1 个未成交订单
+2025-06-04 17:30:42,422 - TradingBot - INFO - 成功取消 SUNUSDT 订单，订单ID=1398976969
+2025-06-04 17:30:42,424 - TradingBot - INFO - 第 1 轮: 成功取消 SUNUSDT SELL 挂单，订单ID=1398976969
+2025-06-04 17:30:42,539 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-04 17:30:42,948 - TradingBot - INFO - RLCUSDT 平仓数量调整: 0.09999999999999964 -> 0.1, 最小值: 0.1, 最大值: 1000000.0, 名义价值=0.10222, 真实保证金=0.034073, 数量精度=1
+2025-06-04 17:30:42,950 - TradingBot - INFO - 第 1 轮: RLCUSDT 差值 0.09999999999999964 为小额调整（名义价值 0.10222 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:43,367 - TradingBot - INFO - DFUSDT 平仓数量调整: 2.0 -> 2.0, 最小值: 1.0, 最大值: 5000000.0, 名义价值=0.09532, 真实保证金=0.031773, 数量精度=0
+2025-06-04 17:30:43,368 - TradingBot - INFO - 第 1 轮: DFUSDT 差值 -2.0 为小额调整（名义价值 0.09532 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:43,808 - TradingBot - INFO - BELUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=0.2934, 真实保证金=0.097800, 数量精度=0
+2025-06-04 17:30:43,810 - TradingBot - INFO - 第 1 轮: BELUSDT 差值 -1.0 为小额调整（名义价值 0.2934 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:44,216 - TradingBot - INFO - LRCUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 10000000.0, 名义价值=0.08804, 真实保证金=0.029347, 数量精度=0
+2025-06-04 17:30:44,218 - TradingBot - INFO - 第 1 轮: LRCUSDT 差值 1.0 为小额调整（名义价值 0.08804 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:44,656 - TradingBot - INFO - DENTUSDT 平仓数量调整: 226.0 -> 226.0, 最小值: 1.0, 最大值: 500000000.0, 名义价值=0.167466, 真实保证金=0.055822, 数量精度=0
+2025-06-04 17:30:44,657 - TradingBot - INFO - 第 1 轮: DENTUSDT 差值 226.0 为小额调整（名义价值 0.167466 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:45,111 - TradingBot - INFO - CTKUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 2500000.0, 名义价值=0.3207, 真实保证金=0.106900, 数量精度=0
+2025-06-04 17:30:45,113 - TradingBot - INFO - 第 1 轮: CTKUSDT 差值 -1.0 为小额调整（名义价值 0.3207 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:45,586 - TradingBot - INFO - SXPUSDT 平仓数量调整: 0.4000000000000057 -> 0.4, 最小值: 0.1, 最大值: 1000000.0, 名义价值=0.07368000000000001, 真实保证金=0.024560, 数量精度=1
+2025-06-04 17:30:45,588 - TradingBot - INFO - 第 1 轮: SXPUSDT 差值 0.4000000000000057 为小额调整（名义价值 0.07368000000000001 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:46,300 - TradingBot - INFO - SUNUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 50000000.0, 名义价值=0.01891, 真实保证金=0.006303, 数量精度=0
+2025-06-04 17:30:46,301 - TradingBot - INFO - 第 1 轮: SUNUSDT 差值 -1.0 为小额调整（名义价值 0.01891 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:46,721 - TradingBot - INFO - AERGOUSDT 平仓数量调整: 1.0 -> 1.0, 最小值: 1.0, 最大值: 4000000.0, 名义价值=0.12022, 真实保证金=0.040073, 数量精度=0
+2025-06-04 17:30:46,723 - TradingBot - INFO - 第 1 轮: AERGOUSDT 差值 -1.0 为小额调整（名义价值 0.12022 < 5 或数量过小），跳过后续轮次
+2025-06-04 17:30:46,723 - TradingBot - INFO - 第 1 轮完成，剩余需求: {}
+2025-06-04 17:30:46,723 - TradingBot - INFO - 第 1 轮后所有目标已达成，结束限价单调仓
+2025-06-04 17:30:46,724 - TradingBot - INFO - ==================== 市价单补齐：后续调仓 ====================
+2025-06-04 17:30:46,835 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-04 17:30:46,835 - TradingBot - INFO - 市价单补齐：所有目标已达成，无需补齐
+2025-06-04 17:30:46,952 - TradingBot - INFO - 准备保存 14 条持仓记录，Run_ID=2025-06-04_172955, 调仓日期=2025-06-04
+2025-06-04 17:30:46,961 - TradingBot - INFO - 持仓数据已保存到 data/positions_output.csv，合并后记录数: 42
+2025-06-04 17:30:46,971 - TradingBot - INFO - 验证: data/positions_output.csv 中 Run_ID=2025-06-04_172955 的记录数: 14
+2025-06-04 17:31:08,910 - TradingBot - INFO - 账户信息已保存为JSON文件: data/account_info_20250604_173108.json
+2025-06-04 17:31:08,911 - TradingBot - INFO - 开始计算手续费和已实现盈亏...
+2025-06-04 17:31:08,911 - TradingBot - INFO - 使用实际交易时间戳: start_time=1749029395839, end_time=1749029446972
+2025-06-04 17:31:08,911 - TradingBot - INFO - 开始获取手续费记录: start_time=1749029395839, end_time=1749029446972, limit=1000
+2025-06-04 17:31:09,035 - TradingBot - INFO - API返回空记录，可能该时间段内没有交易
+2025-06-04 17:31:09,035 - TradingBot - INFO - 获取到 0 条手续费记录
+2025-06-04 17:31:09,035 - TradingBot - INFO - 手续费汇总 (trade_commission_summary_2025-06-04): 0.0 USDT, 记录数: 0
+2025-06-04 17:31:09,035 - TradingBot - INFO - 手续费计算结果: {'value': 0.0, 'description': '买卖交易手续费总和', 'date': '2025-06-04_17:31:09', 'records_count': 0}
+2025-06-04 17:31:09,036 - TradingBot - INFO - 已存在已实现盈亏记录 (trade_realized_pnl_summary_2025-06-04): 0 USDT
+2025-06-04 17:31:09,036 - TradingBot - INFO - 已实现盈亏计算结果: {'value': 0, 'description': '买卖交易已实现盈亏总和', 'date': '2025-06-04'}
+2025-06-04 17:31:09,342 - TradingBot - INFO - 获取到 14 个非零持仓
+2025-06-04 17:31:09,344 - TradingBot - INFO - 账户信息已保存为JSON文件: data/account_info_20250604_172955.json
+2025-06-04 17:31:09,368 - TradingBot - INFO - 加载 account_metrics.xlsx 成功，记录数: 28
+2025-06-04 17:31:09,370 - TradingBot - INFO - 找到 2 条 after_trade_balance 记录
+2025-06-04 17:31:09,373 - TradingBot - INFO - 找到上一次记录: Record_Time=2025-06-04 17:21:58, Run_ID=2025-06-04_172118, after_trade_balance=48.1853699
+2025-06-04 17:31:09,373 - TradingBot - INFO - Pre-rebalance return: -0.006343%
+2025-06-04 17:31:09,373 - TradingBot - INFO - Post-rebalance return: 0.032421%
+2025-06-04 17:31:09,799 - TradingBot - INFO - 成功写入 14 条指标到 data/account_metrics.xlsx，Run_ID=2025-06-04_172955
+2025-06-04 17:31:09,800 - TradingBot - INFO - ✅ 交易引擎执行完成 | RunID: 2025-06-04_172955
+2025-06-04 17:31:09,800 - TradingBot - INFO - 当前日期: 2025-06-04, Run_ID: 2025-06-04_172955
+2025-06-04 17:31:09,808 - TradingBot - INFO - 读取 data/positions_output.csv，去重后包含 42 条记录
+2025-06-04 17:31:09,809 - TradingBot - INFO - 所有 Run_ID: ['2025-06-04_172118', '2025-06-04_172255', '2025-06-04_172955']
+2025-06-04 17:31:09,809 - TradingBot - INFO - 所有调仓日期: ['2025-06-04']
+2025-06-04 17:31:09,810 - TradingBot - INFO - 找到 14 条 Run_ID=2025-06-04_172955 或日期=2025-06-04 的记录
+2025-06-04 17:31:09,810 - TradingBot - INFO - 已提取所需字段的持仓数据
+2025-06-04 17:31:09,810 - TradingBot - INFO - 正持仓数量: 7, 负持仓数量: 7
+2025-06-04 17:31:09,814 - TradingBot - INFO - 资金费率文件 data/pos20250604_v3.csv 已加载，去重后包含 173 条记录
+2025-06-04 17:31:09,815 - TradingBot - INFO - 已为 7 个黑名单币种设置 ErrorReason: 黑名单过滤
+2025-06-04 17:31:09,817 - TradingBot - INFO - 已为 23 个币种映射其他错误原因
+2025-06-04 17:31:09,820 - TradingBot - INFO - 正持仓资金费率数据已筛选，最大 id: 7
+2025-06-04 17:31:09,822 - TradingBot - INFO - 正持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason
+2025-06-04 17:31:09,824 - TradingBot - INFO - 负持仓资金费率数据已筛选，最小 id: 151
+2025-06-04 17:31:09,827 - TradingBot - INFO - 负持仓数据已完成合并并处理空调仓日期、Run_ID 和 ErrorReason
+2025-06-04 17:31:09,828 - TradingBot - INFO - 正负持仓结果已合并
+2025-06-04 17:31:09,885 - TradingBot - INFO - 分析结果已去重并追加写入文件: data/position_analysis.xlsx，记录数: 90
+2025-06-04 17:31:09,911 - TradingBot - INFO - 唯一日期数量为 1，少于3天，不执行可视化
+2025-06-04 17:31:09,924 - TradingBot - INFO - 添加附件: data\position_analysis.xlsx
+2025-06-04 17:31:09,925 - TradingBot - INFO - 未找到可视化 PDF 文件: data\2025-06-04_account_metrics_data_visualization.pdf
+2025-06-04 17:31:09,942 - TradingBot - INFO - 尝试连接到 smtp.gmail.com:465 (第 1/5)
+2025-06-04 17:31:10,732 - TradingBot - INFO - 连接成功，开始登录
+2025-06-04 17:31:13,850 - TradingBot - INFO - 邮件发送成功！
+2025-06-04 17:31:14,038 - TradingBot - INFO - 20250604 交易完成，Run_ID: 2025-06-04_172955
+2025-06-04 17:31:14,038 - TradingBot - INFO - 记录已处理文件 data/pos20250604_v3.csv，哈希: 2fd5f461de1ee0e3813c1573e05a1290，Run_ID: 2025-06-04_172955
+2025-06-04 17:31:14,038 - TradingBot - INFO - 交易完成后等待 10 分钟
+2025-06-04 17:41:14,069 - TradingBot - INFO - 检查 20250604 的文件或邮件，Run_ID: 2025-06-04_174114
+2025-06-04 17:41:14,069 - TradingBot - INFO - 检查本地文件: data/pos20250604_v3.csv
+2025-06-04 17:41:14,071 - TradingBot - INFO - 文件 data/pos20250604_v3.csv 已处理（哈希: 2fd5f461de1ee0e3813c1573e05a1290），跳过
+2025-06-04 17:41:14,071 - TradingBot - INFO - 未收到 20250604 的pos文件，等待 10 分钟后重试
