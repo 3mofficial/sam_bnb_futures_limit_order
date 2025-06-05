@@ -1,62 +1,62 @@
 {
     "position_file": {
-        "value": "pos20250604_v3.csv",
+        "value": "pos20250605_v3.csv",
         "description": "调仓文件",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "before_trade_balance": {
-        "value": 48.29669157,
+        "value": 50.17521669,
         "description": "调仓前账户总保证金余额(totalMarginBalance)",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "before_available_balance": {
-        "value": 5.38197082,
+        "value": 6.25636228,
         "description": "调仓前可用保证金余额(available_balance)",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "after_trade_balance": {
-        "value": 48.27344268,
+        "value": 50.14987465,
         "description": "调仓后账户总保证金余额(totalMarginBalance)",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "balance_loss": {
-        "value": -0.023248889999997857,
+        "value": -0.025342039999998178,
         "description": "调仓前后余额损失金额",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "balance_loss_rate": {
-        "value": "-0.048138%",
+        "value": "-0.050507%",
         "description": "调仓前后余额损失率 (%)",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "after_available_balance": {
-        "value": 5.39812574,
+        "value": 6.19548175,
         "description": "调仓后可用余额",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
     "btc_usdt_price": {
-        "value": 105656.7,
-        "description": "当前btc_usdt_price:105656.7",
-        "date": "2025-06-04"
+        "value": 104559.7,
+        "description": "当前btc_usdt_price:104559.7",
+        "date": "2025-06-05"
     },
-    "trade_commission_summary_2025-06-04": {
+    "trade_commission_summary_2025-06-05": {
         "value": 0,
         "description": "买卖交易手续费总和",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
-    "trade_commission_summary_ratio_2025-06-04": {
+    "trade_commission_summary_ratio_2025-06-05": {
         "value": "0.000000%",
         "description": "买卖交易总手续费占比",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
-    "trade_realized_pnl_summary_2025-06-04": {
+    "trade_realized_pnl_summary_2025-06-05": {
         "value": 0,
         "description": "买卖交易已实现盈亏总和",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     },
-    "trade_realized_pnl_summary_ratio_2025-06-04": {
+    "trade_realized_pnl_summary_ratio_2025-06-05": {
         "value": "0.000000%",
         "description": "买卖交易总盈亏占比",
-        "date": "2025-06-04"
+        "date": "2025-06-05"
     }
 }

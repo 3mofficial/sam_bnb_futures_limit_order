@@ -265,7 +265,14 @@ def analyze_positions(logger, run_id: str, error_reasons: Dict[str, str]):
         raise
 
 def send_email_with_attachments(logger):
-    sender_email = "yanzhiyuan3@gmail.com"
+    # 邮箱配置（QQ邮箱）
+    email_config = {
+        "sender_email": "1010555283@qq.com",
+        "smtp_server": "smtp.qq.com",
+        "smtp_port": 465,
+        "smtp_password": "iuntlyuahbnnbbjg"
+    }
+    
     receiver_email = "yanzhiyuan3@gmail.com"
     cc_emails = ["1010555283@qq.com"]
     subject = "test_sam_account_metrics"
@@ -289,66 +296,79 @@ def send_email_with_attachments(logger):
         logger.info(f"读取 account_metrics.xlsx 时出错: {str(e)}")
         return
 
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    msg['Cc'] = ",".join(cc_emails)
-    msg['Subject'] = subject
+    # 准备邮件内容
+    def prepare_email():
+        msg = MIMEMultipart()
+        msg['From'] = email_config["sender_email"]
+        msg['To'] = receiver_email
+        msg['Cc'] = ",".join(cc_emails)
+        msg['Subject'] = subject
 
-    body = """Hi,
+        body = """Hi,
 
     Please see the attachment.
 
     Regards"""
-    msg.attach(MIMEText(body, 'plain'))
+        msg.attach(MIMEText(body, 'plain'))
 
-    attachment_files = [account_metrics_path]
-    if os.path.exists(position_analysis_path):
-        attachment_files.append(position_analysis_path)
-        logger.info(f"添加附件: {position_analysis_path}")
-    else:
-        logger.info(f"position_analysis.xlsx 文件不存在，将跳过此附件")
+        attachment_files = [account_metrics_path]
+        if os.path.exists(position_analysis_path):
+            attachment_files.append(position_analysis_path)
+            logger.info(f"添加附件: {position_analysis_path}")
+        else:
+            logger.info(f"position_analysis.xlsx 文件不存在，将跳过此附件")
 
-    if os.path.exists(account_metrics_data_visualization_pdf):
-        attachment_files.append(account_metrics_data_visualization_pdf)
-        logger.info(f"添加可视化 PDF 文件: {account_metrics_data_visualization_pdf}")
-    else:
-        logger.info(f"未找到可视化 PDF 文件: {account_metrics_data_visualization_pdf}")
+        if os.path.exists(account_metrics_data_visualization_pdf):
+            attachment_files.append(account_metrics_data_visualization_pdf)
+            logger.info(f"添加可视化 PDF 文件: {account_metrics_data_visualization_pdf}")
+        else:
+            logger.info(f"未找到可视化 PDF 文件: {account_metrics_data_visualization_pdf}")
 
-    for file_path in attachment_files:
-        with open(file_path, "rb") as attachment:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
-            encoders.encode_base64(part)
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename={os.path.basename(file_path)}",
-            )
-            msg.attach(part)
+        for file_path in attachment_files:
+            with open(file_path, "rb") as attachment:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+                encoders.encode_base64(part)
+                part.add_header(
+                    "Content-Disposition",
+                    f"attachment; filename={os.path.basename(file_path)}",
+                )
+                msg.attach(part)
+                
+        return msg
 
-    smtp_server = "smtp.gmail.com"
-    smtp_port = 465
-    smtp_user = sender_email
-    smtp_password = "pyrf nykw jeai kgdf"
-    max_retries = 5
+    # 使用QQ邮箱发送，保留重试机制
+    max_retries = 3
     retry_delay = 10
-
+    
     for attempt in range(max_retries):
         try:
-            logger.info(f"尝试连接到 {smtp_server}:{smtp_port} (第 {attempt + 1}/{max_retries})")
-            with smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=60) as server:
+            msg = prepare_email()
+            
+            logger.info(f"尝试使用QQ邮箱连接到 {email_config['smtp_server']}:{email_config['smtp_port']} (第 {attempt + 1}/{max_retries})")
+            
+            # 关键修改：不使用with语句，手动管理连接关闭
+            server = smtplib.SMTP_SSL(email_config["smtp_server"], email_config["smtp_port"], timeout=30)
+            try:
                 logger.info("连接成功，开始登录")
-                server.login(smtp_user, smtp_password)
+                server.login(email_config["sender_email"], email_config["smtp_password"])
                 server.send_message(msg)
-                logger.info("邮件发送成功！")
+                logger.info("QQ邮箱邮件发送成功！")
+                # 成功发送后立即返回，不处理可能的连接关闭错误
                 return
+            finally:
+                # 无论成功与否，都尝试关闭连接，但忽略关闭时的错误
+                try:
+                    server.quit()
+                except:
+                    pass
         except Exception as e:
-            logger.error(f"发送邮件失败 (第 {attempt + 1}/{max_retries}): {str(e)}")
+            logger.error(f"QQ邮箱发送邮件失败 (第 {attempt + 1}/{max_retries}): {str(e)}")
             if attempt < max_retries - 1:
                 logger.info(f"等待 {retry_delay} 秒后重试...")
                 time.sleep(retry_delay)
-            else:
-                logger.error("达到最大重试次数，邮件发送失败")
+    
+    logger.error("达到最大重试次数，邮件发送失败")
 
 def main():
     config_loader = ConfigLoader()

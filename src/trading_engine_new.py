@@ -595,15 +595,22 @@ class TradingEngine:
             current_date_str = datetime.now().strftime("%Y-%m-%d")
             pnl_key = f'trade_realized_pnl_summary_{current_date_str}'
             
-            # 如果已经计算过，直接返回
-            if pnl_key in self.account_metrics and isinstance(self.account_metrics[pnl_key], dict) and "value" in self.account_metrics[pnl_key]:
-                self.logger.info(f"已存在已实现盈亏记录 ({pnl_key}): {self.account_metrics[pnl_key]['value']} USDT")
-                return self.account_metrics[pnl_key]
-            
-            # 计算当天的开始和结束时间
-            today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-            start_time_ms = int(today.timestamp() * 1000)
-            end_time_ms = int((today.replace(hour=23, minute=59, second=59) + timedelta(days=1)).timestamp() * 1000)
+            # 使用交易的实际开始和结束时间戳，而不是依赖当天的时间范围
+            if hasattr(self, 'trade_start_time') and hasattr(self, 'trade_end_time'):
+                start_time_ms = self.trade_start_time
+                end_time_ms = self.trade_end_time
+                self.logger.info(f"使用实际交易时间戳: start_time={start_time_ms}, end_time={end_time_ms}")
+                
+                # 添加调试日志，显示对应的日期时间
+                start_dt = datetime.fromtimestamp(start_time_ms/1000)
+                end_dt = datetime.fromtimestamp(end_time_ms/1000)
+                self.logger.debug(f"交易时间戳对应的时间: start={start_dt} - end={end_dt}")
+            else:
+                # 如果没有实际交易时间戳，回退到使用当天的时间范围
+                today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+                start_time_ms = int(today.timestamp() * 1000)
+                end_time_ms = int((today.replace(hour=23, minute=59, second=59) + timedelta(days=1)).timestamp() * 1000)
+                self.logger.info(f"使用当天时间范围: start_time={start_time_ms}, end_time={end_time_ms}")
             
             self.logger.info(f"获取已实现盈亏记录，时间范围: {start_time_ms} ({datetime.fromtimestamp(start_time_ms/1000)}) - {end_time_ms} ({datetime.fromtimestamp(end_time_ms/1000)})")
             
@@ -874,7 +881,7 @@ class TradingEngine:
                         error_msg = str(order) if order else "未知错误"  # 获取错误信息
                         self.error_reasons[ticker] = f"下单失败: {error_msg}"  # 记录错误原因
                         self.handle_postonly_error(round_num, ticker, side, qty_to_close, error_msg,
-                                                   pending_orders)  # 处理挂单失败
+                                                   pending_orders, is_close=True)  # 处理挂单失败
 
                 # 处理开仓订单
                 open_orders = {ticker: qty for ticker, qty in all_orders.items() if
@@ -947,7 +954,7 @@ class TradingEngine:
                         error_msg = str(order) if order else "未知错误"  # 获取错误信息
                         self.error_reasons[ticker] = f"下单失败: {error_msg}"  # 记录错误原因
                         self.handle_postonly_error(round_num, ticker, side, abs(qty), error_msg,
-                                                   pending_orders)  # 处理挂单失败
+                                                   pending_orders, is_close=is_reverse_open)  # 处理挂单失败
 
                 # 处理挂单状态
                 if pending_orders:  # 如果存在挂单
@@ -1073,10 +1080,17 @@ class TradingEngine:
                     for ticker, qty in all_orders.items():  # 遍历订单需求
                         price = self.client.get_symbol_price(ticker)  # 获取当前价格
                         if price != 0.0:  # 如果价格有效
-                            adjusted_qty = self.adjust_quantity(ticker, abs(qty), price, is_close=True)  # 调整数量
+                            # 判断是否为平仓操作
+                            is_close_order = (ticker in current_positions and current_positions[ticker] != 0 and 
+                                             (ticker not in self.final_target or self.final_target.get(ticker, 0) == 0 or 
+                                              (self.final_target.get(ticker, 0) * current_positions[ticker] < 0)))
+                            
+                            adjusted_qty = self.adjust_quantity(ticker, abs(qty), price, is_close=is_close_order)  # 调整数量
                             is_open = ticker in self.final_target and self.final_target[ticker] != 0  # 判断是否为开仓
                             notional = adjusted_qty * price  # 计算名义价值
-                            if is_open and (adjusted_qty == 0 or notional < 5):  # 如果是小额调整
+                            
+                            # 只对开仓订单进行小额调整检查，平仓订单不检查
+                            if is_open and not is_close_order and (adjusted_qty == 0 or notional < 5):  # 如果是小额开仓调整
                                 self.logger.info(
                                     f"第 {round_num} 轮: {ticker} 差值 {qty} 为小额调整（名义价值 {notional} < 5 或数量过小），跳过后续轮次"
                                 )  # 记录小额调整日志
@@ -1293,7 +1307,7 @@ class TradingEngine:
             return False # 出错时保守处理，允许下单
 
     def handle_postonly_error(self, round_num: int, ticker: str, side: str, qty: float, error_msg: str,
-                              pending_orders: List[Tuple[str, int, str, float]]):
+                              pending_orders: List[Tuple[str, int, str, float]], is_close: bool = False):
         """处理 postOnly 挂单失败的错误"""
         success = False  # 初始化为失败状态
         order_id = None
@@ -1315,14 +1329,14 @@ class TradingEngine:
                         time.sleep(1)  # 价格获取失败时等待1秒
                         continue
 
-                    adjusted_qty = self.adjust_quantity(ticker, abs(qty), new_price)
+                    adjusted_qty = self.adjust_quantity(ticker, abs(qty), new_price, is_close=is_close)
                     if adjusted_qty <= 0:
                         self.logger.warning(f"第 {round_num} 轮: {ticker} 调整数量为 0，等待重试")
                         time.sleep(1)  # 数量调整失败时等待1秒
                         continue
 
                     success, order, order_id, trade_details = self.client.place_postonly_order(
-                        ticker, side, adjusted_qty, new_price
+                        ticker, side, adjusted_qty, new_price, is_close=is_close
                     )
                     if success:
                         pending_orders.append((ticker, order_id, side, adjusted_qty))
@@ -1790,31 +1804,10 @@ class TradingEngine:
             }
 
     def save_to_json(self, date_str: str, run_id: str):
-        """将账户信息保存为JSON文件"""
+        """将账户信息保存为JSON文件 - 已禁用"""
         try:
-            # 通过API获取最新的账户信息
-            account_info = self.client.get_account_info()  # 获取当前账户信息
-            positions = self.client.get_position_info()  # 获取当前持仓信息
-
-            # 构建与原来相同格式的数据
-            json_data = {
-                "account_info": account_info,  # 保存账户信息
-                "positions": positions,  # 保存持仓信息
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # 保存当前时间戳
-                "run_id": run_id  # 保存运行ID
-            }
-
-            # 确保data目录存在
-            os.makedirs("data", exist_ok=True)  # 创建data目录，如果不存在
-
-            # 生成文件名
-            filename = f"data/account_info_{date_str.replace('-', '')}_{run_id.split('_')[-1]}.json"  # 构造JSON文件名
-
-            # 写入文件
-            with open(filename, "w") as f:  # 打开文件以写入
-                json.dump(json_data, f, indent=4)  # 将数据写入JSON文件，格式化缩进为4
-
-            self.logger.info(f"账户信息已保存为JSON文件: {filename}")  # 记录保存成功的日志
+            # 不再生成account_info_YYYYMMDD_HHMMSS.json文件
+            self.logger.info(f"账户信息JSON文件生成已禁用")
         except Exception as e:
             self.logger.error(f"保存账户信息到JSON文件失败: {str(e)}")  # 记录保存失败的错误日志
 
@@ -1829,7 +1822,7 @@ class TradingEngine:
         """
         self.error_reasons = {}  # 初始化错误原因字典
         start_time = int(time.time() * 1000)  # 记录调仓开始时间（毫秒时间戳）
-        
+
         # 保存交易开始时间戳用于手续费计算
         self.trade_start_time = start_time
         try:
@@ -1901,7 +1894,7 @@ class TradingEngine:
                 "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')  # 修复日期格式，删除多余的-m
             }
 
-        # ==================== 仓位调整阶段 ====================
+            # ==================== 仓位调整阶段 ====================
             try:
                 self.adjust_or_open_positions(long_candidates, short_candidates, run_id, date_str)  # 执行仓位调整
                 # 确保在调仓后保存持仓
@@ -1922,19 +1915,21 @@ class TradingEngine:
 
             # 计算余额损失
             balance_loss = after_trade_balance - before_trade_balance  # 计算调仓前后余额差
-            balance_loss_rate = (balance_loss / before_trade_balance * 100) if before_trade_balance != 0 else 0  # 计算余额损失率
+            balance_loss_rate = (
+                        balance_loss / before_trade_balance * 100) if before_trade_balance != 0 else 0  # 计算余额损失率
 
             # 获取 BTC/USDT 的价格
             btc_price = float(self.client.get_symbol_price('BTCUSDT'))  # 获取 BTC/USDT 当前价格
 
             # 获取所有交易对的交易历史
-            all_symbols = list(set([c['ticker'] for c in long_candidates + short_candidates])) # 获取所有候选交易对
+            all_symbols = list(set([c['ticker'] for c in long_candidates + short_candidates]))  # 获取所有候选交易对
             trade_records = []  # 初始化交易记录列表
             total_commission = 0  # 初始化总手续费
             total_realized_pnl = 0  # 初始化总已实现盈亏
 
             for symbol in all_symbols:  # 遍历所有交易对
-                trades = self.client.get_trade_history(symbol=symbol, start_time=start_time, end_time=end_time)  # 获取交易历史
+                trades = self.client.get_trade_history(symbol=symbol, start_time=start_time,
+                                                       end_time=end_time)  # 获取交易历史
                 for trade in trades:  # 遍历交易记录
                     real_quote = trade['quoteQty'] / self.leverage  # 计算真实成交金额（除以杠杆）
                     trade_record = {
@@ -2026,7 +2021,7 @@ class TradingEngine:
 
             # 保存 account_info 到 JSON 文件之前，更新到self.account_metrics
             self.account_metrics.update(account_info_data)  # 将account_info_data更新到self.account_metrics
-            
+
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')  # 生成时间戳，格式为 YYYYMMDD_HHMMSS
             output_file = f'data/account_info_{timestamp}.json'  # 构造输出文件名
             os.makedirs("data", exist_ok=True)  # 确保data目录存在
@@ -2039,22 +2034,13 @@ class TradingEngine:
             try:
                 commission_result = self.process_trade_commissions()
                 self.logger.info(f"手续费计算结果: {commission_result}")
-                
+
                 pnl_result = self.process_trade_realized_pnl()
                 self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
             except Exception as e:
                 self.logger.error(f"计算手续费或已实现盈亏失败: {str(e)}")
                 self.logger.exception("详细错误信息:")
-            
-            # 保存账户信息到JSON文件
-            self.save_to_json(date_str, run_id)
-            
-            # 计算并追加回报率
-            self.calculate_and_append_returns()
-            
-            # 写入Excel文件
-            self.write_to_excel(run_id=run_id)
-            
+
             self.logger.info(f"✅ 交易引擎执行完成 | RunID: {run_id}")  # 记录交易引擎执行完成的日志
 
         except Exception as e:
@@ -2067,35 +2053,21 @@ class TradingEngine:
                     self.save_positions_to_csv(positions, run_id)  # 保存持仓到CSV文件
                 except Exception as e:
                     self.logger.error(f"持仓信息保存失败: {str(e)}")  # 记录持仓保存失败的错误日志
-            
-            # 确保account_metrics已更新
-            if account_info_data and not self.account_metrics.get("after_trade_balance", {}).get("date"):
-                self.account_metrics.update(account_info_data)  # 将account_info_data更新到self.account_metrics
-                
-            self.logger.info("尝试计算手续费和已实现盈亏...")
-            try:
-                commission_result = self.process_trade_commissions()
-                self.logger.info(f"手续费计算结果: {commission_result}")
-                
-                pnl_result = self.process_trade_realized_pnl()
-                self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
-            except Exception as e:
-                self.logger.error(f"计算手续费和已实现盈亏失败: {str(e)}")
-                self.logger.exception("详细错误信息:")
-            
-            # 保存账户信息到JSON文件
-            self.save_to_json(date_str, run_id)
-            
-            # 计算并追加回报率
-            self.calculate_and_append_returns()
-            
-            # 写入Excel文件
-            self.write_to_excel(run_id=run_id)
-            
+
             self.error_reasons["system_error"] = error_msg  # 记录系统错误原因
 
-        return self.error_reasons  # 返回错误原因字典
+        finally:
+            # ==================== 结果持久化（移到 finally 块中确保只执行一次） ===================
+            # 保存账户信息到JSON文件
+            self.save_to_json(date_str, run_id)
 
+            # 计算并追加回报率
+            self.calculate_and_append_returns()
+
+            # 写入Excel文件
+            self.write_to_excel(run_id=run_id)
+
+        return self.error_reasons  # 返回错误原因字典
 
     def load_blacklist(self) -> Set[str]:
         """加载黑名单列表"""
