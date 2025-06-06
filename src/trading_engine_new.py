@@ -1459,13 +1459,13 @@ class TradingEngine:
         pnl_key = f"trade_realized_pnl_summary_{current_date}"
         pnl_ratio_key = f"trade_realized_pnl_summary_ratio_{current_date}"
 
-        # 强制计算手续费
-        self.logger.debug(f"强制调用 process_trade_commissions for {commission_key}")
-        commission_record = self.process_trade_commissions()
-        self.logger.info(f"手续费计算结果: {commission_record}")
+        # 强制计算手续费 - 已禁用
+        # self.logger.debug(f"强制调用 process_trade_commissions for {commission_key}")
+        # commission_record = self.process_trade_commissions()
+        # self.logger.info(f"手续费计算结果: {commission_record}")
 
-        if pnl_key not in self.account_metrics:
-            self.process_trade_realized_pnl()
+        # if pnl_key not in self.account_metrics:
+        #     self.process_trade_realized_pnl()
 
         before_balance = float(self.account_metrics["before_trade_balance"]["value"])
         if commission_key in self.account_metrics:
@@ -2032,11 +2032,43 @@ class TradingEngine:
             # ==================== 结果持久化 ===================
             self.logger.info("开始计算手续费和已实现盈亏...")
             try:
-                commission_result = self.process_trade_commissions()
-                self.logger.info(f"手续费计算结果: {commission_result}")
+                current_date = datetime.now().strftime('%Y-%m-%d')
+                commission_key = f"trade_commission_summary_{current_date}"
+                pnl_key = f"trade_realized_pnl_summary_{current_date}"
+                
+                # 只有在没有数据或数据为0时才重新计算
+                if commission_key not in self.account_metrics or float(self.account_metrics[commission_key]["value"]) == 0:
+                    commission_result = self.process_trade_commissions()
+                    self.logger.info(f"手续费计算结果: {commission_result}")
+                else:
+                    self.logger.info(f"已有手续费数据，跳过计算: {self.account_metrics[commission_key]['value']}")
 
-                pnl_result = self.process_trade_realized_pnl()
-                self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
+                if pnl_key not in self.account_metrics or float(self.account_metrics[pnl_key]["value"]) == 0:
+                    pnl_result = self.process_trade_realized_pnl()
+                    self.logger.info(f"已实现盈亏计算结果: {pnl_result}")
+                else:
+                    self.logger.info(f"已有盈亏数据，跳过计算: {self.account_metrics[pnl_key]['value']}")
+                
+                # 重新计算占比
+                before_balance = float(self.account_metrics["before_trade_balance"]["value"])
+                commission_ratio_key = f"trade_commission_summary_ratio_{current_date}"
+                pnl_ratio_key = f"trade_realized_pnl_summary_ratio_{current_date}"
+                
+                if commission_key in self.account_metrics:
+                    commission_value = float(self.account_metrics[commission_key]["value"])
+                    self.account_metrics[commission_ratio_key] = {
+                        "value": f"{(commission_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
+                        "description": "买卖交易总手续费占比",
+                        "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+                    }
+                
+                if pnl_key in self.account_metrics:
+                    pnl_value = float(self.account_metrics[pnl_key]["value"])
+                    self.account_metrics[pnl_ratio_key] = {
+                        "value": f"{(pnl_value / before_balance * 100) if before_balance != 0 else 0:.6f}%",
+                        "description": "买卖交易总盈亏占比",
+                        "date": datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+                    }
             except Exception as e:
                 self.logger.error(f"计算手续费或已实现盈亏失败: {str(e)}")
                 self.logger.exception("详细错误信息:")

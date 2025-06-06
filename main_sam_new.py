@@ -345,7 +345,7 @@ def send_email_with_attachments(logger):
         try:
             msg = prepare_email()
             
-            logger.info(f"尝试使用QQ邮箱连接到 {email_config['smtp_server']}:{email_config['smtp_port']} (第 {attempt + 1}/{max_retries})")
+            logger.info(f"尝试使用邮箱连接到 {email_config['smtp_server']}:{email_config['smtp_port']} (第 {attempt + 1}/{max_retries})")
             
             # 关键修改：不使用with语句，手动管理连接关闭
             server = smtplib.SMTP_SSL(email_config["smtp_server"], email_config["smtp_port"], timeout=30)
@@ -353,7 +353,7 @@ def send_email_with_attachments(logger):
                 logger.info("连接成功，开始登录")
                 server.login(email_config["sender_email"], email_config["smtp_password"])
                 server.send_message(msg)
-                logger.info("QQ邮箱邮件发送成功！")
+                logger.info("邮箱邮件发送成功！")
                 # 成功发送后立即返回，不处理可能的连接关闭错误
                 return
             finally:
@@ -363,7 +363,7 @@ def send_email_with_attachments(logger):
                 except:
                     pass
         except Exception as e:
-            logger.error(f"QQ邮箱发送邮件失败 (第 {attempt + 1}/{max_retries}): {str(e)}")
+            logger.error(f"邮箱发送邮件失败 (第 {attempt + 1}/{max_retries}): {str(e)}")
             if attempt < max_retries - 1:
                 logger.info(f"等待 {retry_delay} 秒后重试...")
                 time.sleep(retry_delay)
